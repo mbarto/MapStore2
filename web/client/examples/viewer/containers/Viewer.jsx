@@ -18,6 +18,7 @@ var {changeMapView, getFeatureInfo, changeMapInfoState, purgeMapInfoResults} = r
 
 var VMap = require('../components/Map');
 var LangSelector = require('../../../components/I18N/LangSelector');
+var LayerTree = require('../../../components/map/LayerTree');
 var About = require('../components/About');
 var GetFeatureInfo = require('../components/GetFeatureInfo');
 var Localized = require('../../../components/I18N/Localized');
@@ -47,6 +48,7 @@ var Viewer = React.createClass({
         return [
             <LangSelector key="langSelector" currentLocale={locale} onLanguageChange={this.props.loadLocale}/>,
             <About key="about"/>,
+            <LayerTree layers={this.props.mapConfig.layers} filter={(layer) => {return layer.group !== 'background'; } }/>,
             <GetFeatureInfo
                 key="getFeatureInfo"
                 enabled={this.props.mapInfo.enabled}
