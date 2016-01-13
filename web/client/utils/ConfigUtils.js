@@ -47,6 +47,14 @@ var ConfigUtils = {
         });
     },
 
+    loadPlugins: function() {
+        return axios.get('plugins.json').then(response => {
+            if (typeof response.data === 'object') {
+                return response.data;
+            }
+        });
+    },
+
     getCenter: function(center, projection) {
         var retval;
         if ((center.x || center.x === 0) && (center.y || center.y === 0) && center.crs) {

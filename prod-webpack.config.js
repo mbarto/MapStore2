@@ -1,9 +1,11 @@
 var webpackConfig = require('./webpack.config.js');
 var path = require("path");
 var UglifyJsPlugin = require("webpack/lib/optimize/UglifyJsPlugin");
-var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 var DefinePlugin = require("webpack/lib/DefinePlugin");
 var NormalModuleReplacementPlugin = require("webpack/lib/NormalModuleReplacementPlugin");
+var assign = require('object-assign');
+
+assign(webpackConfig.entry, require('./examples.js'));
 
 webpackConfig.plugins = [
     new DefinePlugin({
@@ -14,7 +16,6 @@ webpackConfig.plugins = [
         'NODE_ENV': '"production"'
       }
     }),
-    new CommonsChunkPlugin("commons", "mapstore-commons.js"),
     new NormalModuleReplacementPlugin(/leaflet$/, path.join(__dirname, "web", "client", "libs", "leaflet")),
     new NormalModuleReplacementPlugin(/openlayers$/, path.join(__dirname, "web", "client", "libs", "openlayers")),
     new NormalModuleReplacementPlugin(/proj4$/, path.join(__dirname, "web", "client", "libs", "proj4")),

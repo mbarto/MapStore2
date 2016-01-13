@@ -1,5 +1,4 @@
 var path = require("path");
-var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 var DefinePlugin = require("webpack/lib/DefinePlugin");
 var NormalModuleReplacementPlugin = require("webpack/lib/NormalModuleReplacementPlugin");
 var NoErrorsPlugin = require("webpack/lib/NoErrorsPlugin");
@@ -17,14 +16,12 @@ module.exports = {
         'webpack-dev-server': 'webpack-dev-server/client?http://0.0.0.0:8081', // WebpackDevServer host and port
         'webpack': 'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
         viewer: path.join(__dirname, "web", "client", "examples", "viewer", "app"),
+        mapstore: path.join(__dirname, "web", "client", "application", "app"),
         mobile: path.join(__dirname, "web", "client", "examples", "viewer", "mobile"),
-        home: path.join(__dirname, "web", "client", "examples", "home", "app"),
-        mouseposition: path.join(__dirname, "web", "client", "examples", "mouseposition", "app"),
-        scalebar: path.join(__dirname, "web", "client", "examples", "scalebar", "app"),
-        layertree: path.join(__dirname, "web", "client", "examples", "layertree", "app")
+        home: path.join(__dirname, "web", "client", "examples", "home", "app")
     },
     output: {
-      path: path.join(__dirname, "web", "client", "dist"),
+        path: path.join(__dirname, "web", "client", "dist"),
         publicPath: "/dist/",
         filename: "[name].js"
     },
@@ -32,7 +29,6 @@ module.exports = {
         new DefinePlugin({
             "__DEVTOOLS__": true
         }),
-        new CommonsChunkPlugin("commons", "mapstore-commons.js"),
         new NormalModuleReplacementPlugin(/leaflet$/, path.join(__dirname, "web", "client", "libs", "leaflet")),
         new NormalModuleReplacementPlugin(/openlayers$/, path.join(__dirname, "web", "client", "libs", "openlayers")),
         new NormalModuleReplacementPlugin(/proj4$/, path.join(__dirname, "web", "client", "libs", "proj4")),

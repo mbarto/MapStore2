@@ -9,7 +9,8 @@
 var {
     CHANGE_MOUSE_POSITION,
     CHANGE_MOUSE_POSITION_CRS,
-    CHANGE_MOUSE_POSITION_STATE
+    CHANGE_MOUSE_POSITION_STATE,
+    TOGGLE_MOUSE_POSITION_STATE
 } = require('../actions/mousePosition');
 
 const assign = require('object-assign');
@@ -19,6 +20,10 @@ function mousePosition(state = null, action) {
         case CHANGE_MOUSE_POSITION_STATE:
             return assign({}, state, {
                 enabled: action.enabled
+            });
+        case TOGGLE_MOUSE_POSITION_STATE:
+            return assign({}, state, {
+                enabled: !state.enabled
             });
         case CHANGE_MOUSE_POSITION:
             return assign({}, state, {
