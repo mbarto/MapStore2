@@ -17,6 +17,8 @@ var {loadLocale} = require('../../actions/locale');
 var ConfigUtils = require('../../utils/ConfigUtils');
 var LocaleUtils = require('../../utils/LocaleUtils');
 
+var Proj4js = require('proj4');
+
 var Debug = require('../../components/development/Debug');
 
 function startApp(plugins) {
@@ -52,6 +54,9 @@ function startApp(plugins) {
     );
 
 }
+
+Proj4js.defs("EPSG:502017", "+proj=laea +lat_0=90 +lon_0=50.0 +x_0=0.0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs");
+
 if (!global.Intl ) {
     require.ensure(['intl', 'intl/locale-data/jsonp/en.js', 'intl/locale-data/jsonp/it.js', './plugins'], (require) => {
         global.Intl = require('intl');

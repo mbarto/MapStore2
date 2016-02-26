@@ -11,6 +11,8 @@ var ConfigUtils = require('../../../utils/ConfigUtils');
 var CoordinatesUtils = require('../../../utils/CoordinatesUtils');
 var assign = require('object-assign');
 var mapUtils = require('../../../utils/MapUtils');
+var Proj4js = require('proj4');
+var Proj4Leaflet = require('proj4leaflet');
 
 require('./SingleClick');
 let LeafletMap = React.createClass({
@@ -56,8 +58,10 @@ let LeafletMap = React.createClass({
         return { };
     },
     componentDidMount() {
-        var map = L.map(this.props.id, assign({zoomControl: this.props.zoomControl}, this.props.mapOptions) ).setView([this.props.center.y, this.props.center.x],
-          this.props.zoom);
+        var map = L.map(this.props.id, assign({
+            zoomControl: this.props.zoomControl,
+            crs: this.getCRS()
+        }, this.props.mapOptions) ).setView([this.props.center.y, this.props.center.x], this.props.zoom);
 
         this.map = map;
         this.map.on('moveend', this.updateMapInfoState);
@@ -122,6 +126,20 @@ let LeafletMap = React.createClass({
     },
     componentWillUnmount() {
         this.map.remove();
+    },
+    getCRS() {
+        const crs = this.props.projection ? this.props.projection.split(':')[1] : '3857';
+        if (Proj4Leaflet.CRS['EPSG' + crs]) {
+            return Proj4Leaflet.CRS['EPSG' + crs];
+        }
+        const projection = new Proj4js.Proj(this.props.projection);
+        if (!projection.srsCode) {
+            projection.srsCode = this.props.projection;
+        }
+        return new Proj4Leaflet.CRS(projection, {
+            resolutions: this.props.mapOptions && this.props.mapOptions.resolutions || [6047.114501953125, 3023.5572509765625, 1511.7786254882812, 755.8893127441406],
+            origin: [-5000000, -5000000]
+        });
     },
     render() {
         const map = this.map;

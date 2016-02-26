@@ -35,7 +35,7 @@ module.exports = {
             "__DEVTOOLS__": true
         }),
         new CommonsChunkPlugin("commons", "mapstore-commons.js"),
-        new NormalModuleReplacementPlugin(/leaflet$/, path.join(__dirname, "web", "client", "libs", "leaflet")),
+        new NormalModuleReplacementPlugin(/[^4]leaflet$/, path.join(__dirname, "web", "client", "libs", "leaflet")),
         new NormalModuleReplacementPlugin(/cesium$/, path.join(__dirname, "web", "client", "libs", "cesium")),
         new NormalModuleReplacementPlugin(/openlayers$/, path.join(__dirname, "web", "client", "libs", "openlayers")),
         new NormalModuleReplacementPlugin(/proj4$/, path.join(__dirname, "web", "client", "libs", "proj4")),
