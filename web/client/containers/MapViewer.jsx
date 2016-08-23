@@ -15,6 +15,7 @@ const urlQuery = url.parse(window.location.href, true).query;
 const ConfigUtils = require('../utils/ConfigUtils');
 
 const PluginsContainer = connect((state) => ({
+    locale: state.locale,
     pluginsConfig: state.plugins || ConfigUtils.getConfigProp('plugins') || null,
     mode: (urlQuery.mode || (state.browser && state.browser.mobile ? 'mobile' : 'desktop')),
     pluginsState: state && state.controls || {}

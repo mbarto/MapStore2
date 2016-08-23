@@ -5,7 +5,14 @@
  * This source code is licensed under the BSD-style license found in the
  * LICENSE file in the root directory of this source tree.
  */
-var url = require('url');
+const url = require('url');
+
+const {addLocaleData} = require('react-intl');
+
+const en = require('react-intl/locale-data/en');
+const it = require('react-intl/locale-data/it');
+
+addLocaleData([...en, ...it]);
 
 let supportedLocales = {
      "it": {
@@ -18,7 +25,7 @@ let supportedLocales = {
      }
 };
 
-var LocaleUtils = {
+const LocaleUtils = {
     ensureIntl(callback) {
         require.ensure(['intl', 'intl/locale-data/jsonp/en.js', 'intl/locale-data/jsonp/it.js'], (require) => {
             global.Intl = require('intl');

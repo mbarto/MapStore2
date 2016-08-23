@@ -28,7 +28,7 @@ var Message = React.createClass({
         var messages = this.props.messages || this.context.messages;
         let message = LocaleUtils.getMessageById(messages, this.props.msgId);
 
-        return message ? <FormattedMessage locales={locale} message={message} {...this.props.msgParams}/> : <span/>;
+        return message ? <FormattedMessage id={this.props.msgId} values={this.props.msgParams}/> : <span/>;
     }
 });
 

@@ -27,7 +27,7 @@ var Message = React.createClass({
         this.props.msgId.split('.').forEach(part => {
             message = message[part];
         });
-        return <FormattedHTMLMessage locales={locale} message={message} {...this.props.msgParams}/>;
+        return <FormattedHTMLMessage id={this.props.msgId} values={this.props.msgParams}/>;
     }
 });
 module.exports = Message;
