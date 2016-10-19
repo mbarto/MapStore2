@@ -102,6 +102,31 @@ describe('Test the map reducer', () => {
         expect(state.zoom).toBe(2);
 
     });
+
+    it('zoom to extent edge cases', () => {
+        const action = {
+            type: 'ZOOM_TO_EXTENT',
+            extent: [160, 44, -170, 46],
+            crs: "EPSG:4326"
+        };
+
+        const action2 = {
+            type: 'ZOOM_TO_EXTENT',
+            extent: [-190, -100, 190, 100],
+            crs: "EPSG:4326",
+            minZoom: 3
+        };
+
+        var state = mapConfig({projection: "EPSG:4326", size: {width: 400, height: 400}}, action);
+        expect(state.mapStateSource).toBe(undefined);
+        expect(state.center.x).toBe(-5);
+        expect(state.center.y).toBe(45);
+        expect(state.zoom).toBe(17);
+
+        state = mapConfig({projection: "EPSG:4326", size: {width: 400, height: 400}}, action2);
+        expect(state.zoom).toBe(3);
+    });
+
     it('change map style', () => {
         const action = {
             type: 'CHANGE_MAP_STYLE',

@@ -25,7 +25,12 @@ const getWMSBBox = (record) => {
             northBoundLatitude: 90.0
         };
     }
-    return bbox;
+    return {
+        westBoundLongitude: parseFloat(bbox.westBoundLongitude),
+        southBoundLatitude: parseFloat(bbox.southBoundLatitude),
+        eastBoundLongitude: parseFloat(bbox.eastBoundLongitude),
+        northBoundLatitude: parseFloat(bbox.northBoundLatitude)
+    };
 };
 
 const converters = {

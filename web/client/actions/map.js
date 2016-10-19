@@ -65,11 +65,12 @@ function panTo(center) {
     };
 }
 
-function zoomToExtent(extent, crs) {
+function zoomToExtent(extent, crs, minZoom) {
     return {
         type: ZOOM_TO_EXTENT,
         extent,
-        crs
+        crs,
+        minZoom
     };
 }
 
