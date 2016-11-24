@@ -30,35 +30,14 @@ function tileMatrixValue(option) {
 }
 
 function tileMatrixIds(option) {
-    const length = option.length;
-    for (let i = 0; i < length; i++) {
-        if (option[i].TileMatrixSet === "EPSG:900913") {
-            if (option[i].TileMatrixSetLimits) {
-                const inner = option[i].TileMatrixSetLimits.TileMatrixLimits;
-                let matrixIds = new Array(inner.length);
-                for (let ii = 0; ii < inner.length; ++ii) {
-                    matrixIds[ii] = inner[ii].TileMatrix;
-                    return matrixIds;
-                }
-                return inner;
-            }
-        }
-    }
+    return mapUtils.getResolutions().map((r, i) => 'EPSG:900913:' + i);
 }
 
 function wmtsToOpenlayersOptions(options) {
     return objectAssign({}, options.baseParams, {
         layer: options.name,
         style: options.style || "",
-        format: options.format || 'image/png',
-        Service: "WMTS",
-        transparent: options.transparent !== undefined ? options.transparent : true,
-        tiled: options.tiled !== undefined ? options.tiled : true,
-        Request: "GetTile",
-        version: options.version || "1.0.0",
-        tilematrixset: CoordinatesUtils.normalizeSRS(options.srs || 'EPSG:3857', options.allowedSRS),
-        tileSize: options.tileSize || 256,
-        TileMatrix: tileMatrixValue(options.TileMatrix)
+        format: options.format || 'image/png'
     }, options.params || {});
 }
 
@@ -81,17 +60,6 @@ Layers.registerType('wmts', {
         const urls = getWMTSURLs(isArray(options.url) ? options.url : [options.url]);
         const queryParameters = wmtsToOpenlayersOptions(options) || {};
         urls.forEach(url => SecurityUtils.addAuthenticationParameter(url, queryParameters));
-        if (options.singleTile) {
-            return new ol.layer.Image({
-                opacity: options.opacity !== undefined ? options.opacity : 1,
-                visible: options.visibility !== false,
-                zIndex: options.zIndex,
-                source: new ol.source.ImageWMS({
-                    url: urls[0],
-                    params: queryParameters
-                })
-            });
-        }
         const mapSrs = map && map.getView() && map.getView().getProjection() && map.getView().getProjection().getCode() || 'EPSG:3857';
         const extent = ol.proj.get(CoordinatesUtils.normalizeSRS(options.srs || mapSrs, options.allowedSRS)).getExtent();
         return new ol.layer.Tile({
@@ -107,7 +75,7 @@ Layers.registerType('wmts', {
                   extent: extent,
                   resolutions: mapUtils.getResolutions(),
                   tileSize: options.tileSize ? options.tileSize : 256,
-                  origin: options.origin ? options.origin : [extent[0], extent[1]],
+                  origin: options.origin ? options.origin : [extent[0], extent[3]],
                   matrixIds: tileMatrixIds(options.TileMatrix)
               }),
               params: queryParameters
