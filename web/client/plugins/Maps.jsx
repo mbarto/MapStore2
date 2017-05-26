@@ -87,6 +87,7 @@ const Maps = React.createClass({
         mapType: React.PropTypes.string,
         onGoToMap: React.PropTypes.func,
         loadMaps: React.PropTypes.func,
+        pageSize: React.PropTypes.number,
         maps: React.PropTypes.object,
         colProps: React.PropTypes.object
     },
@@ -94,7 +95,7 @@ const Maps = React.createClass({
         router: React.PropTypes.object
     },
     componentDidMount() {
-        this.props.loadMaps(ConfigUtils.getDefaults().geoStoreUrl, ConfigUtils.getDefaults().initialMapFilter || "*", {start: 0, limit: 12});
+        this.props.loadMaps(ConfigUtils.getDefaults().geoStoreUrl, ConfigUtils.getDefaults().initialMapFilter || "*", {start: 0, limit: this.props.pageSize || 12});
     },
     getDefaultProps() {
         return {
