@@ -11,7 +11,8 @@ module.exports = {
     login: path.join(__dirname, "web", "client", "examples", "login", "app"),
     plugins: path.join(__dirname, "web", "client", "examples", "plugins", "app"),
     rasterstyler: path.join(__dirname, "web", "client", "examples", "rasterstyler", "app"),
-    api: path.join(__dirname, "web", "client", "examples", "api", "app")
+    api: path.join(__dirname, "web", "client", "examples", "api", "app"),
+    dashboard: path.join(__dirname, "web", "client", "examples", "dashboard", "app")
     // this example is not linked and seems to cause a big slow down with uglyfyplugin. disabled temporary
     // styler: path.join(__dirname, "web", "client", "examples", "styler", "app")
 };
