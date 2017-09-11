@@ -93,6 +93,7 @@
         "gohome": "Retour",
         "back": "Back to the Importer",
         "printbutton": "Imprimer",
+        "annotationsbutton": "Annotations",
         "noresultfound": "Aucun résultat trouvé",
         "save": "Enregistrer",
         "saveAs": "Enregistrer sous",
@@ -550,6 +551,10 @@
                     "within": "Contient"
                 }
             }
+        },
+        "annotations": {
+            "edit": "Modifier",
+            "remove": "Effacer"
         },
         "user":{
             "login": "Login",

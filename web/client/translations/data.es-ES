@@ -93,6 +93,7 @@
         "gohome": "Volver al inicio",
         "back": "Volver al Importador",
         "printbutton": "Imprimir",
+        "annotationsbutton": "Anotaciones",
         "noresultfound": "Ningún resultado encontrado",
         "save": "Guardar",
         "saveAs": "Guardar como",
@@ -573,6 +574,10 @@
                 "usernamePwdInsert": "Por favor, intoduzca su clave y contraseña",
                 "usernamePwdIncorrect":"Ususario o clave incorrectos"
             }
+        },
+        "annotations": {
+            "edit": "Editar",
+            "remove": "Borrar"
         },
         "users": {
             "title": "Administrador de cuentas de usuario",

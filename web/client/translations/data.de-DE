@@ -91,6 +91,7 @@
         "gohome": "Gehe zur Startseite",
         "back": "Zurück zum Import",
         "printbutton": "Drucken",
+        "annotationsbutton": "Annotationen",
         "noresultfound": "Keine Resulte gefunden",
         "save": "Speichern",
         "saveAs": "Speichern als...",
@@ -570,6 +571,10 @@
                 "usernamePwdInsert": "Bitte gib Benutzernamen und Password ein",
                 "usernamePwdIncorrect":"Benutzername oder Passwort inkorrekt"
             }
+        },
+        "annotations": {
+            "edit": "Bearbeiten",
+            "remove": "Löschen"
         },
         "users": {
             "title": "Accounts verwalten",

@@ -91,6 +91,7 @@
         "gohome": "Go home",
         "back": "Back to the Importer",
         "printbutton": "Print",
+        "annotationsbutton": "Annotations",
         "noresultfound": "No Result found",
         "save": "Save",
 		"saveAs": "Save As...",
@@ -569,6 +570,10 @@
                 "usernamePwdInsert": "Please insert username and password",
                 "usernamePwdIncorrect":"Username or password incorrect"
             }
+        },
+        "annotations": {
+            "edit": "Edit",
+            "remove": "Delete"
         },
         "users": {
             "title": "Manage Accounts",

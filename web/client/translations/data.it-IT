@@ -91,6 +91,7 @@
         "gohome": "Torna alla home",
         "back": "Torna all'importer",
         "printbutton": "Stampa",
+        "annotationsbutton": "Annotazioni",
         "noresultfound": "Nessun Risultato Trovato",
         "save": "Salva",
         "saveAs": "Salva con nome",
@@ -570,6 +571,10 @@
                 "usernamePwdInsert": "Per favore, Inserisci username e password",
                 "usernamePwdIncorrect":"Username o password non corretti"
             }
+        },
+        "annotations": {
+            "edit": "Modifica",
+            "remove": "Cancella"
         },
         "users": {
             "title": "Gestione Account",
