@@ -209,6 +209,7 @@ const LayersUtils = {
     },
     saveLayer: (layer) => {
         return {
+            id: layer.id,
             features: layer.features,
             format: layer.format,
             group: layer.group,
@@ -219,6 +220,7 @@ const LayersUtils = {
             provider: layer.provider,
             styles: layer.styles,
             style: layer.style,
+            styleName: layer.styleName,
             availableStyles: layer.availableStyles,
             capabilitiesURL: layer.capabilitiesURL,
             title: layer.title,
@@ -233,6 +235,7 @@ const LayersUtils = {
             matrixIds: layer.matrixIds,
             tileMatrixSet: layer.tileMatrixSet,
             dimensions: layer.dimensions || [],
+            hideLoading: layer.hideLoading || false,
             ...assign({}, layer.params ? {params: layer.params} : {})
         };
     },

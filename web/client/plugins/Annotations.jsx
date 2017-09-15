@@ -14,6 +14,8 @@ const Message = require('../components/I18N/Message');
 const {Glyphicon} = require('react-bootstrap');
 const {toggleControl} = require('../actions/controls');
 
+const {cancelRemoveAnnotation, confirmRemoveAnnotation, editAnnotation, removeAnnotation, cancelEditAnnotation,
+        saveAnnotation, toggleAdd, validationError, removeAnnotationGeometry} = require('../actions/annotations');
 /**
   * Annotations Plugin. Implements annotations handling on maps.
   *
@@ -21,8 +23,28 @@ const {toggleControl} = require('../actions/controls');
   * @memberof plugins
   * @static
   */
-const AnnotationsPlugin = connect()(require('../components/mapcontrols/annotations/Annotations'));
-const {addAnnotationsLayer} = require('../epics/annotations');
+const AnnotationsPlugin = connect((state) => ({
+    removing: state.annotations && state.annotations.removing
+}), {
+    onCancelRemove: cancelRemoveAnnotation,
+    onConfirmRemove: confirmRemoveAnnotation
+})(require('../components/mapcontrols/annotations/Annotations'));
+
+const AnnotationsInfoViewer = connect((state) => ({
+    fields: state.annotations && state.annotations.fields,
+    editing: state.annotations && state.annotations.editing,
+    drawing: state.annotations && state.annotations.drawing,
+    errors: state.annotations.validationErrors
+}),
+{
+    onEdit: editAnnotation,
+    onCancelEdit: cancelEditAnnotation,
+    onError: validationError,
+    onSave: saveAnnotation,
+    onRemove: removeAnnotation,
+    onAddGeometry: toggleAdd,
+    onDeleteGeometry: removeAnnotationGeometry
+})(require('../components/mapcontrols/annotations/AnnotationsInfoViewer'));
 
 module.exports = {
     AnnotationsPlugin: assign(AnnotationsPlugin, {
@@ -36,8 +58,8 @@ module.exports = {
             doNotHide: true
         }
     }),
-    reducers: {},
-    epics: {
-        addAnnotationsLayer
-    }
+    reducers: {
+        annotations: require('../reducers/annotations')
+    },
+    epics: require('../epics/annotations')(AnnotationsInfoViewer)
 };

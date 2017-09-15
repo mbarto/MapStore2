@@ -8,47 +8,166 @@ const PropTypes = require('prop-types');
  */
 
 const React = require('react');
-const {isString} = require('lodash');
-
-const alwaysExcluded = ["id", "exclude", "titleStyle", "listStyle", "componentStyle", "title"];
 
 const {Button, Glyphicon} = require('react-bootstrap');
+const TButton = require('../../data/featuregrid/toolbars/TButton');
 
 const Message = require('../../I18N/Message');
 
+const {FormControl, ButtonGroup, Grid, Row, Col} = require('react-bootstrap');
+
+const ReactQuill = require('react-quill');
+require('react-quill/dist/quill.snow.css');
+
+const {isFunction} = require('lodash');
+
+const assign = require('object-assign');
+
+const PluginsUtils = require('../../../utils/PluginsUtils');
+
 class AnnotationsInfoViewer extends React.Component {
-    static displayName = 'PropertiesViewer';
+    static displayName = 'AnnotationsInfoViewer';
 
     static propTypes = {
         title: PropTypes.string,
         id: PropTypes.string,
         onEdit: PropTypes.func,
-        onRemove: PropTypes.func
+        onCancelEdit: PropTypes.func,
+        onRemove: PropTypes.func,
+        onSave: PropTypes.func,
+        onError: PropTypes.func,
+        onAddGeometry: PropTypes.func,
+        onEditGeometry: PropTypes.func,
+        onDeleteGeometry: PropTypes.func,
+        onStyleGeometry: PropTypes.func,
+        fields: PropTypes.array,
+        editing: PropTypes.object,
+        drawing: PropTypes.bool,
+        errors: PropTypes.object
     };
 
-    getBodyItems = () => {
-        return Object.keys(this.props)
-            .filter(this.toExclude)
-            .map((key) => {
+    static defaultProps = {
+        fields: [
+            {
+                name: 'title',
+                type: 'text',
+                validator: (val) => val,
+                validateError: 'annotations.mandatory',
+                showLabel: false,
+                editable: true
+            },
+            {
+                name: 'description',
+                type: 'html',
+                showLabel: false,
+                editable: true
+            }
+        ]
+    };
+
+    state = {
+        editedFields: {}
+    };
+
+    componentWillReceiveProps(newProps) {
+        if (newProps.id !== this.props.id) {
+            this.setState({
+                editedFields: {}
+            });
+        }
+    }
+
+    getBodyItems = (editing) => {
+        return this.props.fields
+            .filter((field) => !editing || field.editable)
+            .map((field) => {
+                const isError = editing && this.props.errors[field.name];
+                const additionalCls = isError ? 'field-error' : '';
                 return (
-                    <p key={key} className="mapstore-annotations-info-viewer-item"><b>{key}</b> {this.renderProperty(this.props[key])}</p>
+                    <span><p key={field.name} className={"mapstore-annotations-info-viewer-item mapstore-annotations-info-viewer-" + field.name + ' ' + additionalCls}>
+                        {field.showLabel ? <b><Message msgId={"annotations.field." + field.name}/></b> : null} {this.renderProperty(field, this.props[field.name], editing)}
+                    </p>
+                    {isError ? this.renderErrorOn(field.name) : ''}
+                    </span>
                 );
             });
     };
 
-    renderHeader = () => {
-        if (!this.props.title) {
-            return null;
+    getValidator = (validator) => {
+        if (isFunction(validator)) {
+            return validator;
         }
-        return (
-            <div key={this.props.title} className="mapstore-annotations-info-viewer-title">
-                {this.props.title}
-            </div>
-        );
+        return PluginsUtils.handleExpression({}, {}, '{(function(value) {return ' + validator + ';})}');
     };
 
-    renderBody = () => {
-        var items = this.getBodyItems();
+    renderViewButtons = () => {
+        return (<ButtonGroup id="mapstore-annotations-info-viewer-buttons">
+                <Button bsStyle="primary" onClick={() => this.props.onEdit(this.props.id)}><Glyphicon glyph="pencil"/>&nbsp;<Message msgId="annotations.edit"/></Button>
+                <Button bsStyle="primary" onClick={() => this.props.onRemove(this.props.id)}><Glyphicon glyph="ban-circle"/>&nbsp;<Message msgId="annotations.remove"/></Button>
+            </ButtonGroup>);
+    };
+
+    renderEditingButtons = () => {
+        return (<Grid fluid>
+                    <Row>
+                        <Col xs={7}>
+                            <TButton
+                                id="edit-geometry"
+                                tooltip={<Message msgId="annotations.addMarker"/>}
+                                onClick={this.props.onAddGeometry}
+                                visible
+                                active={this.props.drawing}
+                                glyph="pencil-add"/>
+                            <TButton
+                                id="style-annotation-geometry"
+                                tooltip={<Message msgId="annotations.styleGeometry"/>}
+                                onClick={this.props.onStyleGeometry}
+                                visible
+                                glyph="1-stilo"/>
+                            <TButton
+                                id="delete-annotation-geometry"
+                                tooltip={<Message msgId="annotations.deleteGeometry"/>}
+                                onClick={this.props.onDeleteGeometry}
+                                visible
+                                glyph="trash"/>
+                        </Col>
+                        <Col xs={5}>
+                            <Button bsStyle="primary" onClick={this.save}><Glyphicon glyph="floppy-disk"/>&nbsp;<Message msgId="annotations.save"/></Button>
+                            <Button bsStyle="primary" onClick={this.cancelEdit}><Glyphicon glyph="remove"/>&nbsp;<Message msgId="annotations.cancel"/></Button>
+                        </Col>
+            </Row>
+        </Grid>);
+    };
+
+    renderButtons = (editing) => {
+        return editing ? this.renderEditingButtons() : this.renderViewButtons();
+    };
+
+    renderProperty = (field, prop, editing) => {
+        const fieldValue = this.state.editedFields[field.name] === undefined ? prop : this.state.editedFields[field.name];
+        if (editing) {
+            switch (field.type) {
+                case 'html':
+                    return <ReactQuill value={fieldValue} onChange={(val) => this.change(field.name, val)}/>;
+                default:
+                    return <FormControl value={fieldValue} onChange={(e) => this.change(field.name, e.target.value)}/>;
+            }
+
+        }
+        switch (field.type) {
+            case 'html':
+                return <span dangerouslySetInnerHTML={{__html: fieldValue} }/>;
+            default:
+                return fieldValue;
+        }
+    };
+
+    renderErrorOn = (field) => {
+        return <div className="annotations-edit-error"><Message msgId={this.props.errors[field]}/></div>;
+    };
+
+    renderBody = (editing) => {
+        var items = this.getBodyItems(editing);
         if (items.length === 0) {
             return null;
         }
@@ -59,32 +178,58 @@ class AnnotationsInfoViewer extends React.Component {
         );
     };
 
-    renderButtons = () => {
-        return (<div className="mapstore-annotations-info-viewer-buttons">
-            <Button bsStyle="primary" onClick={() => this.props.onEdit(this.props.id)}><Glyphicon glyph="pencil"/>&nbsp;<Message msgId="annotations.edit"/></Button>
-            <Button bsStyle="primary" onClick={() => this.props.onRemove(this.props.id)}><Glyphicon glyph="ban-circle"/>&nbsp;<Message msgId="annotations.remove"/></Button>
-        </div>);
+    renderError = (editing) => {
+        return editing ? Object.keys(this.props.errors).filter(field => this.props.fields.filter(f => f.name === field).length === 0).map(field => this.renderErrorOn(field)) : null;
     };
 
-    renderProperty = (prop) => {
-        if (isString(prop)) {
-            return prop;
-        }
-        return JSON.stringify(prop);
-    };
     render() {
+        const editing = this.props.editing && (this.props.editing.properties.id === this.props.id);
         return (
             <div className="mapstore-annotations-info-viewer">
-                {this.renderHeader()}
-                {this.renderBody()}
-                {this.renderButtons()}
+                {this.renderBody(editing)}
+                {this.renderError(editing)}
+                {this.renderButtons(editing)}
             </div>
         );
     }
 
-    toExclude = (propName) => {
-        return alwaysExcluded
-            .indexOf(propName) === -1;
+    cancelEdit = () => {
+        this.setState({
+            editedFields: {}
+        });
+        this.props.onCancelEdit();
+    };
+
+    change = (field, value) => {
+        this.setState({
+            editedFields: assign({}, this.state.editedFields, {
+                [field]: value
+            })
+        });
+    };
+
+    validate = () => {
+        return assign(this.props.fields.filter(field => field.editable).reduce((previous, field) => {
+            const value = this.state.editedFields[field.name] === undefined ? this.props[field.name] : this.state.editedFields[field.name];
+            if (field.validator && !this.getValidator(field.validator)(value)) {
+                return assign(previous, {
+                    [field.name]: field.validateError
+                });
+            }
+            return previous;
+        }, {}), this.props.editing.geometry ? {} : {
+            geometry: 'annotations.emptygeometry'
+        });
+
+    };
+
+    save = () => {
+        const errors = this.validate();
+        if (Object.keys(errors).length === 0) {
+            this.props.onSave(this.props.id, assign({}, this.state.editedFields), this.props.editing.geometry);
+        } else {
+            this.props.onError(errors);
+        }
     };
 }
 

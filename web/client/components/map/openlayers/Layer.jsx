@@ -147,6 +147,9 @@ class OpenlayersLayer extends React.Component {
     addLayer = (options) => {
         if (this.isValid()) {
             this.props.map.addLayer(this.layer);
+            if (options.handleClickOnLayer) {
+                this.layer.set("handleClickOnLayer", true);
+            }
             this.layer.getSource().on('tileloadstart', () => {
                 if (this.tilestoload === 0) {
                     this.props.onLayerLoading(options.id);
