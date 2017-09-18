@@ -187,6 +187,12 @@ class DrawSupport extends React.Component {
         this.setDoubleClickZoomEnabled(false);
     };
 
+    toMulti = (geometry) => {
+        if (geometry.getType() === 'Point') {
+            return new ol.geom.MultiPoint([geometry.getCoordinates()]);
+        }
+        return geometry;
+    };
     handleDrawAndEdit = (drawMethod, startingPoint, maxPoints) => {
         if (this.drawInteraction) {
             this.removeDrawInteraction();
@@ -203,16 +209,15 @@ class DrawSupport extends React.Component {
         this.drawInteraction.on('drawend', function(evt) {
             this.sketchFeature = evt.feature;
             this.sketchFeature.set('id', uuid.v1());
-            const feature = this.fromOLFeature(this.sketchFeature, startingPoint);
 
             if (!isSimpleGeomType(this.props.drawMethod)) {
                 let geom = evt.feature.getGeometry();
                 let g;
                 let features = head(this.drawSource.getFeatures());
                 if (features === undefined) {
-                    g = this.createOLGeometry({type: drawMethod, coordinates: null});
+                    g = this.toMulti(this.createOLGeometry({type: drawMethod, coordinates: null}));
                 } else {
-                    g = head(this.drawSource.getFeatures()).getGeometry();
+                    g = this.toMulti(head(this.drawSource.getFeatures()).getGeometry());
                 }
                 switch (this.props.drawMethod) {
                     case "MultiPoint": g.appendPoint(geom); break;
@@ -228,6 +233,7 @@ class DrawSupport extends React.Component {
                 }
                 this.sketchFeature.setGeometry(g);
             }
+            const feature = this.fromOLFeature(this.sketchFeature, startingPoint);
             // this.addModifyInteraction();
             const geojsonFormat = new ol.format.GeoJSON();
             let newFeature = reprojectGeoJson(geojsonFormat.writeFeatureObject(this.sketchFeature.clone()), this.props.map.getView().getProjection().getCode(), this.props.options.featureProjection);
@@ -239,6 +245,8 @@ class DrawSupport extends React.Component {
             this.props.onEndDrawing(feature, this.props.drawOwner);
             if (this.props.options.stopAfterDrawing) {
                 this.props.onChangeDrawingStatus('stop', this.props.drawMethod, this.props.drawOwner, this.props.features.concat([feature]));
+            } else {
+                this.props.onChangeDrawingStatus('replace', this.props.drawMethod, this.props.drawOwner, this.props.features.concat([feature]));
             }
             if (this.selectInteraction) {
                 // TODO update also the selected features

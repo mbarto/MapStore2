@@ -63,7 +63,7 @@ const toggleDrawOrEdit = (state) => {
         editEnabled: !drawing,
         drawEnabled: drawing
     };
-    return changeDrawingStatus("drawOrEdit", 'Point', "annotations", [feature], drawOptions, annotationsStyle);
+    return changeDrawingStatus("drawOrEdit", 'MultiPoint', "annotations", [feature], drawOptions, annotationsStyle);
 };
 
 module.exports = (viewer) => ({
@@ -126,7 +126,7 @@ module.exports = (viewer) => ({
         action$.ofType(CONFIRM_REMOVE_ANNOTATION)
         .switchMap((action) => {
             if (action.id === 'geometry') {
-                return Rx.Observable.of(changeDrawingStatus("replace", 'Point', "annotations", [store.getState().annotations.editing], {}));
+                return Rx.Observable.of(changeDrawingStatus("replace", 'MultiPoint', "annotations", [store.getState().annotations.editing], {}));
             }
             return Rx.Observable.from([
                 updateNode('annotations', 'layer', {
@@ -146,7 +146,7 @@ module.exports = (viewer) => ({
                         geometry: f.properties.id === action.id ? action.geometry : f.geometry
                     }))
                 }),
-                changeDrawingStatus("clean", 'Point', "annotations", [], {}),
+                changeDrawingStatus("clean", 'MultiPoint', "annotations", [], {}),
                 changeLayerProperties('annotations', {visibility: true})
             ]);
         }),
@@ -154,7 +154,7 @@ module.exports = (viewer) => ({
         action$.ofType(CANCEL_EDIT_ANNOTATION, PURGE_MAPINFO_RESULTS)
         .switchMap(() => {
             return Rx.Observable.from([
-                changeDrawingStatus("clean", 'Point', "annotations", [], {}),
+                changeDrawingStatus("clean", 'MultiPoint', "annotations", [], {}),
                 changeLayerProperties('annotations', {visibility: true})
             ]);
         }),
