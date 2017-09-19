@@ -22,7 +22,7 @@ class JSONViewer extends React.Component {
     }
 
     render() {
-        const RowViewer = this.props.layer.rowViewer || this.props.rowViewer || PropertiesViewer;
+        const RowViewer = (this.props.layer && this.props.layer.rowViewer) || this.props.rowViewer || PropertiesViewer;
         return (<div className="mapstore-json-viewer">
                 {(this.props.response.features || []).map((feature, i) => {
                     return <RowViewer key={i} title={feature.id} exclude={["bbox"]} {...feature.properties}/>;

@@ -1,4 +1,3 @@
-const PropTypes = require('prop-types');
 /**
  * Copyright 2015, GeoSolutions Sas.
  * All rights reserved.
@@ -7,6 +6,7 @@ const PropTypes = require('prop-types');
  * LICENSE file in the root directory of this source tree.
  */
 
+const PropTypes = require('prop-types');
 const React = require('react');
 
 const {Button, Glyphicon} = require('react-bootstrap');
@@ -25,11 +25,37 @@ const assign = require('object-assign');
 
 const PluginsUtils = require('../../../utils/PluginsUtils');
 
+/**
+ * Identify Viewer customized for Annotations.
+ * @memberof components.mapControls.annotations
+ * @class
+ * @prop {string} id identifier of the current annotation feature
+ * @prop {object[]} fields (configurable) list of fields managed by the annotations viewer / editor; each element is an
+ * object with the following properties:
+ *  - name: name of the property in the underlying feature object
+ *  - type: type of value, chooses the type of rendering and editing component (currently supported types are text and html)
+ *  - showLabel: (true/false) wether we have to show the label or only the value
+ *  - editable: wether the user can edit the field or not
+ *  - validator: function that returns true if the current field value is valid
+ *  - validateError: id for translations of the validation error to show in case of failed validation
+ * @prop {object} editing feature object of the feature under editing (when editing mode is enabled, null otherwise)
+ * @prop {boolean} drawing flag to state status of drawing during editing
+ * @prop {object} errors key/value set of validation errors (field_name: error_id)
+ * @prop {function} onEdit triggered when the user clicks on the edit button
+ * @prop {function} onCancelEdit triggered when the user cancels current editing session
+ * @prop {function} onRemove triggered when the user clicks on the remove button
+ * @prop {function} onSave triggered when the user clicks on the save button
+ * @prop {function} onError triggered when a validation error occurs
+ * @prop {function} onAddGeometry triggered when the user clicks on the add point button
+ * @prop {function} onDeleteGeometry triggered when the user clicks on the remove points button
+ * @prop {function} onStyleGeometry triggered when the user clicks on the style button
+ *
+ * In addition, as the Identify viewer interface mandates, every feature attribute is mapped as a component property.
+ */
 class AnnotationsInfoViewer extends React.Component {
     static displayName = 'AnnotationsInfoViewer';
 
     static propTypes = {
-        title: PropTypes.string,
         id: PropTypes.string,
         onEdit: PropTypes.func,
         onCancelEdit: PropTypes.func,
@@ -37,7 +63,6 @@ class AnnotationsInfoViewer extends React.Component {
         onSave: PropTypes.func,
         onError: PropTypes.func,
         onAddGeometry: PropTypes.func,
-        onEditGeometry: PropTypes.func,
         onDeleteGeometry: PropTypes.func,
         onStyleGeometry: PropTypes.func,
         fields: PropTypes.array,
@@ -59,10 +84,11 @@ class AnnotationsInfoViewer extends React.Component {
             {
                 name: 'description',
                 type: 'html',
-                showLabel: false,
+                showLabel: true,
                 editable: true
             }
-        ]
+        ],
+        errors: {}
     };
 
     state = {

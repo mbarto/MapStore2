@@ -24,7 +24,8 @@ const {cancelRemoveAnnotation, confirmRemoveAnnotation, editAnnotation, removeAn
   * @static
   */
 const AnnotationsPlugin = connect((state) => ({
-    removing: state.annotations && state.annotations.removing
+    removing: state.annotations && state.annotations.removing,
+    editing: state.annotations && !!state.annotations.editing
 }), {
     onCancelRemove: cancelRemoveAnnotation,
     onConfirmRemove: confirmRemoveAnnotation

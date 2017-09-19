@@ -554,7 +554,19 @@
         },
         "annotations": {
             "edit": "Modifier",
-            "remove": "Effacer"
+            "remove": "Effacer",
+            "save": "Enregistrer",
+            "cancel": "Annuler",
+            "addMarker": "Ajouter un nouveau point sur la carte",
+            "styleGeometry": "Choisissez un style différent pour les points",
+            "deleteGeometry": "Supprimer les points existants",
+            "removeannotation": "Voulez-vous supprimer l'annotation?",
+            "removegeometry": "Voulez-vous supprimer tous les points d'annotation?",
+            "confirm": "confirmer",
+            "field": {
+                "title": "titre",
+                "description": "Description"
+            }
         },
         "user":{
             "login": "Login",

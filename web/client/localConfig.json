@@ -33,32 +33,6 @@
     "projectionDefs": [],
     "initialState": {
       "defaultState": {
-        "annotations": {
-          "fields": [{
-                    "name": "title",
-                    "type": "text",
-                    "validator": "value",
-                    "validateError": "annotations.mandatory",
-                    "showLabel": false,
-                    "editable": true
-                },
-                {
-                    "name": "description",
-                    "type": "html",
-                    "showLabel": true,
-                    "editable": true
-                },
-                {
-                    "name": "publisher",
-                    "showLabel": true
-                }, {
-                    "name": "created",
-                    "showLabel": true
-                }, {
-                    "name": "updated",
-                    "showLabel": true
-                }]
-        },
         "catalog":{
           "default": {
             "newService": {
