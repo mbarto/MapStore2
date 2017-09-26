@@ -597,12 +597,17 @@
             "remove": "Cancella",
             "save": "Salva",
             "cancel": "Annulla",
+            "back": "Indietro",
             "addMarker": "Aggiungi un punto sulla mappa",
             "styleGeometry": "Scegli lo stile per il punto",
             "deleteGeometry": "Rimuovi i punti esistenti",
             "removeannotation": "Vuoi rimuovere l'annotazione?",
             "removegeometry": "Vuoi rimuovere tutti i punti dell'annotazione?",
             "confirm": "Conferma",
+            "mandatory": "Campo obbligatorio",
+            "emptygeometry": "La geometria non può essere vuota",
+            "add": "Nuova annotazione",
+            "title": "Annotazioni",
             "field": {
                 "title": "Titolo",
                 "description": "Descrizione"

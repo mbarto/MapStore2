@@ -17,7 +17,8 @@ const getIcon = (style) => {
             icon: prefix + '-' + style.iconGlyph,
             markerColor: style.iconColor || 'blue',
             shape: style.iconShape || 'circle',
-            prefix
+            prefix,
+            extraClasses: style.highlight ? 'marker-selected' : ''
         });
     }
     return L.icon({

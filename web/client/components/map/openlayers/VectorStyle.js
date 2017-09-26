@@ -133,7 +133,7 @@ function getMarkerStyle(options) {
     } else {
         markerStyle = [new ol.style.Style({
               image: new ol.style.Icon(({
-                anchor: [markers.size[0] / 2, markers.size[1]],
+                anchor: [12, 12],
                 anchorXUnits: 'pixels',
                 anchorYUnits: 'pixels',
                 src: extraMarkerShadow
@@ -153,7 +153,14 @@ function getMarkerStyle(options) {
                 offsetY: -markers.size[1] * 2 / 3,
                 fill: new ol.style.Fill({color: '#FFFFFF'})
             })
-        })];
+        })].concat(options.style.highlight ? [new ol.style.Style({
+            text: new ol.style.Text({
+                text: '\ue165',
+                font: '18px mapstore2',
+                offsetY: -markers.size[1] - 10,
+                fill: new ol.style.Fill({color: '#FF00FF'})
+            })
+        })] : []);
     }
     return markerStyle;
 }
@@ -179,14 +186,15 @@ function getStyle(options) {
         if (options.style.iconUrl || options.style.iconGlyph) {
             const markerStyle = getMarkerStyle(options);
 
-            style = function() {
-                const type = this.getGeometry().getType();
+            style = function(f) {
+                var feature = this || f;
+                const type = feature.getGeometry().getType();
                 switch (type) {
                     case "Point":
                     case "MultiPoint":
                         return markerStyle;
                     default:
-                        return styleFunction(this);
+                        return styleFunction(feature);
                 }
             };
         } else {

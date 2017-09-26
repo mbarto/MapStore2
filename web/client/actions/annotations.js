@@ -7,11 +7,14 @@
  */
 
 const EDIT_ANNOTATION = 'ANNOTATIONS:EDIT';
+const SHOW_ANNOTATION = 'ANNOTATIONS:SHOW';
+const NEW_ANNOTATION = 'ANNOTATIONS:NEW';
 const REMOVE_ANNOTATION = 'ANNOTATIONS:REMOVE';
 const REMOVE_ANNOTATION_GEOMETRY = 'ANNOTATIONS:REMOVE_GEOMETRY';
 const CONFIRM_REMOVE_ANNOTATION = 'ANNOTATIONS:CONFIRM_REMOVE';
 const CANCEL_REMOVE_ANNOTATION = 'ANNOTATIONS:CANCEL_REMOVE';
 const CANCEL_EDIT_ANNOTATION = 'ANNOTATIONS:CANCEL_EDIT';
+const CANCEL_SHOW_ANNOTATION = 'ANNOTATIONS:CANCEL_SHOW';
 const SAVE_ANNOTATION = 'ANNOTATIONS:SAVE';
 const TOGGLE_ADD = 'ANNOTATIONS:TOGGLE_ADD';
 const TOGGLE_STYLE = 'ANNOTATIONS:TOGGLE_STYLE';
@@ -19,6 +22,8 @@ const SET_STYLE = 'ANNOTATIONS:SET_STYLE';
 const RESTORE_STYLE = 'ANNOTATIONS:RESTORE_STYLE';
 const UPDATE_ANNOTATION_GEOMETRY = 'ANNOTATIONS:UPDATE_GEOMETRY';
 const VALIDATION_ERROR = 'ANNOTATIONS:VALIDATION_ERROR';
+const HIGHLIGHT = 'ANNOTATIONS:HIGHLIGHT';
+const CLEAN_HIGHLIGHT = 'ANNOTATIONS:CLEAN_HIGHLIGHT';
 
 const {head} = require('lodash');
 
@@ -28,6 +33,12 @@ function editAnnotation(id) {
             type: EDIT_ANNOTATION,
             feature: head(head(getState().layers.flat.filter(l => l.id === 'annotations')).features.filter(f => f.properties.id === id))
         });
+    };
+}
+
+function newAnnotation() {
+    return {
+        type: NEW_ANNOTATION
     };
 }
 
@@ -63,13 +74,14 @@ function cancelEditAnnotation() {
     };
 }
 
-function saveAnnotation(id, fields, geometry, style) {
+function saveAnnotation(id, fields, geometry, style, newFeature) {
     return {
         type: SAVE_ANNOTATION,
         id,
         fields,
         geometry,
-        style
+        style,
+        newFeature
     };
 }
 
@@ -112,8 +124,36 @@ function validationError(errors) {
     };
 }
 
+function highlight(id) {
+    return {
+        type: HIGHLIGHT,
+        id
+    };
+}
+
+function cleanHighlight() {
+    return {
+        type: CLEAN_HIGHLIGHT
+    };
+}
+
+function showAnnotation(id) {
+    return {
+        type: SHOW_ANNOTATION,
+        id
+    };
+}
+
+function cancelShowAnnotation() {
+    return {
+        type: CANCEL_SHOW_ANNOTATION
+    };
+}
+
 module.exports = {
+    SHOW_ANNOTATION,
     EDIT_ANNOTATION,
+    NEW_ANNOTATION,
     REMOVE_ANNOTATION,
     CONFIRM_REMOVE_ANNOTATION,
     CANCEL_REMOVE_ANNOTATION,
@@ -126,7 +166,11 @@ module.exports = {
     TOGGLE_STYLE,
     SET_STYLE,
     RESTORE_STYLE,
+    HIGHLIGHT,
+    CLEAN_HIGHLIGHT,
+    CANCEL_SHOW_ANNOTATION,
     editAnnotation,
+    newAnnotation,
     removeAnnotation,
     confirmRemoveAnnotation,
     cancelRemoveAnnotation,
@@ -138,5 +182,9 @@ module.exports = {
     removeAnnotationGeometry,
     toggleStyle,
     setStyle,
-    restoreStyle
+    restoreStyle,
+    highlight,
+    cleanHighlight,
+    showAnnotation,
+    cancelShowAnnotation
 };

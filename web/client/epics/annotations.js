@@ -8,12 +8,13 @@
 
 const Rx = require('rxjs');
 const {MAP_CONFIG_LOADED} = require('../actions/config');
+const {TOGGLE_CONTROL} = require('../actions/controls');
 const {addLayer, updateNode, changeLayerProperties} = require('../actions/layers');
 const {hideMapinfoMarker, purgeMapInfoResults} = require('../actions/mapInfo');
 
-const {updateAnnotationGeometry, setStyle, toggleStyle,
+const {updateAnnotationGeometry, setStyle, toggleStyle, cleanHighlight,
     CONFIRM_REMOVE_ANNOTATION, SAVE_ANNOTATION, EDIT_ANNOTATION, CANCEL_EDIT_ANNOTATION,
-    TOGGLE_ADD, SET_STYLE, RESTORE_STYLE} = require('../actions/annotations');
+    TOGGLE_ADD, SET_STYLE, RESTORE_STYLE, HIGHLIGHT, CLEAN_HIGHLIGHT} = require('../actions/annotations');
 
 const {GEOMETRY_CHANGED} = require('../actions/draw');
 const {PURGE_MAPINFO_RESULTS} = require('../actions/mapInfo');
@@ -64,7 +65,9 @@ const toggleDrawOrEdit = (state) => {
         editEnabled: !drawing,
         drawEnabled: drawing
     };
-    return changeDrawingStatus("drawOrEdit", 'MultiPoint', "annotations", [feature], drawOptions, feature.style || annotationsStyle);
+    return changeDrawingStatus("drawOrEdit", 'MultiPoint', "annotations", [feature], drawOptions, assign({}, feature.style, {
+        highlight: false
+    }) || annotationsStyle);
 };
 
 module.exports = (viewer) => ({
@@ -85,7 +88,9 @@ module.exports = (viewer) => ({
                     handleClickOnLayer: true
                 }));
             }
-            return Rx.Observable.of(updateNode('annotations', 'layer', { rowViewer: viewer }));
+            return Rx.Observable.of(updateNode('annotations', 'layer', {
+                rowViewer: viewer
+            }));
         }),
     editAnnotationEpic: (action$, store) =>
         action$.ofType(EDIT_ANNOTATION)
@@ -119,7 +124,12 @@ module.exports = (viewer) => ({
                         properties: f.properties.id === action.id ? assign({}, f.properties, action.fields) : f.properties,
                             geometry: f.properties.id === action.id ? action.geometry : f.geometry,
                             style: f.properties.id === action.id ? action.style : f.style
-                    }))
+                    })).concat(action.newFeature ? [{
+                        type: "Feature",
+                        properties: assign({}, action.fields, {id: action.id}),
+                        geometry: action.geometry,
+                        style: action.style
+                    }] : [])
                 }),
                 changeDrawingStatus("clean", 'MultiPoint', "annotations", [], {}),
                 changeLayerProperties('annotations', {visibility: true})
@@ -160,5 +170,39 @@ module.exports = (viewer) => ({
                 toggleStyle()
             ]
             );
+        }),
+    highlighAnnotationEpic: (action$, store) => action$.ofType(HIGHLIGHT)
+        .switchMap((action) => {
+            return Rx.Observable.of(
+                updateNode('annotations', 'layer', {
+                    features: head(store.getState().layers.flat.filter(l => l.id === 'annotations')).features.map(f => f.properties.id === action.id ? assign({}, f, {
+                        style: assign({}, f.style, {
+                            highlight: true
+                        })
+                    }) : f)
+                })
+            );
+        }),
+    cleanHighlighAnnotationEpic: (action$, store) => action$.ofType(CLEAN_HIGHLIGHT)
+        .switchMap(() => {
+            return Rx.Observable.of(
+                updateNode('annotations', 'layer', {
+                    features: head(store.getState().layers.flat.filter(l => l.id === 'annotations')).features.map(f =>
+                    assign({}, f, {
+                        style: assign({}, f.style, {
+                            highlight: false
+                        })
+                    }))
+                })
+            );
+        }),
+    closeAnnotationsEpic: (action$, store) => action$.ofType(TOGGLE_CONTROL)
+        .filter((action) => action.control === 'annotations' && !store.getState().controls.annotations.enabled)
+        .switchMap(() => {
+            return Rx.Observable.from([
+                cleanHighlight(),
+                changeDrawingStatus("clean", 'MultiPoint', "annotations", [], {}),
+                changeLayerProperties('annotations', {visibility: true})
+            ]);
         })
 });

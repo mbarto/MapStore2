@@ -46,7 +46,7 @@ const defaultMarkers = MarkerUtils.extraMarkers.shapes.map((s) => ({
 const glyphs = Object.keys(MarkerUtils.getGlyphs('fontawesome'));
 
 /**
- * Identify Viewer customized for Annotations.
+ * Viewer / Editor for Annotations.
  * @memberof components.mapControls.annotations
  * @class
  * @prop {string} id identifier of the current annotation feature
@@ -77,14 +77,15 @@ const glyphs = Object.keys(MarkerUtils.getGlyphs('fontawesome'));
  *
  * In addition, as the Identify viewer interface mandates, every feature attribute is mapped as a component property.
  */
-class AnnotationsInfoViewer extends React.Component {
-    static displayName = 'AnnotationsInfoViewer';
+class AnnotationsEditor extends React.Component {
+    static displayName = 'AnnotationsEditor';
 
     static propTypes = {
         id: PropTypes.string,
         onEdit: PropTypes.func,
         onCancelEdit: PropTypes.func,
         onCancelStyle: PropTypes.func,
+        onCancel: PropTypes.func,
         onRemove: PropTypes.func,
         onSave: PropTypes.func,
         onSaveStyle: PropTypes.func,
@@ -99,7 +100,8 @@ class AnnotationsInfoViewer extends React.Component {
         styling: PropTypes.bool,
         errors: PropTypes.object,
         markers: PropTypes.array,
-        markerIcon: PropTypes.string
+        markerIcon: PropTypes.string,
+        showBack: PropTypes.bool
     };
 
     static defaultProps = {
@@ -121,7 +123,8 @@ class AnnotationsInfoViewer extends React.Component {
         ],
         markers: defaultMarkers,
         markerIcon: defaultIcon,
-        errors: {}
+        errors: {},
+        showBack: false
     };
 
     state = {
@@ -163,6 +166,7 @@ class AnnotationsInfoViewer extends React.Component {
         return (<ButtonGroup id="mapstore-annotations-info-viewer-buttons">
                 <Button bsStyle="primary" onClick={() => this.props.onEdit(this.props.id)}><Glyphicon glyph="pencil"/>&nbsp;<Message msgId="annotations.edit"/></Button>
                 <Button bsStyle="primary" onClick={() => this.props.onRemove(this.props.id)}><Glyphicon glyph="ban-circle"/>&nbsp;<Message msgId="annotations.remove"/></Button>
+                {this.props.showBack ? <Button bsStyle="primary" onClick={() => this.props.onCancel()}><Glyphicon glyph="back"/>&nbsp;<Message msgId="annotations.back"/></Button> : null }
             </ButtonGroup>);
     };
 
@@ -212,9 +216,9 @@ class AnnotationsInfoViewer extends React.Component {
         if (editing) {
             switch (field.type) {
                 case 'html':
-                    return <ReactQuill value={fieldValue} onChange={(val) => this.change(field.name, val)}/>;
+                    return <ReactQuill value={fieldValue || ''} onChange={(val) => this.change(field.name, val)}/>;
                 default:
-                    return <FormControl value={fieldValue} onChange={(e) => this.change(field.name, e.target.value)}/>;
+                    return <FormControl value={fieldValue || ''} onChange={(e) => this.change(field.name, e.target.value)}/>;
             }
 
         }
@@ -276,7 +280,7 @@ class AnnotationsInfoViewer extends React.Component {
     };
 
     renderError = (editing) => {
-        return editing ? Object.keys(this.props.errors).filter(field => this.props.fields.filter(f => f.name === field).length === 0).map(field => this.renderErrorOn(field)) : null;
+        return editing ? (Object.keys(this.props.errors).filter(field => this.props.fields.filter(f => f.name === field).length === 0).map(field => this.renderErrorOn(field))) : null;
     };
 
     render() {
@@ -344,11 +348,11 @@ class AnnotationsInfoViewer extends React.Component {
         const errors = this.validate();
         if (Object.keys(errors).length === 0) {
             this.props.onSave(this.props.id, assign({}, this.state.editedFields),
-                this.props.editing.geometry, this.props.editing.style);
+                this.props.editing.geometry, this.props.editing.style, this.props.editing.newFeature || false);
         } else {
             this.props.onError(errors);
         }
     };
 }
 
-module.exports = AnnotationsInfoViewer;
+module.exports = AnnotationsEditor;
