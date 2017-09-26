@@ -28,20 +28,8 @@ const Select = require('react-select');
 const PluginsUtils = require('../../../utils/PluginsUtils');
 const MarkerUtils = require('../../../utils/MarkerUtils');
 
-const defaultIcon = MarkerUtils.extraMarkers.icons[0];
-const defaultMarkers = MarkerUtils.extraMarkers.shapes.map((s) => ({
-    name: s,
-    markers: MarkerUtils.extraMarkers.colors.map((m) => ({
-        name: m,
-        width: MarkerUtils.extraMarkers.size[0],
-        height: MarkerUtils.extraMarkers.size[1],
-        offsets: MarkerUtils.extraMarkers.getOffsets(m, s),
-        style: {
-            color: m,
-            shape: s
-        }
-    }))
-}));
+const defaultIcon = MarkerUtils.markers.extra.icons[0];
+const defaultMarkers = MarkerUtils.markers.extra.getGrid();
 
 const glyphs = Object.keys(MarkerUtils.getGlyphs('fontawesome'));
 
@@ -314,11 +302,11 @@ class AnnotationsEditor extends React.Component {
     };
 
     isCurrentStyle = (m) => {
-        return MarkerUtils.extraMarkers.matches(this.props.editing.style, m.style);
+        return MarkerUtils.markers.extra.matches(this.props.editing.style, m.style);
     };
 
     selectStyle = (marker) => {
-        return this.props.onSetStyle(assign(MarkerUtils.extraMarkers.getStyle(marker.style), {
+        return this.props.onSetStyle(assign(MarkerUtils.markers.extra.getStyle(marker.style), {
             iconGlyph: this.props.editing.style.iconGlyph
         }));
     };

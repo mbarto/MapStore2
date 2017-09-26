@@ -68,14 +68,17 @@
 .mapstore-annotations-panel-card-thumbnail {
     display: inline-block;
     float: left;
-    width: 30px;
+    width: 40px;
     height: 100%;
-    padding-top: 25px;
+    padding-top: 15px;
 }
 
-.mapstore-annotations-panel-card:hover .mapstore-annotations-panel-card-thumbnail:before {
+.mapstore-annotations-panel-card:hover > .mapstore-annotations-panel-card-thumbnail:after {
     font-family: 'mapstore2';
     content: '\e165';
+    position: absolute;
+    left: 36px;
+    margin-top: -62px;
 }
 
 .extra-marker .marker-selected:after {
@@ -107,7 +110,7 @@
     clear: both;
 }
 
-.mapstore-right-panel .ql-tooltip {
+.mapstore-right-panel .ql-tooltip, #mapstore-annotations-panel .ql-tooltip {
     left: 0 !important;
     top: 0 !important;
 }
@@ -133,4 +136,18 @@
 
 .mapstore-right-panel .mapstore-json-viewer, .mapstore-right-panel .mapstore-annotations-info-viewer {
     height: 100%;
+}
+
+.mapstore-annotations-panel-card-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.mapstore-annotations-panel-card-thumbnail:before {
+    color: white;
+    font-size: 16px;
+    margin-left: 8px;
+    margin-left: 8px;
+    display: block;
+    margin-top: -7px;
 }

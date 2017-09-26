@@ -5,7 +5,7 @@ var ol = require('openlayers');
 const assign = require('object-assign');
 
 const MarkerUtils = require('../../../utils/MarkerUtils');
-const markers = MarkerUtils.extraMarkers;
+const markers = MarkerUtils.markers.extra;
 const extraMarker = markers.icons[0];
 const extraMarkerShadow = markers.icons[1];
 

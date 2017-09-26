@@ -12,6 +12,10 @@ const ConfirmDialog = require('../../misc/ConfirmDialog');
 const Message = require('../../I18N/Message');
 const {Glyphicon, Button, ButtonGroup} = require('react-bootstrap');
 const {head} = require('lodash');
+const MarkerUtils = require('../../../utils/MarkerUtils');
+
+const defaultIcon = MarkerUtils.markers.extra.icons[0];
+const defaultMarkers = MarkerUtils.markers.extra.getGrid();
 
 /**
  * Annotations panel component. Currently handles the removal confirm panel.
@@ -38,7 +42,9 @@ class Annotations extends React.Component {
         editor: PropTypes.func,
         annotations: PropTypes.array,
         fields: PropTypes.array,
-        current: PropTypes.string
+        current: PropTypes.string,
+        markers: PropTypes.array,
+        markerIcon: PropTypes.string
     };
 
     static defaultProps = {
@@ -58,7 +64,9 @@ class Annotations extends React.Component {
                 showLabel: true,
                 editable: true
             }
-        ]
+        ],
+        markers: defaultMarkers,
+        markerIcon: defaultIcon
     };
 
     renderFieldValue = (field, annotation) => {
@@ -77,9 +85,22 @@ class Annotations extends React.Component {
         </div>);
     };
 
+    renderThumbnail = (style) => {
+        const marker = this.props.markers.filter(m => m.name === style.iconShape)[0]
+            .markers.filter(m2 => m2.name === style.iconColor)[0];
+        return (<div className={"mapstore-annotations-panel-card-thumbnail-" + (style.iconShape || 'square') + '-' + (style.iconColor || 'blue')} style={{
+            backgroundImage: "url(" + this.props.markerIcon + ")",
+            width: marker.width + "px",
+            height: marker.height + "px",
+            backgroundPositionX: marker.offsets[0],
+            backgroundPositionY: marker.offsets[1],
+            cursor: "pointer"
+        }}><span className={"mapstore-annotations-panel-card-thumbnail fa fa-" + style.iconGlyph}></span></div>);
+    };
+
     renderCard = (annotation) => {
         return (<div className="mapstore-annotations-panel-card" onMouseOver={() => this.props.onHighlight(annotation.properties.id)} onMouseOut={this.props.onCleanHighlight} onClick={() => this.props.onDetail(annotation.properties.id)}>
-            <span className="mapstore-annotations-panel-card-thumbnail"/>{this.props.fields.map(f => this.renderField(f, annotation))}
+            <span className="mapstore-annotations-panel-card-thumbnail">{this.renderThumbnail(annotation.style)}</span>{this.props.fields.map(f => this.renderField(f, annotation))}
         </div>);
     };
 
