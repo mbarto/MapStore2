@@ -104,7 +104,9 @@ function annotations(state = { validationErrors: {} }, action) {
             return assign({}, state, {
                 styling: !state.styling
             }, !state.styling ? {
-                originalStyle: assign({}, state.editing.style)
+                originalStyle: assign({}, state.editing.style, {
+                    highlight: false
+                })
             } : {});
         case VALIDATION_ERROR:
             return assign({}, state, {

@@ -158,7 +158,7 @@ module.exports = (viewer) => ({
         .switchMap( () => {
             const {style, ...feature} = store.getState().annotations.editing;
             return Rx.Observable.from([
-                changeDrawingStatus("replace", 'MultiPoint', "annotations", [feature], {}, style)]
+                changeDrawingStatus("replace", 'MultiPoint', "annotations", [feature], {}, assign({}, style, {highlight: false}))]
             );
         }),
     restoreStyleEpic: (action$, store) => action$.ofType(RESTORE_STYLE)
