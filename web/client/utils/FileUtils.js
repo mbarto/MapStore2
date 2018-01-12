@@ -44,13 +44,24 @@ const FileUtils = {
         const geoJSON = [].concat(tj.gpx(xml)).map(item => assign({}, item, {fileName: xml.getElementsByTagName('name')[0].innerHTML}));
         return geoJSON;
     },
-    readZip: function(file) {
+    readBuffer: function(file) {
         return new Promise((resolve, reject) => {
             let reader = new FileReader();
             reader.onload = function() { resolve(reader.result); };
             reader.onerror = function() { reject(reader.error.name); };
             reader.readAsArrayBuffer(file);
         });
+    },
+    readText: function(file) {
+        return new Promise((resolve, reject) => {
+            let reader = new FileReader();
+            reader.onload = function() { resolve(reader.result); };
+            reader.onerror = function() { reject(reader.error.name); };
+            reader.readAsText(file);
+        });
+    },
+    readZip: function(file) {
+        return FileUtils.readFile(file);
     },
     readKml: function(file) {
         return new Promise((resolve, reject) => {
