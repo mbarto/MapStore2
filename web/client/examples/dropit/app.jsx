@@ -26,7 +26,9 @@ const startApp = () => {
     const { zoomToExtent } = require('../../actions/map');
 
     const { plugins } = require('./plugins');
-    const { endsWith } = require('lodash');
+    const { endsWith, capitalize } = require('lodash');
+
+    const annyang = require('annyang');
 
     const Localized = connect((state) => ({
         messages: state.locale && state.locale.messages,
@@ -92,11 +94,32 @@ const startApp = () => {
 
     const StyleUtils = require('../../utils/StyleUtils')(mapType);
 
+    const SpeechEnabled = class extends React.Component {
+        componentDidMount() {
+            var commands = {
+                'add :plugin': (plugin) => { 
+                    checkFile({name: capitalize(plugin) + 'Plugin'});
+                }
+            };
+
+            // Add our commands to annyang
+            annyang.addCommands(commands);
+            annyang.debug(true);
+            // Start listening.
+            annyang.start();
+        }
+
+        render() {
+            return this.props.children;
+        }
+    };
+
     const renderPage = () => {
         ReactDOM.render(
 
                 <Provider store={store}>
                     <Localized>
+                    <SpeechEnabled>
                         <Dropzone className="dropzone" onClick={(e) => {
                             e.preventDefault();
                         }} onDrop={checkFiles}>
@@ -105,6 +128,7 @@ const startApp = () => {
                             <div className="dropzone-content"><div className="dropzone-text">Drop it here!</div>
                             </div>
                         </Dropzone>
+                        </SpeechEnabled>
                     </Localized>
                 </Provider>
             ,
