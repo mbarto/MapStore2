@@ -17,6 +17,7 @@ const startApp = () => {
     const PluginsUtils = require('../../utils/PluginsUtils');
     const FileUtils = require('../../utils/FileUtils');
     const LayersUtils = require('../../utils/LayersUtils');
+    const ThemeUtils = require('../../utils/ThemeUtils');
 
     const { changeBrowserProperties } = require('../../actions/browser');
     const { loadMapConfig } = require('../../actions/config');
@@ -64,6 +65,8 @@ const startApp = () => {
     const pluginsCfg = {
         standard: ['Toolbar']
     };
+
+    const {Promise} = require('es6-promise');
 
     const Theme = connect((state) => ({
         theme: state.theme && state.theme.selectedTheme && state.theme.selectedTheme.id || 'default'
@@ -165,16 +168,29 @@ const startApp = () => {
     const fileHandlers = [{
         name: 'Plugin',
         canHandle(file) {
-            return endsWith(file.name.split('.')[0], "Plugin") ? 10 : -1;
+            return new Promise((resolve) => {
+                resolve({
+                    handler: this,
+                    priority: endsWith(file.name.split('.')[0], "Plugin") ? 10 : -1
+                });
+            });
         },
         canHandleText(text) {
-            try {
-                const compiled = Babel.transform(text, { presets: ['es2015', 'react', 'stage-0'] });
-                return compiled.code ? 10 : -1;
-            } catch(e) {
-                // TODO
-            }
-            return -1;
+            return new Promise((resolve) => {
+                try {
+                    const compiled = Babel.transform(text, { presets: ['es2015', 'react', 'stage-0'] });
+                    resolve({
+                        handler: this,
+                        priority: compiled.code ? 10 : -1
+                    });
+                } catch(e) {
+                    // TODO
+                }
+                resolve({
+                    handler: this,
+                    priority: -1
+                });
+            });
         },
         handle(file) {
             const fileName = file.name.split('.')[0];
@@ -204,69 +220,119 @@ const startApp = () => {
             });
         }
     }, {
-        name: 'Data',
-        canHandle(file) {
-            return file.type === 'application/x-zip-compressed' ||
-                file.type === 'application/zip' ? 10 : -1;
-        },
-        handle(file) {
-            FileUtils.readBuffer(file).then(buffer => {
-                const geoJson = FileUtils.shpToGeoJSON(buffer);
-                const layer = geoJson.map((l) => {
-                    return LayersUtils.geoJSONToLayer(l, uuid.v1());
+            name: 'Style',
+            canHandle(file) {
+                return new Promise((resolve) => {
+                    resolve({
+                        handler: this,
+                        priority: endsWith(file.name.toLowerCase(), '.less') || endsWith(file.name.toLowerCase(), '.css') ? 10 : -1
+                    });
                 });
-                const styledLayer = StyleUtils.toVectorStyle(layer[0], {
-                    radius: 5,
-                    color: {
-                        a: 1,
-                        r: 0,
-                        g: 0,
-                        b: 255
-                    },
-                    width: 1,
-                    opacity: 1,
-                    fill: {
-                        a: 0.7,
-                        r: 0,
-                        g: 0,
-                        b: 255
-                    }
+            },
+            canHandleText(text) {
+                return new Promise((resolve) => {
+                    ThemeUtils.compileFromLess(text, 'themes/default/', (css, e) => {
+                        if (e) {
+                            resolve({
+                                handler: this,
+                                priority: -1
+                            });
+                        }
+                        resolve({
+                            handler: this,
+                            priority: 10
+                        });
+                    });
                 });
-                store.dispatch(addLayer(styledLayer));
-                store.dispatch(zoomToExtent(styledLayer.bbox.bounds, styledLayer.bbox.crs));
-            });
-        },
-        canHandleText: () => false
-    }];
+            },
+            handle(file) {
+                FileUtils.readText(file)
+                    .then((style) => {
+                        const styleEl = document.createElement("style");
+                        document.head.appendChild(styleEl);
+                        styleEl.innerText = style;
+                    });
+            },
+            handleText(style) {
+                const styleEl = document.createElement("style");
+                document.head.appendChild(styleEl);
+                styleEl.innerText = style;
+            }
+        }, {
+            name: 'Data',
+            canHandle(file) {
+                return new Promise((resolve) => {
+                    resolve({
+                        handler: this,
+                        priority: file.type === 'application/x-zip-compressed' ||
+                        file.type === 'application/zip' ? 10 : -1
+                    });
+                });
+            },
+            handle(file) {
+                FileUtils.readBuffer(file).then(buffer => {
+                    const geoJson = FileUtils.shpToGeoJSON(buffer);
+                    const layer = geoJson.map((l) => {
+                        return LayersUtils.geoJSONToLayer(l, uuid.v1());
+                    });
+                    const styledLayer = StyleUtils.toVectorStyle(layer[0], {
+                        radius: 5,
+                        color: {
+                            a: 1,
+                            r: 0,
+                            g: 0,
+                            b: 255
+                        },
+                        width: 1,
+                        opacity: 1,
+                        fill: {
+                            a: 0.7,
+                            r: 0,
+                            g: 0,
+                            b: 255
+                        }
+                    });
+                    store.dispatch(addLayer(styledLayer));
+                    store.dispatch(zoomToExtent(styledLayer.bbox.bounds, styledLayer.bbox.crs));
+                });
+            },
+            canHandleText: () => {
+                return new Promise((resolve) => {
+                    resolve({
+                        handler: this,
+                        priority: -1
+                    });
+                });
+            }
+        }
+    ];
 
     const checkContent = (text) => {
-        const result = fileHandlers.reduce((previous, current) => {
-            return current.canHandleText(text) > previous.priority ? {
-                handler: current,
-                priority: current.canHandleText(text)
-            } : previous;
-        }, {
-                handler: null,
-                priority: -1
-            });
-        if (result.handler) {
-            result.handler.handleText(text);
-        }
+        Promise.all(fileHandlers.map((handler) => handler.canHandleText(text))).then((handlers) => {
+            const result = handlers.reduce((previous, current) => {
+                return current.priority > previous.priority ? current : previous;
+            }, {
+                    handler: null,
+                    priority: -1
+                });
+            if (result.handler) {
+                result.handler.handleText(text);
+            }
+        });
     };
 
     const checkFile = (file) => {
-        const result = fileHandlers.reduce((previous, current) => {
-            return current.canHandle(file) > previous.priority ? {
-                handler: current,
-                priority: current.canHandle(file)
-            } : previous;
-        }, {
-                handler: null,
-                priority: -1
-            });
-        if (result.handler) {
-            result.handler.handle(file);
-        }
+        Promise.all(fileHandlers.map((handler) => handler.canHandle(file))).then((handlers) => {
+            const result = handlers.reduce((previous, current) => {
+                return current.priority > previous.priority ? current : previous;
+            }, {
+                    handler: null,
+                    priority: -1
+                });
+            if (result.handler) {
+                result.handler.handle(file);
+            }
+        });
     };
 
     const checkFiles = (files, otherContent) => {
