@@ -40,7 +40,7 @@ const startApp = () => {
 
     const {success, warning, error} = require('../../actions/notifications');
 
-    const defaultStyle = require('raw-loader!../../themes/default/theme.less');
+    let currentStyle = require('!!raw-loader!./theme.less');
 
     const assign = require('object-assign');
     let customReducers = assign({}, require('../../reducers/shapefile'));
@@ -170,7 +170,11 @@ const startApp = () => {
     };
 
     const replaceTheme = (style) => {
-        return defaultStyle + '\n' + style;
+        currentStyle = style.split('\n').reduce((previous, current) => {
+            const [varName] = current.split(':');
+            return previous.replace(new RegExp("\\s*" + varName + "\\s*:.*?;", "g"), '\n' + current + '\n');
+        }, currentStyle);
+        return currentStyle;
     };
 
     const fileHandlers = [{
@@ -289,7 +293,7 @@ const startApp = () => {
                     });
             },
             handleText(styleText) {
-                const style = (styleText.indexOf('@ms2-') !== -1 && styleText.indexOf('@import') !== -1) ? styleText : replaceTheme(styleText);
+                const style = styleText.indexOf('@ms2-') !== -1 ? (styleText.indexOf('@import') !== -1 ? styleText : replaceTheme(styleText)) : styleText;
                 ThemeUtils.compileFromLess(style, 'themes/default/', (css) => {
                     if (style.indexOf('@ms2-') !== -1) {
                         store.dispatch(success({
