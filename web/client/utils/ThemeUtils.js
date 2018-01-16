@@ -8,7 +8,7 @@ function NodeProcessor(options) {
 
 NodeProcessor.prototype = {
     process: function(src, extra) {
-        const basePath = extra.fileInfo.currentDirectory.replace(this.options.path, '');
+        const [basePath] = extra.fileInfo.currentDirectory.split(this.options.path);
         return src.replace(/\"~(.*)\"/g, '"' + basePath + 'dist/$1"');
     }
 };
@@ -32,6 +32,7 @@ module.exports = {
     compileFromLess: (theme, path, callback) => {
         less.render(theme, {
             plugins: [new LessNodeResolve({ path: path })],
+            paths: ['.', 'node_modules'],
             filename: 'custom.theme.less',
             compress: true
         }, (e, output) => {

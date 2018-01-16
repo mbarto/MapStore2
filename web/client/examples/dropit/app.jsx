@@ -38,6 +38,10 @@ const startApp = () => {
     }))(require('../../components/I18N/Localized'));
 
 
+    const {success, warning, error} = require('../../actions/notifications');
+
+    const defaultStyle = require('raw-loader!../../themes/default/theme.less');
+
     const assign = require('object-assign');
     let customReducers = assign({}, require('../../reducers/shapefile'));
 
@@ -63,7 +67,7 @@ const startApp = () => {
     const Dropzone = require('react-dropzone');
 
     const pluginsCfg = {
-        standard: ['Toolbar']
+        standard: ['Notifications']
     };
 
     const {Promise} = require('es6-promise');
@@ -165,6 +169,10 @@ const startApp = () => {
         }
     };
 
+    const replaceTheme = (style) => {
+        return defaultStyle + '\n' + style;
+    };
+
     const fileHandlers = [{
         name: 'Plugin',
         canHandle(file) {
@@ -198,6 +206,10 @@ const startApp = () => {
 
             if (plugins[fileName]) {
                 pluginsCfg.standard.push(pluginName);
+                store.dispatch(success({
+                    title: 'Added new Plugin',
+                    message: pluginName + ' Plugin added to the page!'
+                }));
                 renderPage();
             } else {
                 FileUtils.readText(file)
@@ -205,6 +217,10 @@ const startApp = () => {
                         customPlugin(code, (plugin) => {
                             userPlugins[fileName] = { [fileName]: plugin };
                             pluginsCfg.standard.push(pluginName);
+                            store.dispatch(success({
+                                title: 'Added new Plugin',
+                                message: pluginName + ' Plugin added to the page!'
+                            }));
                             renderPage();
                         });
                     });
@@ -216,6 +232,10 @@ const startApp = () => {
                 const fileName = pluginName + 'Plugin';
                 userPlugins[fileName] = { [fileName]: plugin };
                 pluginsCfg.standard.push(pluginName);
+                store.dispatch(success({
+                    title: 'Added new Plugin',
+                    message: pluginName + ' Plugin added to the page (Custom user plugin)!'
+                }));
                 renderPage();
             });
         }
@@ -248,15 +268,45 @@ const startApp = () => {
             handle(file) {
                 FileUtils.readText(file)
                     .then((style) => {
-                        const styleEl = document.createElement("style");
-                        document.head.appendChild(styleEl);
-                        styleEl.innerText = style;
+
+                        ThemeUtils.compileFromLess(style, 'themes/default/', (css) => {
+                            if (style.indexOf('@ms2-') !== -1) {
+                                store.dispatch(success({
+                                    title: 'Changed Theme',
+                                    message: 'Page Theme replaced'
+                                }));
+                                document.getElementById('custom_theme').innerText = css;
+                            } else {
+                                const styleEl = document.createElement("style");
+                                document.head.appendChild(styleEl);
+                                styleEl.innerText = css;
+                                store.dispatch(success({
+                                    title: 'CSS updated',
+                                    message: 'New CSS applied to the page!'
+                                }));
+                            }
+                        });
                     });
             },
-            handleText(style) {
-                const styleEl = document.createElement("style");
-                document.head.appendChild(styleEl);
-                styleEl.innerText = style;
+            handleText(styleText) {
+                const style = (styleText.indexOf('@ms2-') !== -1 && styleText.indexOf('@import') !== -1) ? styleText : replaceTheme(styleText);
+                ThemeUtils.compileFromLess(style, 'themes/default/', (css) => {
+                    if (style.indexOf('@ms2-') !== -1) {
+                        store.dispatch(success({
+                            title: 'Changed Theme',
+                            message: 'Page Theme replaced!'
+                        }));
+                        document.getElementById('custom_theme').innerText = css;
+                    } else {
+                        const styleEl = document.createElement("style");
+                        document.head.appendChild(styleEl);
+                        styleEl.innerText = css;
+                        store.dispatch(success({
+                            title: 'CSS updated',
+                            message: 'New CSS applied to the page!'
+                        }));
+                    }
+                });
             }
         }, {
             name: 'Data',
@@ -294,6 +344,10 @@ const startApp = () => {
                     });
                     store.dispatch(addLayer(styledLayer));
                     store.dispatch(zoomToExtent(styledLayer.bbox.bounds, styledLayer.bbox.crs));
+                    store.dispatch(success({
+                        title: 'New Data',
+                        message: 'Shapefile added to the page!'
+                    }));
                 });
             },
             canHandleText: () => {
