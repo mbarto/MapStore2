@@ -16,6 +16,10 @@ const map = require('../../reducers/map');
 const layers = require('../../reducers/layers');
 const mapConfig = require('../../reducers/config');
 
+const standardEpics = {
+    ...require('../../epics/controls')
+};
+
 module.exports = (plugins, custom) => {
     const allReducers = combineReducers(plugins, {
         locale: require('../../reducers/locale'),
@@ -27,7 +31,7 @@ module.exports = (plugins, custom) => {
         pluginsConfig: {},
         custom
     });
-    const rootEpic = combineEpics(plugins);
+    const rootEpic = combineEpics(plugins, {...standardEpics });
     const epicMiddleware = createEpicMiddleware(rootEpic);
     const rootReducer = (state, action) => {
         if (action.type === 'LOADED_STATE') {
