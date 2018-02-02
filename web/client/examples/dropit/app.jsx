@@ -18,11 +18,14 @@ const startApp = () => {
     const { changeBrowserProperties } = require('../../actions/browser');
     const { loadMapConfig } = require('../../actions/config');
     const { loadLocale } = require('../../actions/locale');
+    const { searchTextChanged, textSearch } = require('../../actions/search');
     const { loadPrintCapabilities } = require('../../actions/print');
     const { plugins } = require('./plugins');
     const { capitalize } = require('lodash');
 
     const annyang = require('annyang');
+
+    const stringSimilarity = require('string-similarity');
 
     const Localized = connect((state) => ({
         messages: state.locale && state.locale.messages,
@@ -87,12 +90,18 @@ const startApp = () => {
 
     const SpeechEnabled = class extends React.Component {
         componentDidMount() {
+            const pluginNames = Object.keys(plugins).map(p => p.substring(0, p.length - 6));
+            
             var commands = {
-                'add :plugin': (plugin) => { 
-                    checkFile({name: capitalize(plugin) + 'Plugin'});
+                'aggiungi *plugin':(plugin) => { 
+                    checkFile({name: stringSimilarity.findBestMatch(plugin.replace(/[^a-zA-Z]/g, ''), pluginNames).bestMatch.target + 'Plugin'});
+                },
+                'cerca *place':(place) => {
+                    store.dispatch(searchTextChanged(place));
+                    store.dispatch(textSearch(place));
                 }
             };
-
+            annyang.setLanguage('it-IT');
             // Add our commands to annyang
             annyang.addCommands(commands);
             annyang.debug(true);

@@ -180,6 +180,7 @@
     "rxjs": "5.1.1",
     "screenfull": "3.1.0",
     "shpjs": "3.4.2",
+    "string-similarity": "^1.2.0",
     "turf-bbox": "3.0.10",
     "turf-buffer": "3.0.10",
     "turf-intersect": "3.0.10",
