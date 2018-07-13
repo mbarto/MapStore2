@@ -1,0 +1,19 @@
+{
+	"map": {
+    "center": {"x": 10, "y": 45, "crs": "EPSG:4326"},
+    "zoom": 5,
+    "layers": [
+        {
+                "type": "osm"
+        },
+        {
+                "id": "wms",
+                "type": "wms",
+                "url": "https://demo.geo-solutions.it/geoserver/wms",
+                "name": "nurc:Arc_Sample",
+                "opacity": 0.5,
+                "visibility": true
+        }
+    ]
+	}
+}
