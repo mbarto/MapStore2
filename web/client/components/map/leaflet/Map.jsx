@@ -12,9 +12,8 @@ var ConfigUtils = require('../../../utils/ConfigUtils');
 var CoordinatesUtils = require('../../../utils/CoordinatesUtils');
 var assign = require('object-assign');
 var mapUtils = require('../../../utils/MapUtils');
-const Rx = require('rxjs');
 
-const {throttle} = require('lodash');
+const throttle = require('lodash/throttle');
 
 require('./SingleClick');
 
@@ -401,7 +400,7 @@ class LeafletMap extends React.Component {
 
             event.layer._ms2LoadingTileCount = 0;
 
-            event.layer.layerLoadingStream$ = new Rx.Subject();
+            /*event.layer.layerLoadingStream$ = new Rx.Subject();
             event.layer.layerLoadStream$ = new Rx.Subject();
             event.layer.layerErrorStream$ = new Rx.Subject();
             event.layer.layerErrorStream$
@@ -416,7 +415,7 @@ class LeafletMap extends React.Component {
                         }
                         event.layer._ms2LoadingTileCount = 0;
                     }
-                });
+                });*/
         }
     };
 }

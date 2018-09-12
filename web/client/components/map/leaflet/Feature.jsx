@@ -9,7 +9,7 @@ const PropTypes = require('prop-types');
 
 const React = require('react');
 const L = require('leaflet');
-const {isEqual} = require('lodash');
+const isEqual = require('lodash/isEqual');
 
 const VectorUtils = require('../../../utils/leaflet/Vector');
 

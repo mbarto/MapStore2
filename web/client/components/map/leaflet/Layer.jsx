@@ -9,7 +9,7 @@ const PropTypes = require('prop-types');
 var React = require('react');
 var Layers = require('../../../utils/leaflet/Layers');
 var assign = require('object-assign');
-var {isEqual} = require('lodash');
+var isEqual = require('lodash/isEqual');
 
 class LeafletLayer extends React.Component {
     static propTypes = {

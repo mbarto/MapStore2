@@ -6,7 +6,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const {isString, trim, isNumber} = require('lodash');
+const isString = require('lodash/isString');
+const trim = require('lodash/trim');
+const isNumber = require('lodash/isNumber');
 
 const DEFAULT_SCREEN_DPI = 96;
 
@@ -34,7 +36,9 @@ var hooks = {};
 var CoordinatesUtils = require('./CoordinatesUtils');
 const LayersUtils = require('./LayersUtils');
 const assign = require('object-assign');
-const {isObject, head, isEmpty} = require('lodash');
+const isObject = require('lodash/isObject');
+const head = require('lodash/head');
+const isEmpty = require('lodash/isEmpty');
 
 function registerHook(name, hook) {
     hooks[name] = hook;

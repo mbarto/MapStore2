@@ -2,9 +2,7 @@ const PropTypes = require('prop-types');
 const React = require('react');
 const assign = require('object-assign');
 var L = require('leaflet');
-const {
-    slice
-} = require('lodash');
+const slice = require('lodash/slice');
 const {
     reproject,
     calculateAzimuth,

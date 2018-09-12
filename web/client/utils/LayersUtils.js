@@ -8,7 +8,12 @@
 
 const assign = require('object-assign');
 const toBbox = require('turf-bbox');
-const { isString, isObject, isArray, head, isEmpty, findIndex} = require('lodash');
+const isString = require('lodash/isString');
+const isObject = require('lodash/isObject');
+const isArray = require('lodash/isArray');
+const head = require('lodash/head');
+const isEmpty = require('lodash/isEmpty');
+const findIndex = require('lodash/findIndex');
 const REG_GEOSERVER_RULE = /\/[\w- ]*geoserver[\w- ]*\//;
 const findGeoServerName = ({url, regex = REG_GEOSERVER_RULE}) => {
     return regex.test(url) && url.match(regex)[0] || null;

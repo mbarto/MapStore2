@@ -11,7 +11,7 @@ const ConfigUtils = require('../utils/ConfigUtils');
 
 const SecurityUtils = require('../utils/SecurityUtils');
 const assign = require('object-assign');
-const {isObject} = require('lodash');
+const isObject = require('lodash/isObject');
 const urlUtil = require('url');
 
 /**

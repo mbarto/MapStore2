@@ -11,10 +11,13 @@ const Proj4js = require('proj4').default;
 const proj4 = Proj4js;
 const axios = require('../libs/ajax');
 const assign = require('object-assign');
-const {isArray, flattenDeep, chunk, cloneDeep} = require('lodash');
+const isArray = require('lodash/isArray');
+const flattenDeep = require('lodash/flattenDeep');
+const chunk = require('lodash/chunk');
+const cloneDeep = require('lodash/cloneDeep');
 const lineIntersect = require('@turf/line-intersect');
-const polygonToLinestring = require('@turf/polygon-to-linestring');
-const {head} = require('lodash');
+const polygonToLinestring = require('@turf/polygon-to-line');
+const head = require('lodash/head');
 const greatCircle = require('@turf/great-circle').default;
 const toPoint = require('turf-point');
 

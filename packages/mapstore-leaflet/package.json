@@ -1,0 +1,41 @@
+{
+    "name": "mapstore-leaflet",
+    "version": "0.1.0",
+    "description": "MapStore 2 Leaflet Library",
+    "main": "index.js",
+    "dependencies": {
+        "@turf/great-circle": "5.1.5",
+        "@turf/line-intersect": "4.1.0",
+        "@turf/polygon-to-line": "6.0.3",
+        "axios": "0.11.1",
+        "es6-promise": "2.3.0",
+        "ismobilejs": "0.4.0",
+        "leaflet": "1.3.1",
+        "leaflet-draw": "1.0.2",
+        "leaflet-extra-markers": "1.0.6",
+        "leaflet-minimap": "3.6.0",
+        "leaflet-plugins": "3.0.2",
+        "leaflet-simple-graticule": "1.0.2",
+        "leaflet.gridlayer.googlemutant": "0.6.4",
+        "leaflet.locatecontrol": "0.62.0",
+        "leaflet.nontiledlayer": "1.0.7",
+        "node-geo-distance": "1.2.0",
+        "proj4": "https://github.com/geosolutions-it/proj4js/tarball/mapstore2_fixes",
+        "prop-types": "15.6.0",
+        "turf-bbox": "3.0.10",
+        "turf-point": "2.0.1"
+    },
+    "peerDependencies": {
+        "react": "15.6.2",
+        "react-dom": "15.6.2"
+    },
+    "scripts": {
+        "clean": "rimraf ./dist",
+        "compile": "yarn clean && mkdirp ./dist && webpack --progress --config webpack.config.js"
+    },
+    "author": "GeoSolutions",
+    "license": "BSD-2-Clause",
+    "devDependencies": {
+        "webpack-cli": "^3.2.3"
+    }
+}

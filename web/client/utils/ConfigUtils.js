@@ -10,7 +10,10 @@ const PropTypes = require('prop-types');
 var url = require('url');
 
 var axios = require('axios');
-const {isArray, isObject, endsWith, isNil} = require('lodash');
+const isArray = require('lodash/isArray');
+const isObject = require('lodash/isObject');
+const endsWith = require('lodash/endsWith');
+const isNil = require('lodash/isNil');
 const assign = require('object-assign');
 const {Promise} = require('es6-promise');
 

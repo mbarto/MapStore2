@@ -9,7 +9,8 @@
 const ConfigUtils = require('./ConfigUtils');
 const URL = require('url');
 const assign = require('object-assign');
-const {head, isNil} = require('lodash');
+const head = require('lodash/head');
+const isNil = require('lodash/isNil');
 
 /**
  * This utility class will get information about the current logged user directly from the store.
