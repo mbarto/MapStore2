@@ -197,7 +197,7 @@
             },
             "FeedbackMask"
         ],
-        "desktop": [ "Details",
+        "desktop": [ "Details", "CustomIdentifyViewer",
           {
             "name": "Map",
             "cfg": {

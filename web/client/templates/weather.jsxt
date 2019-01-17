@@ -1,0 +1,6 @@
+<div>Weather Data:<br/>
+{model.features.map((f) => {
+    return (<ul>
+        {Object.keys(f.properties).map((p) => <li><b>{p}</b>: {f.properties[p]}</li>)}
+    </ul>);
+})}</div>

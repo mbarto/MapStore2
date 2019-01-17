@@ -1,0 +1,6 @@
+<div>USA Population Data:<br/>
+{model.features.map((f) => {
+    return (<div><Button onClick={actions.onSubmit}>Save</Button><br/><ul>
+        {Object.keys(f.properties).map((p, idx) => <li><b>{p}</b>: <FormControl onChange={(evt) => actions.onChange(idx, p, evt.target.value)} value={f.properties[p]}/></li>)}
+    </ul></div>);
+})}</div>

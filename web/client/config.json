@@ -93,14 +93,47 @@
         "visibility": true,
         "opacity": 0.5,
 				"title": "Weather data",
-				"name": "nurc:Arc_Sample",
+        "name": "nurc:Arc_Sample",
+        "featureInfo": {
+          "format": "JSON",
+          "featureTemplate": "weather",
+          "viewer": {
+            "type": "CUSTOM"
+          }
+        },
 				"group": "Meteo",
 				"format": "image/png",
         "bbox": {
           "bounds": {"minx": -25.6640625, "miny": 26.194876675795218, "maxx": 48.1640625, "maxy": 56.80087831233043},
           "crs": "EPSG:4326"
         }
-			},
+      },
+      {
+        "type": "wms",
+        "url": "https://demo.geo-solutions.it/geoserver/wms",
+        "visibility": true,
+        "opacity": 0.8,
+        "title": "USA Population",
+        "name": "topp:states",
+        "featureInfo": {
+          "format": "JSON",
+          "featureTemplate": "states",
+          "viewer": {
+            "type": "CUSTOM"
+          }
+        },
+        "group": "Meteo",
+        "format": "image/png",
+        "bbox": {
+          "bounds": {
+            "minx": -25.6640625,
+            "miny": 26.194876675795218,
+            "maxx": 48.1640625,
+            "maxy": 56.80087831233043
+          },
+          "crs": "EPSG:4326"
+        }
+      },
       {
         "type": "tileprovider",
         "title": "OpenTopoMap",
