@@ -5,6 +5,9 @@
     "main": "index.js",
     "dependencies": {
         "mapstore-leaflet": "0.1.0",
+        "mapstore-openlayers": "0.1.0",
+        "mapstore-redux": "0.1.0",
+        "mapstore-plugins": "0.1.0",
         "react": "16.8.0",
         "react-dom": "16.8.0",
         "react-intl": "^2.8.0"

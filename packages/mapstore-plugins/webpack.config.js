@@ -5,9 +5,21 @@ const path = require('path');
 const ParallelUglifyPlugin = require("webpack-parallel-uglify-plugin");
 
 module.exports = {
-    mode: "development",
     entry: {
-        "mapstore-demo": path.join(__dirname, "index")
+        "mapstore-leaflet": path.join(__dirname, "index")
+    },
+    optimization: {
+        splitChunks: {
+			cacheGroups: {
+                vendor: {
+					test: /node_modules/,
+					chunks: "initial",
+					name: "vendor",
+					priority: 10,
+					enforce: true
+				}
+            }
+        }
     },
     output: {
         path: path.join(__dirname, "dist"),
@@ -22,7 +34,7 @@ module.exports = {
         new DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('development')
         }),
-        new NormalModuleReplacementPlugin(/^leaflet$/, path.join(__dirname, "..", "..", "web", "client", "libs", "leaflet")),
+        new NormalModuleReplacementPlugin(/leaflet$/, path.join(__dirname, "..", "..", "web", "client", "libs", "leaflet")),
         new NoEmitOnErrorsPlugin(),
         new ParallelUglifyPlugin({
             uglifyJS: {
@@ -89,16 +101,7 @@ module.exports = {
                 exclude: /(ol\.js)$|(Cesium\.js)$/,
                 use: [{
                     loader: "babel-loader",
-                    options: {
-                        "presets": [
-                            "@babel/env",
-                            "@babel/preset-react"
-                        ],
-                        "plugins": [
-                            "@babel/plugin-proposal-class-properties",
-                            "@babel/plugin-syntax-dynamic-import"
-                        ]
-                 }
+                    options: { babelrcRoots: ['.', '../../web/client'] }
                 }]
             }
         ]

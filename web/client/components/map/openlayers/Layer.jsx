@@ -11,7 +11,6 @@ var Layers = require('../../../utils/openlayers/Layers');
 var CoordinatesUtils = require('../../../utils/CoordinatesUtils');
 var assign = require('object-assign');
 const _ = require('lodash');
-const Rx = require('rxjs');
 
 class OpenlayersLayer extends React.Component {
     static propTypes = {
@@ -31,6 +30,7 @@ class OpenlayersLayer extends React.Component {
 
     static defaultProps = {
         observables: [],
+        options: {},
         onLayerLoading: () => {},
         onLayerLoad: () => {},
         onLayerError: () => {},
@@ -160,9 +160,6 @@ class OpenlayersLayer extends React.Component {
         if (this.isValid()) {
             this.props.map.addLayer(this.layer);
 
-            const tileLoadEndStream$ = new Rx.Subject();
-            const tileStopStream$ = new Rx.Subject();
-
             if (options.handleClickOnLayer) {
                 this.layer.set("handleClickOnLayer", true);
             }
@@ -175,39 +172,9 @@ class OpenlayersLayer extends React.Component {
                 }
             });
             this.layer.getSource().on('tileloadend', () => {
-                tileLoadEndStream$.next({type: 'tileloadend'});
-                this.tilestoload--;
-                if (this.tilestoload === 0) {
-                    tileStopStream$.next();
-                }
             });
             this.layer.getSource().on('tileloaderror', (event) => {
-                tileLoadEndStream$.next({type: 'tileloaderror', event});
-                this.tilestoload--;
-                if (this.tilestoload === 0) {
-                    tileStopStream$.next();
-                }
             });
-
-            tileLoadEndStream$
-                .bufferWhen(() => tileStopStream$)
-                .subscribe({
-                    next: (tileEvents) => {
-                        const errors = tileEvents.filter(e => e.type === 'tileloaderror');
-                        if (errors.length > 0) {
-                            this.props.onLayerLoad(options.id, {error: true});
-                            this.props.onLayerError(options.id, tileEvents.length, errors.length);
-                        } else {
-                            this.props.onLayerLoad(options.id);
-                        }
-                    }
-                });
-
-            this.tileLoadEndStream$ = tileLoadEndStream$;
-            this.tileStopStream$ = tileStopStream$;
-
-            const imageLoadEndStream$ = new Rx.Subject();
-            const imageStopStream$ = new Rx.Subject();
 
             this.layer.getSource().on('imageloadstart', () => {
                 if (this.imagestoload === 0) {
@@ -218,36 +185,10 @@ class OpenlayersLayer extends React.Component {
                 }
             });
             this.layer.getSource().on('imageloadend', () => {
-                this.imagestoload--;
-                imageLoadEndStream$.next({type: 'imageloadend'});
-                if (this.imagestoload === 0) {
-                    imageStopStream$.next();
-                }
             });
             this.layer.getSource().on('imageloaderror', (event) => {
-                this.imagestoload--;
-                imageLoadEndStream$.next({type: 'imageloaderror', event});
-                if (this.imagestoload === 0) {
-                    imageStopStream$.next();
-                }
             });
 
-            imageLoadEndStream$
-                .bufferWhen(() => imageStopStream$)
-                .subscribe({
-                    next: (imageEvents) => {
-                        const errors = imageEvents.filter(e => e.type === 'imageloaderror');
-                        if (errors.length > 0) {
-                            this.props.onLayerLoad(options.id, {error: true});
-                            this.props.onLayerError(options.id, imageEvents.length, errors.length);
-                        } else {
-                            this.props.onLayerLoad(options.id);
-                        }
-                    }
-                });
-
-            this.imageLoadEndStream$ = imageLoadEndStream$;
-            this.imageStopStream$ = imageStopStream$;
 
             if (options.refresh) {
                 let counter = 0;

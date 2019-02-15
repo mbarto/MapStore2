@@ -44,6 +44,9 @@ class OpenlayersMap extends React.Component {
 
     static defaultProps = {
         id: 'map',
+        projection: "EPSG:3857",
+        center: { x: 13, y: 45, crs: "EPSG:4326" },
+        zoom: 5,
         onMapViewChanges: () => {},
         onCreationError: () => {},
         onClick: null,
