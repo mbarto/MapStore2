@@ -1,6 +1,8 @@
-const React = require('react');
-const ReactDOM = require('react-dom');
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-const LMap = require('mapstore-leaflet').Map;
+import {Layer, Map} from 'mapstore-leaflet';
 
-ReactDOM.render(<LMap/>, document.getElementById("container"));
+ReactDOM.render((<Map>
+    <Layer type="osm"/>
+</Map>), document.getElementById('container'));

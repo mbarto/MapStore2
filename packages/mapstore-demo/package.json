@@ -4,11 +4,15 @@
     "description": "MapStore 2 Demo",
     "main": "index.js",
     "dependencies": {
-        "mapstore-leaflet": "0.1.0"
+        "mapstore-leaflet": "0.1.0",
+        "react": "16.8.0",
+        "react-dom": "16.8.0",
+        "react-intl": "^2.8.0"
     },
     "scripts": {
         "clean": "rimraf ./dist",
-        "compile": "yarn clean && mkdirp ./dist && webpack --progress --config webpack.config.js"
+        "compile": "yarn clean && mkdirp ./dist && webpack --progress --config webpack.config.js",
+        "start": "webpack-dev-server --progress --colors --port 8081 --hot --inline --content-base ."
     },
     "author": "GeoSolutions",
     "license": "BSD-2-Clause"

@@ -5,6 +5,7 @@ const path = require('path');
 const ParallelUglifyPlugin = require("webpack-parallel-uglify-plugin");
 
 module.exports = {
+    mode: "development",
     entry: {
         "mapstore-demo": path.join(__dirname, "index")
     },
@@ -21,7 +22,7 @@ module.exports = {
         new DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production')
         }),
-        new NormalModuleReplacementPlugin(/leaflet$/, path.join(__dirname, "..", "..", "web", "client", "libs", "leaflet")),
+        new NormalModuleReplacementPlugin(/^leaflet$/, path.join(__dirname, "..", "..", "web", "client", "libs", "leaflet")),
         new NoEmitOnErrorsPlugin(),
         new ParallelUglifyPlugin({
             uglifyJS: {
@@ -84,16 +85,11 @@ module.exports = {
                 }] // inline base64 URLs for <=8k images, direct URLs for the rest
             },
             {
-                test: /\.jsx$/,
-                exclude: /(ol\.js)$|(Cesium\.js)$/,
-                use: [{
-                    loader: "react-hot-loader"
-                }]
-            }, {
                 test: /\.jsx?$/,
                 exclude: /(ol\.js)$|(Cesium\.js)$/,
                 use: [{
-                    loader: "babel-loader"
+                    loader: "babel-loader",
+                    options: { babelrcRoots: ['.', '../../web/client'] }
                 }]
             }
         ]

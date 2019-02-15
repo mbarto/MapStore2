@@ -106,7 +106,8 @@ module.exports = {
                 test: /\.jsx?$/,
                 exclude: /(ol\.js)$|(Cesium\.js)$/,
                 use: [{
-                    loader: "babel-loader"
+                    loader: "babel-loader",
+                    options: { babelrcRoots: ['.', '../../web/client'] }
                 }]
             }
         ]
