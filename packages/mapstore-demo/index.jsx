@@ -2,9 +2,9 @@ import React, {lazy, useState, Suspense, useRef} from 'react';
 import ReactDOM from 'react-dom';
 const Leaflet = lazy(() => import('./Leaflet'));
 const OpenLayers = lazy(() => import('./OpenLayers'));
+const PluginApp = lazy(() => import('./PluginApp'));
 
 import {actions, selectors, withStore, connect} from 'mapstore-redux';
-import Plugins, {PluginsContainer} from 'mapstore-plugins';
 
 const AppComponent = ({ onZoom, zoom }) => {
     const [mapType, setMapType] = useState('');
@@ -15,11 +15,13 @@ const AppComponent = ({ onZoom, zoom }) => {
             <option value="">----</option>
             <option value="leaflet">Leaflet</option>
             <option value="openlayers">OpenLayers</option>
+            <option value="plugin">Plugin</option>
         </select>
         <button onClick={() => onZoom(zoom + 1)}>Zoom+</button>
         <button onClick={() => onZoom(zoom - 1)}>Zoom-</button>
         {mapType === 'leaflet' ? <Suspense fallback={<div>Loading...</div>}><Leaflet /></Suspense> : null}
         {mapType === 'openlayers' ? <Suspense fallback={<div>Loading...</div>}><OpenLayers /></Suspense> : null}
+        {mapType === 'plugin' ? (<Suspense fallback={<div>Loading...</div>}><PluginApp /></Suspense>) : null}
     </>);
 };
 

@@ -15,7 +15,9 @@
         "mapstore-redux": "0.1.0",
         "recompose": "0.24.0",
         "redux-observable": "0.13.0",
-        "rxjs": "5.1.1"
+        "rxjs": "5.1.1",
+        "react-spinkit": "2.1.2",
+        "turf-point-on-surface": "3.0.10"
     },
     "scripts": {
         "clean": "rimraf ./dist",
