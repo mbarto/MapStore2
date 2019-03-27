@@ -129,106 +129,106 @@ export const localizeElement = (obj, messages) => {
  */
 export const getDefaultSectionTemplate = (type) => {
     switch (type) {
-        case SectionTypes.TITLE:
-            return {
-                id: uuid(),
-                type: SectionTypes.TITLE,
-                title: 'geostory.builder.defaults.titleTitle',
-                cover: false,
-                contents: [
-                    {
-                        id: uuid(),
-                        type: ContentTypes.TEXT,
-                        html: 'geostory.builder.defaults.htmlTitle',
-                        size: 'large',
-                        align: 'center',
-                        theme: 'bright',
-                        background: {
-                            fit: 'cover',
-                            theme: 'bright',
-                            size: 'full',
-                            align: 'center'
-                        }
-                    }
-                ]
-            };
-        case SectionTypes.PARAGRAPH:
-            return {
-                id: uuid(),
-                type: SectionTypes.PARAGRAPH,
-                title: 'geostory.builder.defaults.titleParagraph',
-                contents: [
-                    {
-                        id: uuid(),
-                        type: ContentTypes.COLUMN,
-                        size: 'full',
-                        align: 'center',
-                        contents: [{
-                            id: uuid(),
-                            type: ContentTypes.TEXT,
-                            html: "geostory.builder.defaults.htmlSample"
-                        }]
-                    }
-                ]
-            };
-        case SectionTypes.IMMERSIVE:
-            return {
-                id: uuid(),
-                type: SectionTypes.IMMERSIVE,
-                title: "geostory.builder.defaults.titleImmersive",
-                contents: [getDefaultSectionTemplate(ContentTypes.COLUMN)]
-            };
-        case SectionTemplates.MEDIA: {
-            return {
-                id: uuid(),
-                type: SectionTypes.PARAGRAPH,
-                title: 'geostory.builder.defaults.titleMedia',
-                contents: [
-                    {
-                        id: uuid(),
-                        type: ContentTypes.COLUMN,
-                        contents: [{
-                            id: uuid(),
-                            type: ContentTypes.MEDIA,
-                            size: 'medium',
-                            align: 'center'
-                        }]
-                    }
-                ]
-            };
-        }
-        case ContentTypes.COLUMN: {
-            return {
-                id: uuid(),
-                type: ContentTypes.COLUMN,
-                align: 'left',
-                size: 'small',
-                theme: 'bright',
-                contents: [{
+    case SectionTypes.TITLE:
+        return {
+            id: uuid(),
+            type: SectionTypes.TITLE,
+            title: 'geostory.builder.defaults.titleTitle',
+            cover: false,
+            contents: [
+                {
                     id: uuid(),
                     type: ContentTypes.TEXT,
-                    html: "geostory.builder.defaults.htmlSample"
-                }],
-                background: {
-                    fit: 'cover',
+                    html: 'geostory.builder.defaults.htmlTitle',
+                    size: 'large',
+                    align: 'center',
+                    theme: 'bright',
+                    background: {
+                        fit: 'cover',
+                        theme: 'bright',
+                        size: 'full',
+                        align: 'center'
+                    }
+                }
+            ]
+        };
+    case SectionTypes.PARAGRAPH:
+        return {
+            id: uuid(),
+            type: SectionTypes.PARAGRAPH,
+            title: 'geostory.builder.defaults.titleParagraph',
+            contents: [
+                {
+                    id: uuid(),
+                    type: ContentTypes.COLUMN,
                     size: 'full',
                     align: 'center',
-                    theme: 'bright'
+                    contents: [{
+                        id: uuid(),
+                        type: ContentTypes.TEXT,
+                        html: "geostory.builder.defaults.htmlSample"
+                    }]
                 }
-            };
-        }
-        case ContentTypes.TEXT: {
-            return {
+            ]
+        };
+    case SectionTypes.IMMERSIVE:
+        return {
+            id: uuid(),
+            type: SectionTypes.IMMERSIVE,
+            title: "geostory.builder.defaults.titleImmersive",
+            contents: [getDefaultSectionTemplate(ContentTypes.COLUMN)]
+        };
+    case SectionTemplates.MEDIA: {
+        return {
+            id: uuid(),
+            type: SectionTypes.PARAGRAPH,
+            title: 'geostory.builder.defaults.titleMedia',
+            contents: [
+                {
+                    id: uuid(),
+                    type: ContentTypes.COLUMN,
+                    contents: [{
+                        id: uuid(),
+                        type: ContentTypes.MEDIA,
+                        size: 'medium',
+                        align: 'center'
+                    }]
+                }
+            ]
+        };
+    }
+    case ContentTypes.COLUMN: {
+        return {
+            id: uuid(),
+            type: ContentTypes.COLUMN,
+            align: 'left',
+            size: 'small',
+            theme: 'bright',
+            contents: [{
                 id: uuid(),
                 type: ContentTypes.TEXT,
                 html: "geostory.builder.defaults.htmlSample"
-            };
-        }
-        default:
-            return {
-                id: uuid(),
-                type,
-                title: "geostory.builder.defaults.titleUnknown"
-            };
+            }],
+            background: {
+                fit: 'cover',
+                size: 'full',
+                align: 'center',
+                theme: 'bright'
+            }
+        };
+    }
+    case ContentTypes.TEXT: {
+        return {
+            id: uuid(),
+            type: ContentTypes.TEXT,
+            html: "geostory.builder.defaults.htmlSample"
+        };
+    }
+    default:
+        return {
+            id: uuid(),
+            type,
+            title: "geostory.builder.defaults.titleUnknown"
+        };
     }
 };

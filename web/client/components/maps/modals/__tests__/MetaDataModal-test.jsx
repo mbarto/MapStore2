@@ -31,7 +31,9 @@ describe('This test for MetadataModal', () => {
         expect(metadataModalItem).toExist();
 
         const metadataModalItemDom = ReactDOM.findDOMNode(metadataModalItem);
-        expect(metadataModalItemDom).toNotExist();
+        expect(metadataModalItemDom).toExist();
+        const modalDivList = document.getElementsByClassName("modal-content");
+        expect(modalDivList.length).toBe(0);
 
         const getModals = function() {
             return document.getElementsByTagName("body")[0].getElementsByClassName('modal-dialog');

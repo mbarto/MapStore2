@@ -64,7 +64,7 @@ class LoginModal extends React.Component {
             onLoginSuccess={this.props.onLoginSuccess}
             onSubmit={this.props.onSubmit}
             onError={this.props.onError}
-      />);
+        />);
     };
 
     getFooter = () => {
@@ -78,17 +78,17 @@ class LoginModal extends React.Component {
                 onClick={this.loginSubmit}
                 key="submit">{LocaleUtils.getMessageById(this.context.messages, "user.signIn")}</Button>
             {this.props.includeCloseButton ? <Button
-              key="closeButton"
-              ref="closeButton"
-              bsSize={this.props.buttonSize}
-              onClick={this.props.onClose}><Message msgId="close"/></Button> : <span/>}
+                key="closeButton"
+                ref="closeButton"
+                bsSize={this.props.buttonSize}
+                onClick={this.props.onClose}><Message msgId="close"/></Button> : <span/>}
         </span>);
     };
 
     render() {
         return (<Modal {...this.props.options} show={this.props.show} onHide={this.props.onClose}>
             <Modal.Header key="passwordChange" closeButton>
-              <Modal.Title><Message msgId="user.login"/></Modal.Title>
+                <Modal.Title><Message msgId="user.login"/></Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 {this.getForm()}

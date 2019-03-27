@@ -634,8 +634,6 @@ function saveAll(map, metadataMap, nameThumbnail, dataThumbnail, categoryThumbna
         }
         if (isNil(dataThumbnail) && isNil(metadataMap) && !detailsChanged) {
             dispatch(resetUpdating(resourceIdMap));
-            /*dispatch(onDisplayMetadataEdit(false));
-            dispatch(resetCurrentMap());*/
         }
     };
 }
@@ -658,8 +656,6 @@ function deleteThumbnail(resourceId, resourceIdMap, options, reset) {
                     dispatch(resetUpdating(resourceIdMap));
                 }
             }
-            /*dispatch(onDisplayMetadataEdit(false));
-            dispatch(resetCurrentMap());*/
         }).catch((e) => {
             // Even if is not possible to delete the Thumbnail from geostore -> reset the attribute in order to display the default thumbnail
             if (e.status === 403) {
