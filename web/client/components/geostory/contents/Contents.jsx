@@ -35,20 +35,20 @@ import AddBar from "../common/AddBar";
  * ```
  */
 export default ({
-        viewWidth,
-        viewHeight,
-        className,
-        contentProps = {},
-        addButtons = [],
-        tools = [],
-        contents=[],
-        ContentComponent=Content,
-        mode,
-        editMedia = () => {},
-        add = () => {},
-        update = () => {},
-        remove = () => {}
-    }) =>
+    viewWidth,
+    viewHeight,
+    className,
+    contentProps = {},
+    addButtons = [],
+    tools = [],
+    contents = [],
+    ContentComponent = Content,
+    mode,
+    editMedia = () => {},
+    add = () => {},
+    update = () => {},
+    remove = () => {}
+}) =>
     (<div className={className}>
         {contents.reduce(( rendered = [], { id, ...props }) => {
             const content =
@@ -73,9 +73,9 @@ export default ({
                         containerWidth={viewWidth}
                         containerHeight={viewHeight}
                         buttons={addButtons.map((button = {}) => ({
-                                ...button,
-                                onClick: () => add(`contents`, id, button.template)
-                            }))}
+                            ...button,
+                            onClick: () => add(`contents`, id, button.template)
+                        }))}
                     />
                 );
             }

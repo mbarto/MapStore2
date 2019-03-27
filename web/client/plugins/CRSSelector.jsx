@@ -22,7 +22,7 @@ const {projectionDefsSelector, projectionSelector} = require('../selectors/map')
 const {bottomPanelOpenSelector} = require('../selectors/maplayout');
 const {crsInputValueSelector} = require('../selectors/crsselector');
 const {currentBackgroundSelector} = require('../selectors/layers');
-const{modeSelector} = require('../selectors/featuregrid');
+const {modeSelector} = require('../selectors/featuregrid');
 const {error} = require('../actions/notifications');
 const {userRoleSelector} = require('../selectors/security');
 
@@ -85,56 +85,56 @@ class Selector extends React.Component {
         };
         const allowed = (role) => includes(this.props.allowedRoles, "ALL") ? true : includes(role, this.props.allowedRoles);
         return (this.props.enabled && allowed(this.props.currentRole) ? <Dropdown
-        dropup
-        className="ms-prj-selector">
-        <Button
-            bsRole="toggle"
-            bsStyle="primary"
-            className="map-footer-btn"
-            tooltip="Select projection"
-            tooltipPosition="top">
-            <Glyphicon glyph="crs" />
-        </Button>
-        <CrsSelectorMenu bsRole="menu" value={this.props.value} selected={currentCRS} projectionDefs={this.props.projectionDefs}
-            filterAllowedCRS={this.props.filterAllowedCRS} additionalCRS={this.props.additionalCRS} changeInputValue={v => this.props.typeInput(v)}>
+            dropup
+            className="ms-prj-selector">
+            <Button
+                bsRole="toggle"
+                bsStyle="primary"
+                className="map-footer-btn"
+                tooltip="Select projection"
+                tooltipPosition="top">
+                <Glyphicon glyph="crs" />
+            </Button>
+            <CrsSelectorMenu bsRole="menu" value={this.props.value} selected={currentCRS} projectionDefs={this.props.projectionDefs}
+                filterAllowedCRS={this.props.filterAllowedCRS} additionalCRS={this.props.additionalCRS} changeInputValue={v => this.props.typeInput(v)}>
                 {list.map(crs =>
-                        <ListGroupItem
+                    <ListGroupItem
                         key={crs.value}
                         active={currentCRS === crs.value}
                         onClick= { es => changeCrs(es.target.textContent)}
                         eventKey={crs.value}
-                        >
-                            {crs.value}
-                        </ListGroupItem>)}
-        </CrsSelectorMenu>
-    </Dropdown> : null );
+                    >
+                        {crs.value}
+                    </ListGroupItem>)}
+            </CrsSelectorMenu>
+        </Dropdown> : null );
     }
 }
 
 const crsSelector = connect(
-        createSelector(
-            userRoleSelector,
-            currentBackgroundSelector,
-            projectionSelector,
-            projectionDefsSelector,
-            crsInputValueSelector,
-            modeSelector,
-            isCesium,
-            bottomPanelOpenSelector,
-                ( currentRole, currentBackground, selected, projectionDefs, value, mode, cesium, bottomPanel) => ({
-                    currentRole,
-                    currentBackground,
-                    selected,
-                    projectionDefs,
-                    value,
-                    enabled: (mode !== 'EDIT') && !cesium && !bottomPanel
-                })
-            ), {
-                typeInput: setInputValue,
-                setCrs: changeMapCrs,
-                onError: error
-            }
-        )(Selector);
+    createSelector(
+        userRoleSelector,
+        currentBackgroundSelector,
+        projectionSelector,
+        projectionDefsSelector,
+        crsInputValueSelector,
+        modeSelector,
+        isCesium,
+        bottomPanelOpenSelector,
+        ( currentRole, currentBackground, selected, projectionDefs, value, mode, cesium, bottomPanel) => ({
+            currentRole,
+            currentBackground,
+            selected,
+            projectionDefs,
+            value,
+            enabled: (mode !== 'EDIT') && !cesium && !bottomPanel
+        })
+    ), {
+        typeInput: setInputValue,
+        setCrs: changeMapCrs,
+        onError: error
+    }
+)(Selector);
 
 
 /**

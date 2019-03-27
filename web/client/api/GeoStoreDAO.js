@@ -233,10 +233,10 @@ const Api = {
                         + "<group><id>" + (rule.group.id || "") + "</id><groupName>" + (rule.group.groupName || "") + "</groupName></group>"
                         + "</SecurityRule>";
                 }
-                return "";
                 // NOTE: if rule has no group or user, it is skipped
                 // NOTE: if rule is "no read and no write", it is skipped
             }
+            return "";
         }).join('') + "</SecurityRuleList>";
     },
     updateResourcePermissions: function(resourceId, securityRules) {
@@ -257,10 +257,10 @@ const Api = {
         const attributesSection = createAttributeList(metadata);
         return axios.post(
             "resources/",
-                "<Resource>" + generateMetadata(name, description) + "<category><name>" + (category || "") + "</name></category>" +
+            "<Resource>" + generateMetadata(name, description) + "<category><name>" + (category || "") + "</name></category>" +
                 attributesSection +
                 "<store><data><![CDATA[" + (
-                    data
+                data
                         && (
                             (typeof data === 'object')
                                 ? JSON.stringify(data)
@@ -297,8 +297,8 @@ const Api = {
                         'Accept': "application/json"
                     }
                 })).then(function(response) {
-                    return parseAdminGroups(response.data);
-                });
+                return parseAdminGroups(response.data);
+            });
         }
         return axios.get(
             "users/user/details",
@@ -307,8 +307,8 @@ const Api = {
                     'Accept': "application/json"
                 }
             })).then(function(response) {
-                return parseUserGroups(response.data);
-            });
+            return parseUserGroups(response.data);
+        });
     },
     getUsers: function(textSearch, options = {}) {
         const url = "extjs/search/users" + (textSearch ? "/" + textSearch : "");
@@ -448,12 +448,12 @@ const Api = {
             Api.addBaseUrl({
                 ...parseOptions(options),
                 headers: {
-                   "Content-Type": "application/xml",
-                   "Accept": "application/json"
+                    "Content-Type": "application/xml",
+                    "Accept": "application/json"
                 }
             })
         )
-        .then(response => response.data);
+            .then(response => response.data);
     },
     utils: {
         /**

@@ -19,24 +19,24 @@ const handleSave = mapPropsStream(props$ => {
             .withLatestFrom(props$)
             .switchMap(([resource, props]) =>
                 updateResource(resource)
-                .do( () => {
-                    if (props) {
-                        if (props.onClose) {
-                            props.onClose();
+                    .do( () => {
+                        if (props) {
+                            if (props.onClose) {
+                                props.onClose();
+                            }
+                            if (props.onSaveSuccess) {
+                                props.onSaveSuccess();
+                            }
                         }
-                        if (props.onSaveSuccess) {
-                            props.onSaveSuccess();
-                        }
-                    }
-                })
-                .catch( e => Rx.Observable.of({
-                    errors: [
-                        ...(props.errors || []),
-                        e
-                    ]
-                }))
-                .startWith({loading: true})
-                .concat(Rx.Observable.of({loading: false}))
+                    })
+                    .catch( e => Rx.Observable.of({
+                        errors: [
+                            ...(props.errors || []),
+                            e
+                        ]
+                    }))
+                    .startWith({loading: true})
+                    .concat(Rx.Observable.of({loading: false}))
             );
     return props$.combineLatest(
         saveStream$.startWith({}),

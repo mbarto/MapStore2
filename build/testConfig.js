@@ -1,3 +1,5 @@
+const assign = require('object-assign');
+
 module.exports = ({files, path, testFile, singleRun, basePath = ".", alias = {}}) => ({
     browsers: [ 'Chrome' ],
 
@@ -23,7 +25,6 @@ module.exports = ({files, path, testFile, singleRun, basePath = ".", alias = {}}
         outputDir: './web/target/karma-tests-results',
         suite: ''
     },
-
     coverageReporter: {
         dir: './coverage/',
         reporters: [
@@ -41,11 +42,12 @@ module.exports = ({files, path, testFile, singleRun, basePath = ".", alias = {}}
     },
     webpack: {
         devtool: 'eval',
+        mode: 'development',
         module: {
             rules: [
                 {
                     test: /\.jsx?$/,
-                    exclude: /(ol\.js$|node_modules)/,
+                    exclude: /node_modules/,
                     use: [{
                         loader: 'babel-loader'
                     }],
@@ -100,8 +102,10 @@ module.exports = ({files, path, testFile, singleRun, basePath = ".", alias = {}}
             ]
         },
         resolve: {
-            extensions: ['.js', '.json', '.jsx'],
-            alias: alias
+            alias: assign({}, {
+                jsonix: '@boundlessgeo/jsonix'
+            }, alias),
+            extensions: ['.js', '.json', '.jsx']
         }
     },
     webpackServer: {

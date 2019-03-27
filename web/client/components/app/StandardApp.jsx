@@ -60,7 +60,7 @@ class StandardApp extends React.Component {
         pluginsDef: {plugins: {}, requires: {}},
         initialActions: [],
         printingEnabled: false,
-        appStore: () => ({dispatch: () => {}}),
+        appStore: () => ({dispatch: () => {}, getState: () => ({}), subscribe: () => {}}),
         appComponent: () => <span/>,
         onStoreInit: () => {}
     };
@@ -78,7 +78,7 @@ class StandardApp extends React.Component {
         }
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const onInit = (config) => {
             if (!global.Intl ) {
                 require.ensure(['intl', 'intl/locale-data/jsonp/en.js', 'intl/locale-data/jsonp/it.js'], (require) => {

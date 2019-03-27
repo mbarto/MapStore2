@@ -27,7 +27,7 @@ import {
     resourcesSelector,
     currentPageSelector
 } from '../../selectors/geostory';
-import TEST_STORY from "json-loader!../../test-resources/geostory/sampleStory_1.json";
+import TEST_STORY from "../../test-resources/geostory/sampleStory_1.json";
 
 import geostory from '../../reducers/geostory';
 import { Modes, lists, getDefaultSectionTemplate } from '../../utils/GeoStoryUtils';

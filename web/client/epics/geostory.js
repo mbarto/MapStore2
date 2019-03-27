@@ -52,8 +52,8 @@ export const openMediaEditorForNewMedia = action$ =>
         })
         .switchMap(({path: arrayPath, element}) => {
             return Observable.of(
-                    show('geostory') // open mediaEditor
-                )
+                show('geostory') // open mediaEditor
+            )
                 .merge(
                     action$.ofType(CHOOSE_MEDIA, HIDE)
                         .switchMap( ({type, resource = {}}) => {
@@ -69,7 +69,7 @@ export const openMediaEditorForNewMedia = action$ =>
                                         path,
                                         { type: "image" }, // TODO take type from mediaEditor state or from resource
                                         "merge" )
-                                    ) :
+                                ) :
                                 Observable.of(
                                     update(
                                         path,
@@ -89,17 +89,17 @@ export const openMediaEditorForNewMedia = action$ =>
  */
 export const localizeTemplateEpic = (action$, store) =>
     action$.ofType(ADD)
-    .switchMap(({element}) => {
-        const messages = currentMessagesSelector(store.getState());
-        const propsLocalized = localizeElement(element, messages);
-        return Observable.of(
+        .switchMap(({element}) => {
+            const messages = currentMessagesSelector(store.getState());
+            const propsLocalized = localizeElement(element, messages);
+            return Observable.of(
                 update(
                     `sections[{"id": "${element.id}"}]`,
                     propsLocalized,
                     "merge"
                 )
             );
-    });
+        });
 
 /**
  * side effect to scroll to new sections
@@ -108,19 +108,19 @@ export const localizeTemplateEpic = (action$, store) =>
  */
 export const scrollToContentEpic = action$ =>
     action$.ofType(ADD)
-    .switchMap(({element}) => {
-        return Observable.of(element)
-            .switchMap(() => {
-                if (!document.getElementById(element.id)) {
-                    const err = new Error("Item not mounted yet");
-                    throw err;
-                } else {
-                    scrollToContent(element.id, {behavior: "smooth"});
-                    return Observable.empty();
-                }
-            })
-            .retryWhen(errors => errors.delay(200).take(10));
-    });
+        .switchMap(({element}) => {
+            return Observable.of(element)
+                .switchMap(() => {
+                    if (!document.getElementById(element.id)) {
+                        const err = new Error("Item not mounted yet");
+                        throw err;
+                    } else {
+                        scrollToContent(element.id, {behavior: "smooth"});
+                        return Observable.empty();
+                    }
+                })
+                .retryWhen(errors => errors.delay(200).take(10));
+        });
 
 
 /**
@@ -135,16 +135,16 @@ export const editMediaForBackgroundEpic = (action$, store) =>
             const state = store.getState();
             const resourceId = resourceIdSelectorCreator(path)(state);
             return Observable.of(
-                    show(owner), // open mediaEditor
-                    selectItem(resourceId)
-                )
+                show(owner), // open mediaEditor
+                selectItem(resourceId)
+            )
                 .merge(
                     action$.ofType(CHOOSE_MEDIA)
                         .switchMap( ({resource = {}}) => {
                             const type = mediaTypeSelector(state);
                             return Observable.of(
                                 update(`${path}`, {resourceId: resource.id, type}, "merge" )
-                                );
+                            );
                         })
                         .takeUntil(action$.ofType(HIDE, ADD))
                 );
@@ -157,15 +157,15 @@ export const editMediaForBackgroundEpic = (action$, store) =>
  * @param {object} store
  */
 export const loadGeostoryEpic = (action$, {getState = () => {}}) => action$
-        .ofType(LOAD_GEOSTORY)
-        .switchMap( ({id}) =>
-            Observable.defer(() => {
-                if (id && isNaN(parseInt(id, 10))) {
-                    return axios.get(`configs/${id}.json`);
-                }
-                // TODO manage load process from external api
-                return axios.get(`configs/sampleStory.json`);
-            })
+    .ofType(LOAD_GEOSTORY)
+    .switchMap( ({id}) =>
+        Observable.defer(() => {
+            if (id && isNaN(parseInt(id, 10))) {
+                return axios.get(`configs/${id}.json`);
+            }
+            // TODO manage load process from external api
+            return axios.get(`configs/sampleStory.json`);
+        })
             .map(({ data }) => {
                 if (isObject(data)) {
                     return setCurrentStory(data);
@@ -202,7 +202,7 @@ export const loadGeostoryEpic = (action$, {getState = () => {}}) => action$
                     );
                 }
             ))
-        );
+    );
 
 /**
  * Removes containers that are empty after a REMOVE action from GeoStory.

@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { get, isString, isNumber, findIndex, toPath, isObject, isArray } from "lodash";
-import { set, unset, arrayUpdate } from '../utils/ImmutableUtils';
+import { set, arrayUpdate } from '../utils/ImmutableUtils';
 
 import {
     ADD,
@@ -138,75 +138,74 @@ const getIndexToInsert = (array, position) => {
  */
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case ADD: {
-            const {id, path: rawPath, position} = action;
-            let {element} = action;
+    case ADD: {
+        const {id, path: rawPath, position} = action;
+        let {element} = action;
 
-            const path = getEffectivePath(`currentStory.${rawPath}`, state);
-            const arrayToUpdate = get(state, path, []);
-            const index = getIndexToInsert(arrayToUpdate, position);
-            // create a copy
-            const newSections = arrayToUpdate.slice();
-            // insert the new element at the proper index
-            newSections.splice(index, 0, {
-                id,
-                ...element
-            });
-            return set(
-                path,
-                newSections,
-                state);
-        }
-        case ADD_RESOURCE: {
-            const {id, mediaType: type, data} = action;
-            // add last resource on top
-            return set('currentStory.resources', [{id, type, data}, ...(state.currentStory && state.currentStory.resources || [])], state);
-        }
-        case CHANGE_MODE: {
-            return set('mode', action.mode, state);
-        }
-        case EDIT_RESOURCE: {
-            const {id, mediaType: type, data} = action;
-            const newState = arrayUpdate("currentStory.resources", {id, type, data}, {id}, state);
-            return newState;
-        }
-        case REMOVE: {
-            const { path: rawPath } = action;
-            const path = getEffectivePath(`currentStory.${rawPath}`, state);
-            let containerPath = [...path];
-            let lastElement = containerPath.pop();
-            const container = get(state, containerPath);
-            if (isArray(container)) {
-                if (isString(lastElement)) {
-                    // path sometimes can not be converted into numbers (e.g. when recursive remove of containers)
-                    lastElement = parseInt(lastElement, 10);
-                }
-                return set(containerPath, [...container.slice(0, lastElement), ...container.slice(lastElement + 1)], state);
+        const path = getEffectivePath(`currentStory.${rawPath}`, state);
+        const arrayToUpdate = get(state, path, []);
+        const index = getIndexToInsert(arrayToUpdate, position);
+        // create a copy
+        const newSections = arrayToUpdate.slice();
+        // insert the new element at the proper index
+        newSections.splice(index, 0, {
+            id,
+            ...element
+        });
+        return set(
+            path,
+            newSections,
+            state);
+    }
+    case ADD_RESOURCE: {
+        const {id, mediaType: type, data} = action;
+        // add last resource on top
+        return set('currentStory.resources', [{id, type, data}, ...(state.currentStory && state.currentStory.resources || [])], state);
+    }
+    case CHANGE_MODE: {
+        return set('mode', action.mode, state);
+    }
+    case EDIT_RESOURCE: {
+        const {id, mediaType: type, data} = action;
+        const newState = arrayUpdate("currentStory.resources", {id, type, data}, {id}, state);
+        return newState;
+    }
+    case REMOVE: {
+        const { path: rawPath } = action;
+        const path = getEffectivePath(`currentStory.${rawPath}`, state);
+        let containerPath = [...path];
+        let lastElement = containerPath.pop();
+        const container = get(state, containerPath);
+        if (isArray(container)) {
+            if (isString(lastElement)) {
+                // path sometimes can not be converted into numbers (e.g. when recursive remove of containers)
+                lastElement = parseInt(lastElement, 10);
             }
-            // object
-            return unset(path, state);
+            return set(containerPath, [...container.slice(0, lastElement), ...container.slice(lastElement + 1)], state);
         }
-        case SET_CURRENT_STORY: {
-            return set('currentStory', action.story, state);
+        return set(containerPath, [...container.slice(0, lastElement), ...container.slice(lastElement + 1)], state);
+    }
+    case SET_CURRENT_STORY: {
+        return set('currentStory', action.story, state);
+    }
+    case TOGGLE_CARD_PREVIEW: {
+        return set('cardPreviewEnabled', !state.cardPreviewEnabled, state);
+    }
+    case UPDATE: {
+        const { path: rawPath, mode } = action;
+        let { element: newElement } = action;
+        const path = getEffectivePath(`currentStory.${rawPath}`, state);
+        const oldElement = get(state, path);
+        if (isObject(oldElement) && isObject(newElement) && mode === "merge") {
+            newElement = {...oldElement, ...newElement};
         }
-        case TOGGLE_CARD_PREVIEW: {
-            return set('cardPreviewEnabled', !state.cardPreviewEnabled, state);
-        }
-        case UPDATE: {
-            const { path: rawPath, mode } = action;
-            let { element: newElement } = action;
-            const path = getEffectivePath(`currentStory.${rawPath}`, state);
-            const oldElement = get(state, path);
-            if (isObject(oldElement) && isObject(newElement) && mode === "merge") {
-                newElement = {...oldElement, ...newElement};
-            }
-            return set(path, newElement, state);
-        }
-        case UPDATE_CURRENT_PAGE: {
-            const {type, ...currentPage} = action;
-            return set('currentPage', currentPage, state); // maybe a merge is better
-        }
-        default:
-            return state;
+        return set(path, newElement, state);
+    }
+    case UPDATE_CURRENT_PAGE: {
+        const {type, ...currentPage} = action;
+        return set('currentPage', currentPage, state); // maybe a merge is better
+    }
+    default:
+        return state;
     }
 };

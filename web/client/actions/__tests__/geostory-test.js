@@ -21,7 +21,7 @@ import {
     toggleCardPreview, TOGGLE_CARD_PREVIEW
 } from '../geostory';
 const { Modes } = require('../../utils/GeoStoryUtils');
-import TEST_STORY from "json-loader!../../test-resources/geostory/sampleStory_1.json";
+import TEST_STORY from "../../test-resources/geostory/sampleStory_1.json";
 
 describe('test geostory action creators', () => {
     it('setEditing', () => {
