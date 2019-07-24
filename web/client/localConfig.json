@@ -1,14 +1,9 @@
 {
     "proxyUrl": {
         "url": "proxy/?url=",
+        "autoDetectCORS": true,
         "useCORS": [
-          "http://demo.geo-solutions.it/geoserver",
-          "https://demo.geo-solutions.it:443/geoserver",
-          "https://demo.geo-solutions.it/geoserver",
-          "https://nominatim.openstreetmap.org",
-          "http://cloudsdi.geo-solutions.it",
-          "https://gs-stable.geo-solutions.it/geoserver",
-          "https://gs-stable.geo-solutions.it:443/geoserver"
+          "http://localhost:8080/geoserver"
         ]
     },
     "geoStoreUrl": "rest/geostore/",
@@ -40,7 +35,22 @@
       {"name": "routing", "path": "routing.location.pathname"},
       {"name": "browser", "path": "browser"},
       {"name": "featuregridmode", "path": "featuregrid.mode"}],
-    "projectionDefs": [],
+    "projectionDefs": [{
+        "code": "EPSG:54009",
+        "def": "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs",
+        "extent": [
+          -9009954.605703328,
+          -9009954.605703328,
+          9009954.605703328,
+          9009954.605703328
+        ],
+        "worldExtent": [
+          -179,
+          -89.99,
+          179,
+          89.99
+        ]
+      }],
     "initialState": {
       "defaultState": {
         "annotations": {
@@ -63,8 +73,14 @@
                 "isNew": true,
                 "autoload": false
             },
-            "selectedService": "gs_stable_csw",
+            "selectedService": "local_wms",
             "services": {
+              "local_wms": {
+                "url": "http://localhost:8080/geoserver/foss4g/wms",
+                "type": "wms",
+                "title": "Local GeoServer WMS",
+                "autoload": true
+              },
               "gs_stable_csw": {
                 "url": "https://gs-stable.geo-solutions.it/geoserver/csw",
                 "type": "csw",
@@ -88,10 +104,6 @@
         },
         "locales": {
           "supportedLocales": {
-            "it": {
-              "code": "it-IT",
-              "description": "Italiano"
-            },
             "en": {
               "code": "en-US",
               "description": "English"
@@ -317,22 +329,31 @@
                 "editCRS": true,
                 "showLabels": true,
                 "showToggle": true,
-                "filterAllowedCRS": ["EPSG:4326", "EPSG:3857"],
-                "additionalCRS": {}
+                "filterAllowedCRS": [
+                  "EPSG:4326",
+                  "EPSG:3857",
+                  "EPSG:54009"
+                ],
+                "additionalCRS": {
+                  "EPSG:54009": {
+                    "label": "Mollweide"
+                  }
+                }
               }
             }, {
               "name": "CRSSelector",
               "cfg": {
                 "additionalCRS": {
-
+                  "EPSG:54009": {
+                    "label": "Mollweide"
+                  }
                 },
                 "filterAllowedCRS": [
                   "EPSG:4326",
-                  "EPSG:3857"
+                  "EPSG:3857",
+                  "EPSG:54009"
                 ],
-                "allowedRoles": [
-                  "ADMIN"
-                ]
+                "allowedRoles": ["ALL"]
               }
             }, {
                 "name": "Search",
@@ -385,7 +406,12 @@
             "Timeline",
             "Playback",
             "FeedbackMask",
-            "StyleEditor"
+            {
+              "name": "StyleEditor",
+              "cfg": {
+                "editingAllowedRoles": null
+              }
+            }
         ],
         "embedded": [{
                 "name": "Map",
