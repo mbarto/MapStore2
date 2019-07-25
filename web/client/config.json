@@ -14,7 +14,6 @@
 				"title": "Natural Earth",
 				"url": "http://localhost:8080/geoserver/wms",
 				"name": "foss4g:NaturalEarth",
-       			"singleTile": true,
 				"group": "background",
         		"visibility": true
 			},

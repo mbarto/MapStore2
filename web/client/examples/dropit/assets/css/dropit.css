@@ -1,0 +1,28 @@
+html, body, #container, #map, .dropzone, .dropzone-content {
+    position:absolute;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.dropzone-content {
+    font-family: Calibri, arial;
+    font-size: 100px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.dropzone-text {
+    position: absolute;
+    top: calc(50% - 100px);
+    width: 100%;
+}
+
+.plugins-container {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}

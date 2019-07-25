@@ -64,6 +64,22 @@ const FileUtils = {
             fileName: xml.getElementsByTagName('name')[0] && xml.getElementsByTagName('name')[0].innerHTML || fileName }));
         return geoJSON;
     },
+    readBuffer: function(file) {
+        return new Promise((resolve, reject) => {
+            let reader = new FileReader();
+            reader.onload = function() { resolve(reader.result); };
+            reader.onerror = function() { reject(reader.error.name); };
+            reader.readAsArrayBuffer(file);
+        });
+    },
+    readText: function(file) {
+        return new Promise((resolve, reject) => {
+            let reader = new FileReader();
+            reader.onload = function() { resolve(reader.result); };
+            reader.onerror = function() { reject(reader.error.name); };
+            reader.readAsText(file);
+        });
+    },
     readZip: function(file) {
         return new Promise((resolve, reject) => {
             let reader = new FileReader();

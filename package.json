@@ -80,6 +80,7 @@
   },
   "//": "replace react-sortable-items with official on npm when it will support React 15",
   "dependencies": {
+    "annyang": "2.6.0",
     "@carnesen/redux-add-action-listener-enhancer": "0.0.1",
     "@mapbox/geojsonhint": "2.0.1",
     "@mapbox/togeojson": "0.16.0",
@@ -196,6 +197,7 @@
     "reselect": "2.5.1",
     "resize-observer-polyfill": "1.5.0",
     "rxjs": "5.1.1",
+    "string-similarity": "1.2.0",
     "screenfull": "4.0.0",
     "shpjs": "3.4.2",
     "tinycolor2": "1.4.1",

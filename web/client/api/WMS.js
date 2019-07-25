@@ -258,6 +258,7 @@ const Api = {
         }
         return catalogBounds;
     },
+    searchAndPaginate,
     reset: () => {
         Object.keys(capabilitiesCache).forEach(key => {
             delete capabilitiesCache[key];

@@ -29,6 +29,18 @@ LessNodeResolve.prototype = {
 const less = require('less');
 
 module.exports = {
+    compileFromLess: (theme, path, callback) => {
+        less.render(theme, {
+            plugins: [new LessNodeResolve({ path: path })],
+            paths: ['.', 'node_modules'],
+            filename: 'custom.theme.less',
+            compress: true
+        }, (e, output) => {
+            if (callback) {
+                callback(output && output.css, e);
+            }
+        });
+    },
     renderFromLess: (theme, container, path, callback) => {
         less.render(theme, {
             plugins: [new LessNodeResolve({path: path})],
