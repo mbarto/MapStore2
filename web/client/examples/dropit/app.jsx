@@ -91,7 +91,10 @@ const startApp = () => {
 
             var commands = {
                 'add *plugin': (plugin) => {
-                    checkFile({name: stringSimilarity.findBestMatch(plugin.replace(/[^a-zA-Z]/g, ''), pluginNames).bestMatch.target + 'Plugin'});
+                    checkFile({
+                        name: stringSimilarity.findBestMatch(plugin.replace(/[^a-zA-Z]/g, ''), pluginNames).bestMatch.target + 'Plugin',
+                        type: 'text/plain'
+                    });
                 },
                 'search *place': (place) => {
                     store.dispatch(searchTextChanged(place));
