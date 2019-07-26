@@ -3,7 +3,8 @@
         "url": "proxy/?url=",
         "autoDetectCORS": true,
         "useCORS": [
-          "http://localhost:8080/geoserver"
+          "http://localhost:8080/geoserver",
+          "http://192.168.1.31:8080/geoserver"
         ]
     },
     "geoStoreUrl": "rest/geostore/",
@@ -91,7 +92,7 @@
             "selectedService": "local_wms",
             "services": {
               "local_wms": {
-                "url": "http://localhost:8080/geoserver/foss4g/wms",
+                "url": "http://192.168.1.31:8080/geoserver/foss4g/wms",
                 "type": "wms",
                 "title": "Local GeoServer WMS",
                 "autoload": true
@@ -163,6 +164,13 @@
         "mobile": [{
                 "name": "Map",
                 "cfg": {
+                    "additionalLayers": [{
+                        "url": "http://192.168.1.31:8080/geoserver/wms",
+                        "format": "application/bil16",
+                        "name": "elevation",
+                        "visibility": true,
+                        "useForElevation": true
+                    }],
                     "mapOptions": {
                       "openlayers": {
                         "interactions": {
@@ -269,6 +277,14 @@
           {
             "name": "Map",
             "cfg": {
+              "additionalLayers": [{
+                "type": "wms",
+                "url": "http://192.168.1.31:8080/geoserver/wms",
+                "format": "application/bil16",
+                "name": "foss4g:dtm",
+                "visibility": true,
+                "useForElevation": true
+              }],
               "mapOptions": {
                 "openlayers": {
                   "interactions": {
@@ -361,6 +377,7 @@
             , {
               "name": "MousePosition",
               "cfg": {
+                "showElevation": true,
                 "editCRS": true,
                 "showLabels": true,
                 "showToggle": true,

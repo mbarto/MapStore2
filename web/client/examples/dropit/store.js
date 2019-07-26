@@ -19,7 +19,8 @@ const mapConfig = require('../../reducers/config');
 const standardEpics = {
     ...require('../../epics/controls'),
     ...require('../../epics/layers'),
-    ...require('../../epics/dimension')
+    ...require('../../epics/dimension'),
+    ...require('../../epics/annotations')({})
 };
 
 module.exports = (plugins, custom) => {
@@ -27,6 +28,7 @@ module.exports = (plugins, custom) => {
         locale: require('../../reducers/locale'),
         browser: require('../../reducers/browser'),
         theme: require('../../reducers/theme'),
+        annotations: require('../../reducers/annotations'),
         map: () => {return null; },
         mapInitialConfig: () => {return null; },
         layers: () => {return null; },
@@ -49,5 +51,7 @@ module.exports = (plugins, custom) => {
         return newState;
     };
 
-    return createDebugStore(rootReducer, {}, [epicMiddleware]);
+    return createDebugStore(rootReducer, {
+        maptype: {mapType: "openlayers"}
+    }, [epicMiddleware]);
 };

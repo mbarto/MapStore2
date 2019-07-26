@@ -121,7 +121,7 @@ const startApp = () => {
                             e.preventDefault();
                         }} onDrop={checkFiles}>
                             <Theme path="../../dist/themes" version="dropit"/>
-                            <PluginsContainer params={{ mapType: "leaflet" }} plugins={PluginsUtils.getPlugins(getPlugins())} pluginsConfig={getPluginsConfiguration()} mode="standard" />
+                            <PluginsContainer params={{ mapType: "openlayers" }} plugins={PluginsUtils.getPlugins(getPlugins())} pluginsConfig={getPluginsConfiguration()} mode="standard" />
                             <div className="dropzone-content"><div className="dropzone-text">Drop it here!</div>
                             </div>
                         </Dropzone>
@@ -144,10 +144,11 @@ const startApp = () => {
         require('./drophandlers/plugin')(appCfg),
         require('./drophandlers/style')(appCfg),
         require('./drophandlers/data')(appCfg),
-        require('./drophandlers/url')(appCfg)
+        require('./drophandlers/url')(appCfg),
+        require('./drophandlers/annotations')(appCfg)
     ];
 
-    const checkContent = (text, type) => {
+    const checkContent = (text, type, evt) => {
         Promise.all(fileHandlers.map((handler) => handler.canHandleText(text, type))).then((handlers) => {
             const result = handlers.reduce((previous, current) => {
                 return current.priority > previous.priority ? current : previous;
@@ -156,13 +157,13 @@ const startApp = () => {
                     priority: -1
                 });
             if (result.handler) {
-                result.handler.handleText(text, renderPage, type);
+                result.handler.handleText(text, renderPage, type, evt);
             }
         }).catch(e => {
         });
     };
 
-    const checkFile = (file) => {
+    const checkFile = (file, evt) => {
         Promise.all(fileHandlers.map((handler) => handler.canHandle(file))).then((handlers) => {
             const result = handlers.reduce((previous, current) => {
                 return current.priority > previous.priority ? current : previous;
@@ -171,19 +172,24 @@ const startApp = () => {
                     priority: -1
                 });
             if (result.handler) {
-                result.handler.handle(file, renderPage);
+                result.handler.handle(file, renderPage, evt);
             }
         }).catch(e => {
         });
     };
 
-    const checkFiles = (files, otherContent) => {
+    const checkFiles = (files, otherContent, e) => {
+        const evt = {
+            x: e.clientX,
+            y: e.clientY
+        };
         files.forEach(file => {
-            checkFile(file);
+            checkFile(file, evt);
+            window.URL.revokeObjectURL(file.preview);
         });
         otherContent.forEach(content => {
-            const {type, kind} = content;
-            content.getAsString(text => checkContent(text, type));
+            const {type} = content;
+            content.getAsString(text => checkContent(text, type, evt));
         });
     };
 
