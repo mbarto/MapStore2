@@ -200,7 +200,8 @@ class MapPlugin extends React.Component {
         features: PropTypes.array,
         securityToken: PropTypes.string,
         shouldLoadFont: PropTypes.bool,
-        elevationEnabled: PropTypes.bool
+        elevationEnabled: PropTypes.bool,
+        items: PropTypes.array
     };
 
     static defaultProps = {
@@ -236,7 +237,8 @@ class MapPlugin extends React.Component {
         additionalLayers: [],
         shouldLoadFont: false,
         elevationEnabled: false,
-        onFontError: () => {}
+        onFontError: () => {},
+        items: []
     };
     state = {
         canRender: true
@@ -351,6 +353,7 @@ class MapPlugin extends React.Component {
                     {...this.props.options}
                     projectionDefs={this.props.projectionDefs}
                     {...this.props.map}
+                    items={this.props.items}
                     mapOptions={assign({}, mapOptions, this.getMapOptions())}
                     zoomControl={this.props.zoomControl}>
                     {this.renderLayers()}

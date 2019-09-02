@@ -43,7 +43,8 @@ class LeafletMap extends React.Component {
         registerHooks: PropTypes.bool,
         interactive: PropTypes.bool,
         resolutions: PropTypes.array,
-        onCreationError: PropTypes.func
+        onCreationError: PropTypes.func,
+        items: PropTypes.array
     };
 
     static defaultProps = {
@@ -67,7 +68,8 @@ class LeafletMap extends React.Component {
         registerHooks: true,
         style: {},
         interactive: true,
-        resolutions: mapUtils.getGoogleMercatorResolutions(0, 23)
+        resolutions: mapUtils.getGoogleMercatorResolutions(0, 23),
+        items: []
     };
 
     state = { };
@@ -110,7 +112,12 @@ class LeafletMap extends React.Component {
           Math.round(this.props.zoom));
 
         this.map = map;
-
+        this.props.items.forEach(item => {
+            item.plugin.map = {
+                type: 'leaflet',
+                map
+            };
+        });
 
         this.attribution = L.control.attribution();
         this.attribution.addTo(this.map);
@@ -257,6 +264,12 @@ class LeafletMap extends React.Component {
                 this.map.setMinZoom(limits.minZoom);
             }
         }
+        this.props.items.forEach(item => {
+            item.plugin.map = {
+                type: 'leaflet',
+                map: this.map
+            };
+        });
         return false;
     }
 

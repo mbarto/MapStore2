@@ -11,6 +11,7 @@ const ReactDOM = require('react-dom');
 const StandardApp = require('../components/app/StandardApp');
 const LocaleUtils = require('../utils/LocaleUtils');
 const ConfigUtils = require('../utils/ConfigUtils');
+const {createPlugin, jsPlugin} = require('../utils/PluginsUtils');
 const {connect} = require('react-redux');
 
 const {configureMap, loadMapConfig} = require('../actions/config');
@@ -22,7 +23,7 @@ const url = require('url');
 const ThemeUtils = require('../utils/ThemeUtils');
 
 const assign = require('object-assign');
-const {partialRight, merge} = require('lodash');
+const {merge, get} = require('lodash');
 
 const defaultConfig = require('json-loader!../config.json');
 
@@ -222,6 +223,7 @@ const MapStore2 = {
                     listener.call(null, selector(store.getState()));
                 });
             });
+            MapStore2.store = store;
         };
         if (options.noLocalConfig) {
             ConfigUtils.setLocalConfigurationFile('');
@@ -312,8 +314,27 @@ const MapStore2 = {
      * @example
      * MapStore2.withPlugins({...});
      */
-    withPlugins: (plugins, options) => {
-        return assign({}, MapStore2, {create: partialRight(MapStore2.create, partialRight.placeholder, partialRight.placeholder, plugins), defaultOptions: options || {}});
+    withPlugins: (plugins = {}, options) => {
+        return assign({}, MapStore2, {
+            create: (container, opts, pluginsDef = {}, component) => {
+                const pluginsList = {
+                    plugins: assign({}, pluginsDef, plugins.plugins),
+                    requires: plugins.requires
+                };
+                return MapStore2.create(container, opts, pluginsList, component);
+            }, defaultOptions: options || {}});
+    },
+    createPlugin: (name, pluginDef, containers = {}) => {
+        return createPlugin(name, {
+            component: jsPlugin(pluginDef),
+            containers: pluginDef.needsMap ? {
+                ...containers,
+                Map: {}
+            } : containers
+        });
+    },
+    getState: (path) => {
+        return get(MapStore2.store.getState(), path);
     },
     /**
      * Triggers an action

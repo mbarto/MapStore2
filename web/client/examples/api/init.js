@@ -6,6 +6,8 @@ function init() {
     var theme;
     var embeddedPlugins;
     var pluginsCfg;
+    var JSPlugin;
+    var ToolbarPlugin;
 
     /*eslint-disable */
     cfg = MapStore2.loadConfigFromStorage('mapstore.example.plugins.' + MapStore2.getParamFromRequest('map'));
@@ -20,12 +22,13 @@ function init() {
             "ZoomAll",
             "Expander",
             "ZoomIn",
-            "ZoomOut",
             "ScaleBox",
             "OmniBar",
             "Search",
             "DrawerMenu",
             "TOC",
+            "JS",
+            "JSToolbar",
             {
                 "name": "BackgroundSelector",
                 "cfg": {
@@ -49,7 +52,55 @@ function init() {
             },
             "FullScreen"
         ]};
+
     /*eslint-disable */
+    JSPlugin = MapStore2.createPlugin('JS', {
+        id: 'myzoom',
+        needsMap: true,
+        style: {
+            position: "absolute",
+            zIndex: 1000
+        },
+        onMount: function(el, map)  {
+            el.innerHTML = '<button>Zoom In (' + map.type + ')</button>';
+            el.querySelector('button').addEventListener('click', function(evt) {
+                MapStore2.triggerAction({
+                    type: 'CHANGE_ZOOM_LVL',
+                    zoom: MapStore2.getState('map.present.zoom') + 1
+                });
+            });
+        },
+        onUnmount: function(el) {
+            el.innerHTML = '';
+        }
+    });
+    JSToolbarPlugin = MapStore2.createPlugin('JSToolbar', {
+        id: 'myzoom2',
+        needsMap: true,
+        style: {
+            width: "25px"
+        },
+        onMount: function(el, map) {
+            el.innerHTML = '<button>-</button>';
+            el.querySelector('button').addEventListener('click', function(evt) {
+                MapStore2.triggerAction({
+                    type: 'CHANGE_ZOOM_LVL',
+                    zoom: MapStore2.getState('map.present.zoom') - 1
+                });
+            });
+        },
+        onUnmount: function(el) {
+            el.innerHTML = '';
+        }
+    }, {
+            Toolbar: {
+                name: "MyZoomOut",
+                position: 4,
+                tooltip: "zoombuttons.zoomOutTooltip",
+                tool: true,
+                priority: 1
+            }
+    });
     pluginsCfg = cfg && MapStore2.buildPluginsCfg(cfg.pluginsCfg.standard, cfg.userCfg) || embeddedPlugins;
     MapStore2.create('container', {
         plugins: pluginsCfg,
@@ -64,6 +115,9 @@ function init() {
         } : {
             path: '../../dist/themes'
         }
+    }, {
+        JSPlugin: JSPlugin,
+        JSToolbarPlugin: JSToolbarPlugin
     });
     MapStore2.onAction('CHANGE_MAP_VIEW', function(action) {
         console.log('ZOOM: ' + action.zoom);

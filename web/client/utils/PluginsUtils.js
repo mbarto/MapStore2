@@ -7,6 +7,7 @@
  */
 
 const React = require('react');
+const PropTypes = require('prop-types');
 const assign = require('object-assign');
 const { omit, isObject, head, isArray, isString, memoize, get, endsWith } = require('lodash');
 const {combineReducers} = require('redux');
@@ -252,6 +253,30 @@ const getPluginImplementation = (impl, stateSelector) => {
     return isMapStorePlugin(impl) ? impl : impl(stateSelector);
 };
 
+const jsPlugin = (pluginDef = {}) => {
+    const JSPlugin = class extends React.Component {
+        static map = {};
+        componentDidMount() {
+            if (pluginDef.onMount) {
+                pluginDef.onMount(this.element, JSPlugin.map);
+            }
+        }
+        componentWillUnmount() {
+            if (pluginDef.onUnmount) {
+                pluginDef.onUnmount(this.element);
+            }
+        }
+        render() {
+            return (<div id={pluginDef.id}
+                ref={(el) => this.element = el}
+                style={pluginDef.style || {}}
+                className={pluginDef.className || 'cls-' + pluginDef.id}></div>
+            );
+        }
+    };
+    return JSPlugin;
+};
+
 /**
  * Utilities to manage plugins
  * @memberof utils
@@ -457,6 +482,7 @@ const PluginsUtils = {
     handleExpression,
     getMorePrioritizedContainer,
     getPluginConfiguration,
-    isMapStorePlugin
+    isMapStorePlugin,
+    jsPlugin
 };
 module.exports = PluginsUtils;
