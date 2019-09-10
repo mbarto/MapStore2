@@ -1,6 +1,7 @@
 {
   "parser": "babel-eslint",          // https://github.com/babel/babel-eslint
   "plugins": [
+    "no-only-tests",                 // https://github.com/levibuzolic/eslint-plugin-no-only-tests
     "react"                          // https://github.com/yannickcr/eslint-plugin-react
   ],
   "env": {                           // http://eslint.org/docs/user-guide/configuring.html#specifying-environments
@@ -45,6 +46,7 @@
 /**
  * Possible errors
  */
+    "no-only-tests/no-only-tests": ["error", {"block": ["it", "describe"], "focus": ["only"]}],
     "comma-dangle": [2, "never"],    // http://eslint.org/docs/rules/comma-dangle
     "no-cond-assign": [2, "always"], // http://eslint.org/docs/rules/no-cond-assign
     "no-console": 1,                 // http://eslint.org/docs/rules/no-console
