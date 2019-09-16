@@ -7,6 +7,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const ParallelUglifyPlugin = require("webpack-parallel-uglify-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const URLImportPlugin = require('webpack-external-import/webpack');
 
 /**
  * Webpack configuration builder.
@@ -38,7 +39,9 @@ module.exports = (bundles, themeEntries, paths, extractThemesPlugin, prod, publi
     }, bundles, themeEntries),
     mode: prod ? "production" : "development",
     optimization: {
-        minimize: false
+        minimize: false,
+        moduleIds: "named",
+        chunkIds: "named"
     },
     output: {
         path: paths.dist,
