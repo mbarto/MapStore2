@@ -39,7 +39,12 @@ module.exports = (bundles, themeEntries, paths, extractThemesPlugin, prod, publi
     optimization: {
         minimize: !!prod,
         moduleIds: "named",
-        chunkIds: "named"
+        chunkIds: "named",
+        splitChunks: {
+            cacheGroups: {
+                vendors: false
+            }
+        }
     },
     output: {
         path: paths.dist,

@@ -76,7 +76,7 @@ export const filterState = memoize((state, monitor) => {
 
 const getPluginSimpleName = plugin => endsWith(plugin, 'Plugin') && plugin.substring(0, plugin.length - 6) || plugin;
 
-const normalizeName = name => endsWith(name, 'Plugin') && name || (name + "Plugin");
+export const normalizeName = name => endsWith(name, 'Plugin') && name || (name + "Plugin");
 
 export const getPluginConfiguration = (cfg, plugin) => {
     const pluginName = getPluginSimpleName(plugin);
@@ -559,5 +559,6 @@ export default {
     handleExpression,
     getMorePrioritizedContainer,
     getPluginConfiguration,
-    isMapStorePlugin
+    isMapStorePlugin,
+    normalizeName
 };

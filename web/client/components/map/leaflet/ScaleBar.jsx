@@ -35,7 +35,9 @@ class ScaleBar extends React.Component {
         if (this.props.map) {
             this.scalebar.addTo(this.props.map);
             if (this.props.container) {
-                document.querySelector(this.props.container).appendChild(this.scalebar.getContainer());
+                if (document.querySelector(this.props.container)) {
+                    document.querySelector(this.props.container).appendChild(this.scalebar.getContainer());
+                }
                 const mainControl = document.querySelector('.leaflet-control-container .leaflet-control-scale-line');
                 if (mainControl && mainControl.parentNode) {
                     mainControl.parentNode.removeChild(mainControl);

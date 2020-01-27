@@ -139,7 +139,7 @@ class PluginsContainer extends React.Component {
             // renders only loaded plugins (skip lazy ones, not loaded yet)
             .filter(this.filterLoaded)
             // renders only root plugins (children of other plugins are skipped)
-            .filter(this.filterRoot)
+            .filter((plugin) => this.filterRoot(plugin, this.props.plugins))
             .map((Plugin) => <Plugin.impl key={Plugin.id} ref={Plugin.cfg.withGlobalRef ? PluginsUtils.setRefToWrdComponent(Plugin.name) : null}
                 {...this.props.params} {...Plugin.cfg} pluginCfg={Plugin.cfg} items={Plugin.items}/>);
     };
@@ -172,13 +172,20 @@ class PluginsContainer extends React.Component {
 
     filterLoaded = (plugin) => plugin && !plugin.impl.loadPlugin;
 
-    filterRoot = (plugin) => {
+    definedContainer = (container, plugins) => {
+        return container && container.plugin && plugins[PluginsUtils.normalizeName(container.plugin.name)];
+    };
+
+    filterRoot = (plugin, plugins) => {
         const container = PluginsUtils.getMorePrioritizedContainer(
             plugin.impl,
             PluginsUtils.getPluginConfiguration(this.getPluginsConfig(this.props), plugin.name).override,
             this.getPluginsConfig(this.props),
             0
         );
+        if (!this.definedContainer(container, plugins)) {
+            return true;
+        }
         // render on root if container is root (plugin === null || plugin.impl === null) or plugin explicitly wants to render on root (doNotHide = true)
         // in addition to the container
         return !container.plugin || !container.plugin.impl || container.plugin.impl.doNotHide;

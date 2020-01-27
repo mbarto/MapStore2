@@ -17,11 +17,48 @@ const Localized = require('../I18N/Localized');
 
 const assign = require('object-assign');
 
+const {getReducers, getEpics} = require("../../utils/PluginsUtils");
+const {augmentStore} = require("../../utils/StateUtils");
+
 const Theme = connect((state) => ({
     theme: state.theme && state.theme.selectedTheme && state.theme.selectedTheme.id
 }), {}, (stateProps, dispatchProps, ownProps) => {
     return assign({}, stateProps, dispatchProps, ownProps);
 })(require('../theme/Theme'));
+
+const {getPlugins} = require('../../utils/PluginsUtils');
+
+class DynamicPage extends React.Component {
+    static propTypes = {
+        pageLoader: PropTypes.func
+    };
+
+    state = {
+        page: null,
+        plugins: null
+    };
+
+    componentDidMount() {
+        const { pageLoader } = this.props;
+        pageLoader((page, plugins) => {
+            const reducers = getReducers(plugins.plugins);
+            const epics = getEpics(plugins.plugins);
+            augmentStore({ reducers, epics });
+            this.setState({
+                page,
+                plugins
+            });
+        });
+    }
+
+    render() {
+        const { pageLoader, plugins, ...other} = this.props;
+        const { plugins: statePlugins } = this.state.plugins || {};
+        const pagePlugins = statePlugins ? { ...plugins, ...getPlugins(statePlugins)} : plugins;
+        const Page = this.state.page;
+        return Page && <Page {...other} plugins={pagePlugins}/>;
+    }
+}
 
 class StandardRouter extends React.Component {
     static propTypes = {
@@ -45,17 +82,23 @@ class StandardRouter extends React.Component {
         loadAfterTheme: false
     };
     state = {
-        themeLoaded: false
+        themeLoaded: false,
+        pages: []
+    }
+    componentDidMount() {
+        this.setState({
+            pages: this.props.pages.map((page) => {
+                const pageConfig = page.pageConfig || {};
+                return {...page, component: connect(() => ({
+                    plugins: this.props.plugins,
+                    pageLoader: page.component,
+                    ...pageConfig
+                }))(DynamicPage)};
+            })
+        });
     }
     renderPages = () => {
-        return this.props.pages.map((page, i) => {
-            const pageConfig = page.pageConfig || {};
-            const Component = connect(() => ({
-                plugins: this.props.plugins,
-                ...pageConfig
-            }))(page.component);
-            return <Route key={(page.name || page.path) + i} exact path={page.path} component={Component}/>;
-        });
+        return this.state.pages.map((page, i) => <Route key={(page.name || page.path) + i} exact path={page.path} component={page.component} />);
     };
 
     renderAfterTheme() {
