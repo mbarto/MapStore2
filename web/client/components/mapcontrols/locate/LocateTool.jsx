@@ -23,12 +23,12 @@ const defaultOpt = {
     }
 };
 /**
- * Common interface shared across multiple map types
+ * Locate Tool Component shared across multiple map types
  * @prop {object} map the map object
- * @prop {string} mapType can be openlayers, leaflet or cesium
+ * @prop {string} mapType the map type
  * @prop {string} status locate status: DISABLED, FOLLOWING, ENABLED, LOCATING, PERMISSION_DENIED
- * @prop {string} message a message to show
- * @prop {function} changeLocateState callback to run when state changes
+ * @prop {string} messages message to be shown when location is found
+ * @prop {function} changeLocateState callback to run when status changes
  * @prop {function} onLocateError callback to run when an error occurs
  */
 const LocateTool = ({map, mapType, status, messages, changeLocateState, onLocateError}) => {
@@ -46,9 +46,6 @@ const LocateTool = ({map, mapType, status, messages, changeLocateState, onLocate
         changeLocateState("DISABLED");
     };
 
-    /**
-     * when loaded do something, use the start method
-     */
     useEffect(() => {
         if (loaded) {
             // the Locate tool is a class and we can create an instance of it
@@ -63,16 +60,10 @@ const LocateTool = ({map, mapType, status, messages, changeLocateState, onLocate
         };
     }, [loaded]);
 
-    /**
-     * when some of the props changes run an update
-     */
     useEffect(() => {
         locateInstance.current?.update({status, messages});
     }, [status, messages, loaded]);
 
-    /**
-     * when there is an error run the callbacks that handles it
-     */
     useEffect(() => {
         if (error) {
             onLocateError(error);

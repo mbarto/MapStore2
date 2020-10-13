@@ -9,10 +9,10 @@
 import {useEffect, useRef, useState} from "react";
 
 /**
- * hook used to load in an asynchronous way a tool
- * @param {string} mapType can be openlayers, leaflet or cesium
+ * Hook that can be used to load a tool in an asynchronous way
+ * @param {string} mapType the map type
  * @param {string} tool the name of the tool, should match a file in web/client/map/<mapType> folder
- * @return {[boolean, object, object]} loaded if the tool has been correctly loaded, impl.current is the reference to the tool, error is an object containing the possible error that can occur while loading
+ * @return {[boolean, object, object]} [loaded, tool_implementation, error]: loaded is false until the tool has been correctly loaded, tool_implementation is a ReactJS reference to the tool, error is an object containing an error if the tool implementation cannot be loaded
  */
 const useMapTool = (mapType = "openlayers", tool = "") => {
     const [loaded, setLoaded] = useState(false);
