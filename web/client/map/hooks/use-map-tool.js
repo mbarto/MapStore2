@@ -8,7 +8,13 @@
 
 import {useEffect, useRef, useState} from "react";
 
-const useMapTool = (mapType, tool) => {
+/**
+ * Hook that can be used to load a tool in an asynchronous way
+ * @param {string} mapType the map type
+ * @param {string} tool the name of the tool, should match a file in web/client/map/<mapType> folder
+ * @return {[boolean, object, object]} [loaded, tool_implementation, error]: loaded is false until the tool has been correctly loaded, tool_implementation is a ReactJS reference to the tool, error is an object containing an error if the tool implementation cannot be loaded
+ */
+const useMapTool = (mapType = "openlayers", tool = "") => {
     const [loaded, setLoaded] = useState(false);
     const [error, setError] = useState(null);
     const impl = useRef();
