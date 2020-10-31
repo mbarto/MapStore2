@@ -12,6 +12,10 @@
 
 set -e
 
+node -v
+npm -v
+export NODE_OPTIONS="--max_old_space_size=4096"
+
 echo "Running NPM install to update dependencies"
 echo `date`
 npm install
