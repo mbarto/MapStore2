@@ -42,6 +42,5 @@ jobs:
               run: |
                   docker build -t mapstore-dev-aws .
                   docker tag mapstore-dev-aws 703780215332.dkr.ecr.us-east-2.amazonaws.com/mbarto-dev:latest
-                  aws ecr get-login-password --region us-east-2 | docker login --password-stdin --username AWS "703780215332.dkr.ecr.us
--east-2.amazonaws.com"
+                  aws ecr get-login-password --region us-east-2 | docker login --password-stdin --username AWS "703780215332.dkr.ecr.us-east-2.amazonaws.com"
                   docker push 703780215332.dkr.ecr.us-east-2.amazonaws.com/mbarto-dev:latest
