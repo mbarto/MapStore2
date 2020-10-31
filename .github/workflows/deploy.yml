@@ -14,10 +14,12 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v1
 
-            - name: Build
+            - name: Setup node
               uses: actions/setup-node@v1
               with:
                 node-version: '12'
+
+            - name: Build
               id: build
               run: |
                   chmod +x ./build.sh
