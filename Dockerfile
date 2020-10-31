@@ -1,19 +1,19 @@
-# Stage 0 - npm install
-FROM node:12.13.1-slim AS deps
-
-COPY package.json /app/
-COPY package-lock.json /app/
-WORKDIR /app
-RUN npm install
-COPY . /app
-
-# Stage 1 - test & build & lint
-FROM node:12.13.1-slim AS build
-COPY --from=deps /app/ /app
-WORKDIR /app
-RUN npm run compile
-
 FROM tomcat:8.5-jdk8-openjdk
-COPY --from=deps /app/ /app
-WORKDIR /app
-RUN mvn clean install
+
+# Tomcat specific options
+ENV CATALINA_BASE "$CATALINA_HOME"
+ENV JAVA_OPTS="${JAVA_OPTS}  -Xms512m -Xmx512m -XX:MaxPermSize=128m"
+
+# Optionally remove Tomcat manager, docs, and examples
+ARG TOMCAT_EXTRAS=false
+RUN if [ "$TOMCAT_EXTRAS" = false ]; then \
+      find "${CATALINA_BASE}/webapps/" -delete; \
+    fi
+
+# Add war files to be deployed
+COPY web/target/mapstore.war "${CATALINA_BASE}/webapps/"
+
+# Set variable to better handle terminal commands
+ENV TERM xterm
+
+EXPOSE 8080
