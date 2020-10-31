@@ -41,5 +41,5 @@ jobs:
             - name: Docker Build, tag and push
               run: |
                   docker build -t mapstore-dev-aws .
-                  docker tag mapstore-dev-aws 703780215332.dkr.ecr.us-east-2.amazonaws.com/mbarto-dev/mapstore-dev-aws:latest
-                  docker push 703780215332.dkr.ecr.us-east-2.amazonaws.com/mbarto-dev/mapstore-dev-aws:latest
+                  docker tag mapstore-dev-aws 703780215332.dkr.ecr.us-east-2.amazonaws.com/mbarto-dev:latest
+                  docker push 703780215332.dkr.ecr.us-east-2.amazonaws.com/mbarto-dev:latest
