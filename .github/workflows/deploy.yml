@@ -28,6 +28,4 @@ jobs:
               id: build
               run: |
                   chmod +x ./build.sh
-                  node -v
-                  npm -v
                   ./build.sh
