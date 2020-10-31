@@ -42,4 +42,5 @@ jobs:
               run: |
                   docker build -t mapstore-dev-aws .
                   docker tag mapstore-dev-aws 703780215332.dkr.ecr.us-east-2.amazonaws.com/mbarto-dev:latest
+                  aws ecr get-login --no-include-email --region us-east-2
                   docker push 703780215332.dkr.ecr.us-east-2.amazonaws.com/mbarto-dev:latest
