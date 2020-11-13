@@ -6,13 +6,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const React = require('react');
-const ReactDOM = require('react-dom');
-const {get} = require('lodash');
-const expect = require('expect');
-const CounterWizard = require('../CounterWizard');
+import expect from 'expect';
+import {get} from 'lodash';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-const describeStates = require('../../../../../test-resources/wfs/describe-states.json');
+import describeStates from '../../../../../test-resources/wfs/describe-states.json';
+import CounterWizard from '../CounterWizard';
+
 describe('CounterWizard component', () => {
     beforeEach((done) => {
         document.body.innerHTML = '<div id="container"></div>';
