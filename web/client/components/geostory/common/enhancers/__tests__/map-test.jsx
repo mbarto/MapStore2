@@ -15,7 +15,7 @@ import {createSink} from  'recompose';
 import Toolbar from '../../../../misc/toolbar/Toolbar';
 import {withLocalMapState, withMapEditingAndLocalMapState, withToolbar} from '../map';
 
-describe.only("geostory media map component enhancers", () => {
+describe("geostory media map component enhancers", () => {
     beforeEach((done) => {
         document.body.innerHTML = '<div id="container"></div>';
         setTimeout(done);
