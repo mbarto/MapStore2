@@ -5,19 +5,17 @@
  * This source code is licensed under the BSD-style license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react';
-import ReactTestUtils from 'react-dom/test-utils';
-import ReactDOM from 'react-dom';
-
-import Toolbar from '../../../../misc/toolbar/Toolbar';
 
 import expect from 'expect';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import ReactTestUtils from 'react-dom/test-utils';
 import {createSink} from  'recompose';
 
+import Toolbar from '../../../../misc/toolbar/Toolbar';
 import {withLocalMapState, withMapEditingAndLocalMapState, withToolbar} from '../map';
 
-
-describe("geostory media map component enhancers", () => {
+describe.only("geostory media map component enhancers", () => {
     beforeEach((done) => {
         document.body.innerHTML = '<div id="container"></div>';
         setTimeout(done);

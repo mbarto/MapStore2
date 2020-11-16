@@ -5,13 +5,14 @@
  * This source code is licensed under the BSD-style license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react';
 
-import PropTypes from 'prop-types';
 import assign from 'object-assign';
-import ScaleBox from '../mapcontrols/scale/ScaleBox';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
+
 import { getMapZoom } from '../../utils/PrintUtils';
+import ScaleBox from '../mapcontrols/scale/ScaleBox';
 
 let PMap;
 let Layer;
@@ -56,11 +57,11 @@ class MapPreview extends React.Component {
     };
 
     UNSAFE_componentWillMount() {
-        const mapComponents = require('../map/' + this.props.mapType + '/index');
+        const mapComponents = require('../map/' + this.props.mapType + '/index').default;
         PMap = mapComponents.LMap;
         Layer = mapComponents.LLayer;
         Feature = mapComponents.Feature;
-        require('../map/' + this.props.mapType + '/plugins/index');
+        require('../map/' + this.props.mapType + '/plugins/index').default;
     }
 
     getRatio = () => {
