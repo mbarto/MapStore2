@@ -62,7 +62,7 @@ module.exports = ({browsers = [ 'ChromeHeadless' ], files, path, testFile, singl
         module: {
             rules: [
                 {
-                    test: /\.jsx?$/,
+                    test: /\.[j|t]sx?$/,
                     exclude: /node_modules/,
                     use: [{
                         loader: 'babel-loader',
