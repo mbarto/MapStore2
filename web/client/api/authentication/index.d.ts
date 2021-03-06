@@ -1,8 +1,8 @@
 export type AuthenticationApi = {
     login: (username: string, password: string, options: ServiceOptions) => Promise<Authenticated>
-    changePassword: (user: string, newPassword: string, options: ServiceOptions) => Promise<void>
+    changePassword: (user: UserData, newPassword: string, options: ServiceOptions) => Promise<void>
     refreshToken: (accessToken: string, refreshToken: string, options: ServiceOptions) => Promise<Authenticated>
-    verifySession: () => Promise<Authenticated>
+    verifySession: (options: ServiceOptions) => Promise<Authenticated>
 }
 
 declare namespace Authentication {
@@ -10,16 +10,16 @@ declare namespace Authentication {
     export function addApi(name: string, impl: AuthenticationApi): void
     let authProviderName: string
     export function login(username: string, password: string, options: ServiceOptions): Promise<Authenticated>
-    export function changePassword(user: string, newPassword: string, options: ServiceOptions): Promise<void>
+    export function changePassword(user: UserData, newPassword: string, options: ServiceOptions): Promise<void>
     export function refreshToken(accessToken: string, refreshToken: string, options: ServiceOptions): Promise<Authenticated>
-    export function verifySession(): Promise<Authenticated>
+    export function verifySession(options: ServiceOptions): Promise<Authenticated>
 }
 
 export type ServiceOptions = {
     [key: string]: string
 }
 
-export type Authenticated = AuthenticationData & UserData
+export type Authenticated = AuthenticationData & {User: UserData}
 
 export type AuthenticationData = {
     access_token: string
@@ -29,14 +29,12 @@ export type AuthenticationData = {
 }
 
 export type UserData = {
-    User: {
-        id: number
-        name: string
-        attribute: Attribute[],
-        enabled: boolean
-        groups: Group[]
-        role: "USER" | "ADMIN"
-    }
+    id: number
+    name: string
+    attribute: Attribute[],
+    enabled: boolean
+    groups: Group[]
+    role: "USER" | "ADMIN"
 }
 
 export type Attribute = {

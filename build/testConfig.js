@@ -131,7 +131,7 @@ module.exports = ({browsers = [ 'ChromeHeadless' ], files, path, testFile, singl
                 // proj4: '@geosolutions/proj4',
                 "react-joyride": '@geosolutions/react-joyride'
             }, alias),
-            extensions: ['.js', '.json', '.jsx']
+            extensions: ['.js', '.json', '.jsx', '.ts', ',tsx']
         },
         plugins: [
             new ProvidePlugin({

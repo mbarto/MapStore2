@@ -9,7 +9,7 @@
 /**
  * Here you can change the API to use for AuthenticationAPI
  */
-import AuthenticationAPI from '../api/GeoStoreDAO';
+import AuthenticationAPI from '../api/authentication';
 
 import {getToken, getRefreshToken} from '../utils/SecurityUtils';
 import { loadMaps } from './maps';

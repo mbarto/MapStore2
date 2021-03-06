@@ -1,12 +1,16 @@
 import ConfigUtils from '../../utils/ConfigUtils';
 
 import geostore from '../GeoStoreDAO';
+import memory from "./memory"
+import node from "./node"
 
 let Authentication;
 const ApiProviders = {
-    geostore
+    geostore,
+    memory,
+    node
 };
-let api = "geostore";
+let api = "node";
 /**
 * Add a new API implementation
 * @param {string} name the key of the added api implementation

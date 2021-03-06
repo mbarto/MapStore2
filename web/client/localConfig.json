@@ -11,6 +11,8 @@
           "https://gs-stable.geo-solutions.it:443/geoserver"
         ]
     },
+    "authenticationApi": "node",
+    "nodeUrl": "http://localhost:8000/rest/node",
     "geoStoreUrl": "rest/geostore/",
     "mailingList": "https://groups.google.com/forum/#!forum/mapstore-users",
     "printUrl": "pdf/info.json",

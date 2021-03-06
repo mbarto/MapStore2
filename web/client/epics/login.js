@@ -23,7 +23,7 @@ import { setControlProperty, SET_CONTROL_PROPERTY } from '../actions/controls';
 import { pathnameSelector } from '../selectors/router';
 import { isLoggedIn } from '../selectors/security';
 import ConfigUtils from '../utils/ConfigUtils';
-import AuthenticationAPI from '../api/GeoStoreDAO';
+import AuthenticationAPI from '../api/authentication';
 import Rx from 'rxjs';
 import { push, LOCATION_CHANGE } from 'connected-react-router';
 import url from 'url';

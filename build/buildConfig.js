@@ -81,7 +81,7 @@ module.exports = (bundles, themeEntries, paths, plugins = [], prod, publicPath, 
             timers: false,
             stream: false
         },
-        extensions: [".js", ".jsx"],
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
         alias: assign({}, {
             jsonix: '@boundlessgeo/jsonix',
             // next libs are added because of this issue https://github.com/geosolutions-it/MapStore2/issues/4569
@@ -161,7 +161,7 @@ module.exports = (bundles, themeEntries, paths, plugins = [], prod, publicPath, 
                 }] // inline base64 URLs for <=8k images, direct URLs for the rest
             },
             {
-                test: /\.jsx?$/,
+                test: /\.[j|t]sx?$/,
                 exclude: /(ol\.js)$|(Cesium\.js)$/,
                 use: [{
                     loader: "babel-loader",
