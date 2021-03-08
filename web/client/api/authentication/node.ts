@@ -1,40 +1,38 @@
 import { AuthenticationApi } from ".";
 import {getConfigProp} from "../../utils/ConfigUtils";
+import axios from "axios";
 
 const nodeAPI : AuthenticationApi = {
     login(username, password, options) {
-        return fetch(`${getConfigProp("nodeUrl")}/login`, {
+        return axios.post(`${getConfigProp("nodeUrl")}/login`, {
+            user: username,
+            password
+        }, {
             headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            method: "POST",
-            body: JSON.stringify({user: username, password})
-        }).then(response => response.json())
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.data);
     },
     changePassword(user, newPassword, options) {
-        return Promise.resolve()
+        return Promise.resolve();
     },
     refreshToken(accessToken, refreshToken, options) {
-        return fetch(`${getConfigProp("nodeUrl")}/refresh`, {
+        return axios.post(`${getConfigProp("nodeUrl")}/refresh`, {accessToken, refreshToken}, {
             headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            method: "POST",
-            body: JSON.stringify({accessToken, refreshToken})
-        }).then(response => response.json())
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.data);
     },
     verifySession() {
-        return fetch(`${getConfigProp("nodeUrl")}/verify`, {
+        return axios.post(`${getConfigProp("nodeUrl")}/verify`, {}, {
             headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            method: "POST",
-            body: JSON.stringify({})
-        }).then(response => response.json())
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.data);
     }
-}
+};
 
-export default nodeAPI
+export default nodeAPI;

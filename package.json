@@ -21,6 +21,7 @@
     }
   },
   "eslintIgnore": [
+    "*.ts",
     "web/client/dist/",
     "web/client/libs/Cesium",
     "web/client/libs/cesium-navigation",
@@ -137,6 +138,7 @@
     "@turf/point-on-surface": "4.1.0",
     "@turf/polygon-to-linestring": "4.1.0",
     "@types/cors": "2.8.10",
+    "@types/uuid": "^8.3.0",
     "ag-grid-community": "20.2.0",
     "ag-grid-react": "20.2.0",
     "assert": "2.0.0",

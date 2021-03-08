@@ -1,4 +1,5 @@
 import {AuthenticationApi, Authenticated, UserData} from "./index"
+import uuid from "uuid"
 
 export type UserKey = string
 export type AccessToken = string
@@ -9,7 +10,6 @@ export type Sessions = Map<AccessToken, Authenticated>
 const users: Users = new Map<UserKey, UserData>()
 const sessions: Sessions = new Map<AccessToken, Authenticated>()
 
-let sessionKey = 1
 let currentSession: Authenticated | undefined;
 
 type MemoryAPI = {
@@ -37,7 +37,7 @@ const memoryAPI : AuthenticationApi & MemoryAPI = {
     login(username, password, options) {
         const key = buildKey(username, password)
         if (users.has(key)) {
-            const newSessionKey = String(sessionKey++);
+            const newSessionKey = uuid.v1();
             currentSession = {
                 User: users.get(key) as UserData,
                 access_token: newSessionKey,

@@ -8,7 +8,8 @@
           "https://nominatim.openstreetmap.org",
           "http://cloudsdi.geo-solutions.it",
           "https://gs-stable.geo-solutions.it/geoserver",
-          "https://gs-stable.geo-solutions.it:443/geoserver"
+          "https://gs-stable.geo-solutions.it:443/geoserver",
+          "http://localhost:8000"
         ]
     },
     "authenticationApi": "node",
@@ -37,6 +38,9 @@
     },
     "authenticationRules": [{
         "urlPattern": ".*geostore.*",
+        "method": "bearer"
+      }, {
+        "urlPattern": ".*rest/node.*",
         "method": "bearer"
       }, {
         "urlPattern": ".*rest/config.*",
