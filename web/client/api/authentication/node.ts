@@ -15,7 +15,12 @@ const nodeAPI : AuthenticationApi = {
         }).then(response => response.data);
     },
     changePassword(user, newPassword, options) {
-        return Promise.resolve();
+        return axios.post(`${getConfigProp("nodeUrl")}/changePassword`, {user, newPassword}, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(() => {});
     },
     refreshToken(accessToken, refreshToken, options) {
         return axios.post(`${getConfigProp("nodeUrl")}/refresh`, {accessToken, refreshToken}, {

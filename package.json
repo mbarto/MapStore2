@@ -305,7 +305,7 @@
     "compileserver": "tsc --project ./web/server",
     "analyze": "npm run clean && mkdirp ./web/client/dist && webpack --json --config build/prod-webpack.config.js | webpack-bundle-size-analyzer",
     "start": "webpack serve --progress --color --port 8081 --hot --inline --config build/webpack.config.js --content-base web/client",
-    "startserver": "nodemon web/server/index.ts",
+    "startserver": "nodemon --watch web/server web/server/index.ts",
     "startprod": "webpack serve --progress --color --port 8081 --hot --inline --content-base web/client  --config build/prod-webpack.config.js",
     "examples": "webpack serve --progress --color --port 8081 --hot --inline --content-base web/client --config build/examples-webpack.config.js",
     "test": "karma start ./build/karma.conf.single-run.js --color",

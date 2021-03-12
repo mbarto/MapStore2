@@ -1,0 +1,1 @@
+{"users":[{"id":1,"name":"user","password":"password","enabled":true,"attribute":[],"role":"USER","groups":["users"]},{"id":2,"name":"admin","password":"password","enabled":true,"attribute":[],"role":"ADMIN","groups":["admins"]}],"groups":[{"id":1,"groupName":"users","description":"","enabled":true},{"id":2,"groupName":"admins","description":"","enabled":true}]}
