@@ -2,9 +2,13 @@ import { AuthenticationApi } from ".";
 import {getConfigProp} from "../../utils/ConfigUtils";
 import axios from "axios";
 
+function getUrl(path: string): string {
+    return `${getConfigProp("nodeUrl")}/auth/${path}`;
+}
+
 const nodeAPI : AuthenticationApi = {
     login(username, password, options) {
-        return axios.post(`${getConfigProp("nodeUrl")}/login`, {
+        return axios.post(`${getUrl("login")}`, {
             user: username,
             password
         }, {
@@ -15,7 +19,7 @@ const nodeAPI : AuthenticationApi = {
         }).then(response => response.data);
     },
     changePassword(user, newPassword, options) {
-        return axios.post(`${getConfigProp("nodeUrl")}/changePassword`, {user, newPassword}, {
+        return axios.post(`${getUrl("changePassword")}`, {user, newPassword}, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -23,7 +27,7 @@ const nodeAPI : AuthenticationApi = {
         }).then(() => {});
     },
     refreshToken(accessToken, refreshToken, options) {
-        return axios.post(`${getConfigProp("nodeUrl")}/refresh`, {accessToken, refreshToken}, {
+        return axios.post(`${getUrl("refresh")}`, {accessToken, refreshToken}, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -31,7 +35,7 @@ const nodeAPI : AuthenticationApi = {
         }).then(response => response.data);
     },
     verifySession() {
-        return axios.post(`${getConfigProp("nodeUrl")}/verify`, {}, {
+        return axios.post(`${getUrl("verify")}`, {}, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'

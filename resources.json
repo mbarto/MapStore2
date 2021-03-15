@@ -1,0 +1,326 @@
+{
+	"resources": [{
+		"canDelete": false,
+		"category": {
+			"id": 1,
+			"name": "MAP"
+		},
+		"canEdit": false,
+		"canCopy": true,
+		"creation": "2017-11-21 12:22:16.063",
+		"lastUpdate": "2018-02-02 08:55:44.075",
+		"description": "Institutii de invatamant din sectorul agroalimentar din R. Moldova",
+		"id": 3267,
+		"name": "Agricultura (invatamant)",
+		"thumbnail": "rest/geostore/data/22739/raw?decode=datauri",
+		"owner": "evgenii"
+	}, {
+		"canDelete": false,
+		"category": {
+			"id": 1,
+			"name": "MAP"
+		},
+		"canEdit": false,
+		"canCopy": true,
+		"creation": "2020-11-11 14:47:55.923",
+		"lastUpdate": "2020-11-12 17:16:27.036",
+		"description": "User guide map",
+		"id": 31327,
+		"name": "Attribute table",
+		"attributes": null,
+		"detailsSettings": {}
+	}, {
+		"canDelete": false,
+		"category": {
+			"id": 1,
+			"name": "MAP"
+		},
+		"canEdit": false,
+		"canCopy": true,
+		"creation": "2020-05-08 13:41:18.577",
+		"lastUpdate": "2020-05-08 14:30:48.443",
+		"description": "Test Mail 08052020 Query Layer",
+		"id": 24794,
+		"name": "Bolzano Test Query Layer",
+		"owner": "admin",
+		"thumbnail": "rest/geostore/data/24802/raw?decode=datauri&v=66da9210-9121-11ea-a97f-31058eec749a"
+	}, {
+		"canDelete": false,
+		"category": {
+			"id": 1,
+			"name": "MAP"
+		},
+		"canEdit": false,
+		"canCopy": true,
+		"creation": "2019-07-08 12:23:39.84",
+		"lastUpdate": "2021-02-26 12:24:15.511",
+		"description": "Search - Annotations - Style - Info Template - Charts",
+		"id": 10358,
+		"name": "Demo Map",
+		"owner": "admin",
+		"Attributes": {"attribute": [{"name": "featured","@type": "STRING","value": true}]},
+		"thumbnail": "rest/geostore/data/22381/raw?decode=datauri",
+		"details": "rest/geostore/data/32912",
+		"detailsSettings": {
+			"showAsModal": false,
+			"showAtStartup": false
+		}
+	}, {
+		"canDelete": false,
+		"category": {
+			"id": 1,
+			"name": "MAP"
+		},
+		"canEdit": false,
+		"canCopy": true,
+		"creation": "2017-07-18 12:17:04.219",
+		"lastUpdate": "2020-03-13 16:18:04.542",
+		"description": "Sample for WMS Dimension",
+		"id": 2723,
+		"name": "Elevation",
+		"owner": "admin",
+		"Attributes": {"attribute": [{"name": "featured","@type": "STRING","value": false}]},
+		"thumbnail": "%2Fmapstore%2Frest%2Fgeostore%2Fdata%2F3190%2Fraw%3Fdecode%3Ddatauri"
+	}, {
+		"canDelete": false,
+		"category": {
+			"id": 1,
+			"name": "MAP"
+		},
+		"canEdit": false,
+		"canCopy": true,
+		"creation": "2019-11-21 18:20:09.166",
+		"lastUpdate": "2019-11-21 18:41:26.673",
+		"description": "Espaces verts de Rennes",
+		"id": 13184,
+		"name": "Espaces verts de Rennes",
+		"owner": "admin",
+		"Attributes": {"attribute": [{"name": "featured","@type": "STRING","value": true}]},
+		"thumbnail": "rest/geostore/data/22409/raw?decode=datauri"
+	}, {
+		"canDelete": false,
+		"category": {
+			"id": 1,
+			"name": "MAP"
+		},
+		"canEdit": false,
+		"canCopy": true,
+		"creation": "2020-03-02 13:58:17.658",
+		"lastUpdate": "2021-02-12 11:52:52.483",
+		"description": "Mosaic data ",
+		"id": 22306,
+		"name": "Eumetsat Test Map",
+		"detailsSettings": {},
+		"owner": "admin",
+		"thumbnail": "rest/geostore/data/22341/raw?decode=datauri"
+	}, {
+		"canDelete": false,
+		"category": {
+			"id": 1,
+			"name": "MAP"
+		},
+		"canEdit": false,
+		"canCopy": true,
+		"creation": "2012-10-29 17:10:44.974",
+		"lastUpdate": "2020-02-14 19:16:42.407",
+		"description": "FAO Figis Tuna",
+		"id": 194,
+		"name": "FAO Areas",
+		"owner": "geosolutions",
+		"featured": false
+	}, {
+		"canDelete": false,
+		"category": {
+			"id": 1,
+			"name": "MAP"
+		},
+		"canEdit": false,
+		"canCopy": true,
+		"creation": "2020-06-12 17:59:25.673",
+		"lastUpdate": "2020-06-12 18:16:42.014",
+		"description": "fedgeo_example",
+		"id": 26364,
+		"name": "fedgeo_example",
+		"owner": "admin"
+	}, {
+		"canDelete": false,
+		"category": {
+			"id": 1,
+			"name": "MAP"
+		},
+		"canEdit": false,
+		"canCopy": true,
+		"creation": "2018-09-26 14:40:39.453",
+		"lastUpdate": "2019-11-13 15:50:56.192",
+		"description": "Global Sentinel 2 Cloudless map",
+		"id": 7965,
+		"name": "Global Sentinel 2 Cloudless",
+		"owner": "admin",
+		"thumbnail": "rest/geostore/data/22379/raw?decode=datauri",
+		"featured": true
+	}, {
+		"canDelete": false,
+		"category": {
+			"id": 1,
+			"name": "MAP"
+		},
+		"canEdit": false,
+		"canCopy": true,
+		"creation": "2014-04-04 12:14:21.17",
+		"lastUpdate": "2017-05-17 10:18:11.455",
+		"description": "",
+		"id": 464,
+		"name": "Historical Maps of Florence",
+		"thumbnail": "rest/geostore/data/22751/raw?decode=datauri",
+		"owner": "geosolutions",
+		"details": "NODATA",
+		"featured": false
+	}, {
+		"canDelete": false,
+		"category": {
+			"id": 1,
+			"name": "MAP"
+		},
+		"canEdit": false,
+		"canCopy": true,
+		"creation": "2014-03-08 13:09:44.239",
+		"lastUpdate": "2021-01-28 14:47:02.638",
+		"description": "Current Temperature Southern Europe from meteo stations.Credits to LaMMa.",
+		"id": 451,
+		"name": "LaMMa Current Temperature Southern Europe",
+		"owner": "geosolutions",
+		"detailsSettings": {},
+		"thumbnail": "rest/geostore/data/22425/raw?decode=datauri",
+		"featured": false
+	}, {
+		"canDelete": false,
+		"category": {
+			"id": 2,
+			"name": "DASHBOARD"
+		},
+		"canEdit": false,
+		"canCopy": true,
+		"creation": "2018-04-27 10:44:18.411",
+		"lastUpdate": "2021-03-09 16:30:51.652",
+		"description": "a sample dashboard with all widgets!",
+		"id": 5728,
+		"name": "All widgets",
+		"thumbnail": "rest%2Fgeostore%2Fdata%2F5891%2Fraw%3Fdecode%3Ddatauri%26v%3D45ed7cf0-578c-11e8-a74e-c520a50d6e8f",
+		"featured": false
+	}, {
+		"canDelete": false,
+		"category": {
+			"id": 2,
+			"name": "DASHBOARD"
+		},
+		"canEdit": false,
+		"canCopy": true,
+		"creation": "2020-02-20 11:10:09.488",
+		"lastUpdate": "2020-12-15 15:37:47.863",
+		"description": "Filtering Capabilities",
+		"id": 21694,
+		"name": "Demo Dashboard",
+		"Attributes": {"attribute": [{"name": "featured","@type": "STRING","value": true}]},
+		"thumbnail": "rest/geostore/data/21716/raw?decode=datauri&v=c4b77ef0-53d9-11ea-bc50-9931c4e30b1f"
+	}, {
+		"canDelete": false,
+		"category": {
+			"id": 2,
+			"name": "DASHBOARD"
+		},
+		"canEdit": false,
+		"canCopy": true,
+		"creation": "2020-10-27 14:33:43.78",
+		"lastUpdate": "2020-10-27 14:36:54.197",
+		"description": "Sample dashboard for #6102",
+		"id": 31090,
+		"name": "Sample dashboard for #6102"
+	}, {
+		"canDelete": false,
+		"category": {
+			"id": 2,
+			"name": "DASHBOARD"
+		},
+		"canEdit": false,
+		"canCopy": true,
+		"creation": "2018-04-26 16:36:43.667",
+		"lastUpdate": "2020-01-29 10:11:00.812",
+		"description": "unesco items in italy",
+		"id": 5593,
+		"name": "unesco items",
+		"thumbnail": "rest%2Fgeostore%2Fdata%2F5648%2Fraw%3Fdecode%3Ddatauri",
+		"featured": false
+	}, {
+		"canDelete": false,
+		"category": {
+			"id": 3,
+			"name": "GEOSTORY"
+		},
+		"canEdit": false,
+		"canCopy": true,
+		"creation": "2019-10-22 17:23:40.905",
+		"lastUpdate": "2021-02-05 10:55:36.552",
+		"description": "Highest Astronomical Observatories",
+		"id": 11555,
+		"name": "Demo GeoStory",
+		"thumbnail": "rest/geostore/data/22397/raw?decode=datauri",
+		"Attributes": {"attribute": [{"name": "featured","@type": "STRING","value": true}]},
+		"details": "rest/geostore/data/32756"
+	}, {
+		"canDelete": false,
+		"category": {
+			"id": 3,
+			"name": "GEOSTORY"
+		},
+		"canEdit": false,
+		"canCopy": true,
+		"creation": "2019-11-19 12:13:46.792",
+		"lastUpdate": "2020-03-31 14:25:14.111",
+		"description": "Prospects Storyboard for PROSPEX 2019",
+		"id": 12754,
+		"name": "MapStand PROSPEX 2019",
+		"thumbnail": "rest/geostore/data/22401/raw?decode=datauri",
+		"Attributes": {"attribute": [{"name": "featured","@type": "STRING","value": true}]},
+		"details": "NODATA"
+	}, {
+		"canDelete": false,
+		"category": {
+			"id": 3,
+			"name": "GEOSTORY"
+		},
+		"canEdit": false,
+		"canCopy": true,
+		"creation": "2020-06-12 18:29:11.297",
+		"description": "",
+		"id": 26373,
+		"name": "MyStory"
+	}, {
+		"canDelete": false,
+		"category": {
+			"id": 3,
+			"name": "GEOSTORY"
+		},
+		"canEdit": false,
+		"canCopy": true,
+		"creation": "2020-09-07 16:30:58.926",
+		"lastUpdate": "2020-09-07 16:32:01.782",
+		"description": "to test GFI",
+		"id": 28260,
+		"name": "Story with Map with many layers"
+	}, {
+		"canDelete": false,
+		"category": {
+			"id": 3,
+			"name": "GEOSTORY"
+		},
+		"canEdit": false,
+		"canCopy": true,
+		"creation": "2019-11-07 15:08:53.184",
+		"lastUpdate": "2021-01-25 15:10:34.03",
+		"description": "Used to write geostory userguide",
+		"id": 12073,
+		"name": "User-guide",
+		"thumbnail": "rest%2Fgeostore%2Fdata%2F13670%2Fraw%3Fdecode%3Ddatauri%26v%3D948fa3b0-110d-11ea-a548-1183a3195315",
+		"Attributes": {"attribute": [{"name": "featured","@type": "STRING","value": false}]}
+	}]
+}

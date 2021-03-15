@@ -4,7 +4,7 @@ import geostore from '../GeoStoreDAO';
 import memory from "./memory";
 import node from "./node";
 
-let Authentication;
+let Resources;
 const ApiProviders = {
     geostore,
     memory,
@@ -31,23 +31,19 @@ export const setApi = (name = "geostore") => {
 * @return {object} Current api
 */
 const getApi = () => {
-    return ApiProviders[ConfigUtils.getConfigProp("authenticationApi") || api];
+    return ApiProviders[ConfigUtils.getConfigProp("resourcesApi") || api];
 };
 
-const login = (username, password, options) => getApi().login(username, password, options);
-const changePassword = (user, newPassword, options) => getApi().changePassword(user, newPassword, options);
-const refreshToken = (accessToken, refreshToken, options) => getApi().refreshToken(accessToken, refreshToken, options);
-const verifySession = () => getApi().verifySession();
+const getResourcesByCategory = (category, query, options) => getApi().getResourcesByCategory(category, query, options);
+const searchListByAttributes = (filter, options, url) => getApi().searchListByAttributes(filter, options, url);
 
-Authentication = {
+Resources = {
     addApi,
     setApi,
     getApi,
     authProviderName: api,
-    login,
-    changePassword,
-    refreshToken,
-    verifySession
+    getResourcesByCategory,
+    searchListByAttributes
 };
 
-export default Authentication;
+export default Resources;

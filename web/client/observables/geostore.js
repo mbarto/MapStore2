@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import uuid from 'uuid/v1';
 import { includes, isNil, omit, isArray, isObject, get, find } from 'lodash';
 import GeoStoreDAO from '../api/GeoStoreDAO';
+import ResourcesAPI from "../api/resources";
 
 const createLinkedResourceURL = (id, tail = "") => `rest/geostore/data/${id}${tail}`;
 import {getResourceIdFromURL} from "../utils/ResourceUtils";
@@ -210,7 +211,7 @@ export const getResources = ({
         withPermission: false
     }
 } = {},
-API = GeoStoreDAO ) => {
+API = ResourcesAPI ) => {
     return Observable.defer(
         () => API.getResourcesByCategory(category, query, options)
     ).map(({ results = [], totalCount = 0 }) => {

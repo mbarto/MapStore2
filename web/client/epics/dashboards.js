@@ -22,7 +22,7 @@ import {
 } from '../actions/dashboards';
 
 import { searchParamsSelector, searchTextSelector, totalCountSelector } from '../selectors/dashboards';
-import GeoStoreApi from '../api/GeoStoreDAO';
+import ResourcesApi from '../api/resources';
 import { wrapStartStop } from '../observables/epics';
 import { error } from '../actions/notifications';
 import { deleteResource } from '../api/persistence';
@@ -57,7 +57,7 @@ export const searchDashboards = (action$, { getState = () => { } }) =>
         }))
         .switchMap(
             ({ searchText, options }) =>
-                Rx.Observable.defer(() => GeoStoreApi.getResourcesByCategory("DASHBOARD", searchText, options))
+                Rx.Observable.defer(() => ResourcesApi.getResourcesByCategory("DASHBOARD", searchText, options))
                     .map(results => dashboardListLoaded(results, {searchText, options}))
                     .let(wrapStartStop(
                         dashboardsLoading(true, "loading"),

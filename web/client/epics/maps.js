@@ -10,7 +10,7 @@ import Rx from 'rxjs';
 import assign from 'object-assign';
 import {push} from 'connected-react-router';
 import {basicError, basicSuccess} from '../utils/NotificationUtils';
-import GeoStoreApi from '../api/GeoStoreDAO';
+import ResourcesApi from '../api/resources';
 import { MAP_SAVED, mapSaveError, mapSaved, loadMapInfo, configureMap } from '../actions/config';
 import { get, isArray, isEqual, isObject, isNil, pick, omit, keys, zip, mapValues } from 'lodash';
 import {
@@ -150,7 +150,7 @@ export const getMapsResourcesByCategoryEpic = (action$, store) =>
                     return getContextNames(maps).switchMap(mapsWithContext =>
                         Rx.Observable.of(mapsLoaded(mapsWithContext, opts.params, actualSearchText)));
                 }) :
-                Rx.Observable.fromPromise(GeoStoreApi.getResourcesByCategory(map, actualSearchText, {
+                Rx.Observable.fromPromise(ResourcesApi.getResourcesByCategory(map, actualSearchText, {
                     ...opts,
                     params: {
                         ...(opts.params || {}),
@@ -218,7 +218,7 @@ export const mapsLoadContextsEpic = (action$) =>
         .switchMap(({searchText, options = {}, delayLoad = 0}) => {
             const curSearchText = searchText || '*';
             return Rx.Observable.of(null).delay(delayLoad).switchMap(() =>
-                Rx.Observable.defer(() => GeoStoreApi.getResourcesByCategory('CONTEXT', curSearchText, options))
+                Rx.Observable.defer(() => ResourcesApi.getResourcesByCategory('CONTEXT', curSearchText, options))
                     .switchMap(response => {
                         return Rx.Observable.of(setContexts({
                             results: (isArray(response.results) ? response.results : [response.results]).filter(r => !!r),

@@ -13,7 +13,7 @@
         ]
     },
     "authenticationApi": "node",
-    "nodeUrl": "http://localhost:8000/rest/node",
+    "nodeUrl": "http://localhost:8000",
     "geoStoreUrl": "rest/geostore/",
     "mailingList": "https://groups.google.com/forum/#!forum/mapstore-users",
     "printUrl": "pdf/info.json",
@@ -40,7 +40,7 @@
         "urlPattern": ".*geostore.*",
         "method": "bearer"
       }, {
-        "urlPattern": ".*rest/node.*",
+        "urlPattern": ".*:8000.*",
         "method": "bearer"
       }, {
         "urlPattern": ".*rest/config.*",

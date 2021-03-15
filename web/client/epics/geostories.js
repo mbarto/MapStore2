@@ -22,7 +22,7 @@ import {
 } from '../actions/geostories';
 
 import { searchParamsSelector, searchTextSelector, totalCountSelector } from '../selectors/geostories';
-import GeoStoreApi from '../api/GeoStoreDAO';
+import ResourcesApi from '../api/resources';
 import { wrapStartStop } from '../observables/epics';
 import { error } from '../actions/notifications';
 import { deleteResource } from '../api/persistence';
@@ -56,7 +56,7 @@ export const searchGeostories = (action$, { getState = () => { } }) =>
         }))
         .switchMap(
             ({ searchText, options }) =>
-                Rx.Observable.defer(() => GeoStoreApi.getResourcesByCategory("GEOSTORY", searchText, options))
+                Rx.Observable.defer(() => ResourcesApi.getResourcesByCategory("GEOSTORY", searchText, options))
                     .map(results => geostoriesListLoaded(results, {searchText, options}))
                     .let(wrapStartStop(
                         geostoriesLoading(true, "loading"),

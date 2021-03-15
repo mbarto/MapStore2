@@ -10,7 +10,7 @@ import { get, isArray, isEqual, isObject, zip } from 'lodash';
 import { compose, lifecycle, withState } from 'recompose';
 import Rx from 'rxjs';
 
-import DAO from '../../../api/GeoStoreDAO';
+import DAO from '../../../api/resources';
 import { getResource } from '../../../api/persistence';
 
 /*
