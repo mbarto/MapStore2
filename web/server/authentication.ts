@@ -1,5 +1,5 @@
 
-import {UserData, Group} from "../client/api/authentication";
+import {UserData, Group} from "../client/api/authentication/api";
 import memory from "../client/api/authentication/memory";
 import fs from "fs";
 import express from "express";

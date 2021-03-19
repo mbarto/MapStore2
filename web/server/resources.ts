@@ -1,7 +1,7 @@
 import fs from "fs";
 import express from "express";
 import memory from "../client/api/resources/memory";
-import { Resource } from "../client/api/resources";
+import { Resource } from "../client/api/resources/api";
 
 type ResourcesFile = {
     resources: Resource[]
