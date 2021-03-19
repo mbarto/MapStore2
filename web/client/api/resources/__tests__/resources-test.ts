@@ -1,4 +1,5 @@
-import Resources, {Resource} from "../index"
+import Resources from "../index"
+import {Resource} from "../api"
 import expect from "expect"
 import memory from "../memory"
 

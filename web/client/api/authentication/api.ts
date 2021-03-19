@@ -39,15 +39,3 @@ export type AuthenticationApi = {
     verifySession: (options: ServiceOptions) => Promise<Authenticated>
 }
 
-declare namespace Authentication {
-    export function setApi(name: string): void
-    export function addApi(name: string, impl: AuthenticationApi): void
-    let authProviderName: string;
-    export function login(username: string, password: string, options: ServiceOptions): Promise<Authenticated>
-    export function changePassword(user: UserData, newPassword: string, options: ServiceOptions): Promise<void>
-    export function refreshToken(accessToken: string, rfreshToken: string, options: ServiceOptions): Promise<Authenticated>
-    export function verifySession(options: ServiceOptions): Promise<Authenticated>
-}
-
-
-export default Authentication;

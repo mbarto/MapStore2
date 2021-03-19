@@ -1,4 +1,5 @@
-import Authentication, {UserData} from "../index"
+import Authentication from "../index"
+import {UserData} from "../api"
 import expect from "expect"
 import memory from "../memory"
 

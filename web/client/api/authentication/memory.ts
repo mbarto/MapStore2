@@ -1,4 +1,4 @@
-import {AuthenticationApi, Authenticated, UserData} from "./index"
+import {AuthenticationApi, Authenticated, UserData} from "./api"
 import uuid from "uuid"
 
 export type UserKey = string

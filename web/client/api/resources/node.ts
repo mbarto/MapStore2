@@ -1,4 +1,4 @@
-import { ResourcesApi } from ".";
+import { ResourcesApi } from "./api";
 import {getConfigProp} from "../../utils/ConfigUtils";
 import axios from "axios";
 

@@ -1,4 +1,4 @@
-import { AuthenticationApi } from ".";
+import { AuthenticationApi } from "./api";
 import {getConfigProp} from "../../utils/ConfigUtils";
 import axios from "axios";
 

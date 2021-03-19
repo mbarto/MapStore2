@@ -77,12 +77,3 @@ export type ResourcesApi = {
     searchListByAttributes: (filter: ResourcesFilter, options: ResourcesOptions, url?: string) => Promise<SearchByAttributesResult>
 };
 
-declare namespace Resources {
-    export function setApi(name: string): void
-    export function addApi(name: string, impl: ResourcesApi): void
-    let authProviderName: string;
-    export function getResourcesByCategory(category: string, query: ResourcesQuery, options: ResourcesOptions): Promise<ListResult>
-    export function searchListByAttributes(filter: ResourcesFilter, options: ResourcesOptions, url?: string): Promise<SearchByAttributesResult>
-}
-
-export default Resources;

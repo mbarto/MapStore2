@@ -1,4 +1,4 @@
-import {ResourcesApi, Resource, Category, ResourcesFilter, ResourcesByAttributeFilter, ResourcesOptions, ResourceByFieldFilter} from "./index"
+import {ResourcesApi, Resource, Category, ResourcesFilter, ResourcesByAttributeFilter, ResourcesOptions, ResourceByFieldFilter} from "./api"
 
 const categories = new Map<string, Category>();
 ["MAP", "DASHBOARD", "CONTEXT", "GEOSTORY"].forEach((c, index) => categories.set(c, {
