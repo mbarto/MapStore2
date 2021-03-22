@@ -1,0 +1,11 @@
+{
+  "canDelete": false,
+  "canEdit": false,
+  "canCopy": true,
+  "creation": "2018-04-27 10:44:18.411",
+  "lastUpdate": "2021-03-09 16:30:51.652",
+  "description": "a sample dashboard with all widgets!",
+  "name": "All widgets",
+  "thumbnail": "rest%2Fgeostore%2Fdata%2F5891%2Fraw%3Fdecode%3Ddatauri%26v%3D45ed7cf0-578c-11e8-a74e-c520a50d6e8f",
+  "featured": false
+}

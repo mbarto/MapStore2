@@ -10,21 +10,20 @@ type Apis<Api> = {
     [key: string]: Api
 }
 
-export class ApiProvider<Api> implements ApiProviderType<Api> {
-    private apis: Apis<Api> = {}
-    private authProviderName: string = ""
-    public apiName: string = ""
-    constructor(apiName: string, defaultName: string) {
-        this.apiName = apiName
-        this.authProviderName = defaultName
-    }
-    addApi(name: string, apiImplementation: Api) {
-        this.apis[name] = apiImplementation
-    }
-    setApi(name: string) {
-        this.authProviderName = name
-    }
-    getApi() {
-        return this.apis[ConfigUtils.getConfigProp(this.apiName) || this.authProviderName]
+export function createApiProvider<Api>(apiName: string, defaultImplementation: string): ApiProviderType<Api> {
+    const apis: Apis<Api> = {}
+    let authProviderName: string = defaultImplementation
+    return {
+        addApi(name, apiImplementation) {
+            apis[name] = apiImplementation
+        },
+        setApi(name) {
+            authProviderName = name
+        },
+        getApi() {
+            return apis[ConfigUtils.getConfigProp(apiName) || authProviderName]
+        }
     }
 }
+
+

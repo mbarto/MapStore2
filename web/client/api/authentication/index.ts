@@ -1,20 +1,20 @@
 import geostore from '../GeoStoreDAO';
 import memory from "./memory";
 import node from "./node";
-import {ApiProvider} from "../provider"
-import {AuthenticationApi, ServiceOptions, UserData} from "./api"
+import {ApiProviderType, createApiProvider} from "../provider"
+import {AuthenticationApi} from "./api"
 
-class Api extends ApiProvider<AuthenticationApi> implements AuthenticationApi {
-    login = (username: string, password: string, options: ServiceOptions) =>
-        this.getApi().login(username, password, options);
-    changePassword = (user: UserData, newPassword: string, options: ServiceOptions) =>
-        this.getApi().changePassword(user, newPassword, options);
-    refreshToken = (accessToken: string, refreshToken: string, options: ServiceOptions) =>
-        this.getApi().refreshToken(accessToken, refreshToken, options);
-    verifySession = (options: ServiceOptions) => this.getApi().verifySession(options);
-}
+const Authentication: ApiProviderType<AuthenticationApi> & AuthenticationApi = {
+    ...createApiProvider("authenticationApi", "node"),
+    login: (username, password, options) =>
+        Authentication.getApi().login(username, password, options),
+    changePassword: (user, newPassword, options) =>
+        Authentication.getApi().changePassword(user, newPassword, options),
+    refreshToken: (accessToken, refreshToken, options) =>
+        Authentication.getApi().refreshToken(accessToken, refreshToken, options),
+    verifySession: (options) => Authentication.getApi().verifySession(options)
+};
 
-const Authentication = new Api("authenticationApi", "node");
 Authentication.addApi("geostore", geostore)
 Authentication.addApi("memory", memory)
 Authentication.addApi("node", node)

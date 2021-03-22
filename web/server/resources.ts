@@ -1,20 +1,59 @@
 import fs from "fs";
 import express from "express";
 import memory from "../client/api/resources/memory";
-import { Resource } from "../client/api/resources/api";
+import { Category, Resource } from "../client/api/resources/api";
 
-type ResourcesFile = {
+type ResourcesCatalog = {
     resources: Resource[]
 }
 
-let resourcesFile: ResourcesFile;
+type MetadataFile = Omit<Resource, "category" | "id">
+
+let resourcesCatalog: ResourcesCatalog;
+
+function createCategory(id: number, name: string): Category {
+    return {
+        id,
+        name
+    }
+}
+
+function createResource(id: number, category: Category): Resource {
+    let metadataFile : MetadataFile
+    metadataFile = JSON.parse(fs.readFileSync(`catalog/${category.name}/${id}/metadata.json`, {
+        encoding: "utf-8"
+    }))
+    return {
+        id,
+        category,
+        ...metadataFile
+    }
+}
+
+function browseResources(resources: Resource[], category: Category): Resource[] {
+    return [...resources, ...fs.readdirSync(`catalog/${category.name}`, {
+        encoding: "utf-8",
+        withFileTypes: true
+    }).filter(ent => ent.isDirectory())
+    .map(ent => createResource(Number(ent.name), category))]
+}
+
+function browseCatalog(folder: string): ResourcesCatalog {
+    return {
+        resources: fs.readdirSync(folder, {
+            encoding: "utf-8",
+            withFileTypes: true
+        }).filter(ent => ent.isDirectory())
+        .map((ent, index) => createCategory(index + 1, ent.name))
+        .reduce(browseResources, [])
+    }
+}
 
 function readResources(): boolean {
     try {
-        resourcesFile = JSON.parse(fs.readFileSync("resources.json", {
-            encoding: "utf-8"
-        }))
-        const {resources} = resourcesFile;
+        resourcesCatalog = browseCatalog("catalog")
+
+        const {resources} = resourcesCatalog;
         memory.clear()
         resources.forEach(resource => {
             memory.addResource(resource.id, resource)
