@@ -5,7 +5,7 @@
  * This source code is licensed under the BSD-style license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import Cesium from '../../../libs/cesium';
+import * as Cesium from 'Cesium';
 
 import PropTypes from 'prop-types';
 import Rx from 'rxjs';
@@ -82,7 +82,7 @@ class CesiumMap extends React.Component {
     }
 
     componentDidMount() {
-        var map = new Cesium.Viewer(this.getDocument().getElementById(this.props.id), assign({
+        const map = new Cesium.Viewer(this.getDocument().getElementById(this.props.id), assign({
             baseLayerPicker: false,
             animation: false,
             fullscreenButton: false,

@@ -6,8 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const Layers = require('../../../../utils/cesium/Layers');
-const Cesium = require('../../../../libs/cesium');
+import Layers from '../../../../utils/cesium/Layers';
+import * as Cesium from "Cesium";
 const createBILTerrainProvider = require('../../../../utils/cesium/BILTerrainProvider').default;
 const BILTerrainProvider = createBILTerrainProvider(Cesium);
 const ConfigUtils = require('../../../../utils/ConfigUtils').default;
@@ -92,10 +92,9 @@ function wmsToCesiumOptions(options) {
     const credit = cr ? new Cesium.Credit(cr.text || cr.title, cr.imageUrl, cr.link) : options.attribution;
     // NOTE: can we use opacity to manage visibility?
     return assign({
-        url: "{s}",
+        url: new Cesium.Resource({url: "{s}", proxy: proxy && new WMSProxy(proxy) || new NoProxy()}),
         credit,
         subdomains: getURLs(isArray(options.url) ? options.url : [options.url]),
-        proxy: proxy && new WMSProxy(proxy) || new NoProxy(),
         layers: options.name,
         enablePickFeatures: false,
         parameters: assign({

@@ -6,8 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-var Layers = require('../../../../utils/cesium/Layers');
-var Cesium = require('../../../../libs/cesium');
+import Layers from '../../../../utils/cesium/Layers';
+import * as Cesium from "Cesium";
 
 const {isEqual} = require('lodash');
 const assign = require('object-assign');
@@ -24,7 +24,7 @@ Layers.registerType('marker', {
         }, options.style);
 
         const point = map.entities.add(assign({
-            position: Cesium.Cartesian3.fromDegrees(options.point.lng, options.point.lat)
+            position: Cesium.Cartesian3.fromDegrees(options.point[0], options.point[1])
         }, style));
         return {
             detached: true,
