@@ -23,6 +23,30 @@
                 "source": "osm",
                 "group": "background",
                 "visibility": true
+            },
+            {
+              "title": "Dragon",
+              "type": "3dtileset",
+              "url": "http://localhost:8003/tilesets/TilesetWithDiscreteLOD/tileset.json",
+              "visibility": true
+            },
+            {
+              "title": "Buildings",
+              "type": "3dtileset",
+              "url": "http://localhost:8003/tilesets/TilesetWithRequestVolume/tileset.json",
+              "visibility": false
+            },
+            {
+              "title": "Trees",
+              "type": "3dtileset",
+              "url": "http://localhost:8003/tilesets/TilesetWithTreeBillboards/tileset.json",
+              "visibility": false
+            },
+            {
+              "title": "Cube",
+              "type": "3dtileset",
+              "url": "http://localhost:8003/tilesets/TilesetWithExpiration/tileset.json",
+              "visibility": false
             }
         ]
     }

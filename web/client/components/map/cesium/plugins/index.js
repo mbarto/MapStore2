@@ -14,5 +14,6 @@ export default {
     WMTSLayer: require('./WMTSLayer'),
     GraticuleLayer: require('./GraticuleLayer'),
     MarkerLayer: require('./MarkerLayer'),
-    OverlayLayer: require('./OverlayLayer')
+    OverlayLayer: require('./OverlayLayer'),
+    ThreeDimTileSetLayer: require('./ThreeDimTileSetLayer')
 };
