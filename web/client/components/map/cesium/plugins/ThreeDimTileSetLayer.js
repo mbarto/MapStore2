@@ -4,10 +4,21 @@ import * as Cesium from 'Cesium';
 Layers.registerType('3dtileset', {
     create: (options, map) => {
         if (options.visibility) {
-            const tileSet = map.scene.primitives.add(new Cesium.Cesium3DTileset({
-                url: options.url
-            }));
-            map.zoomTo(tileSet, new Cesium.HeadingPitchRange(0, -0.5, 0));
+            let tileSet;
+            if (options.url) {
+                tileSet = map.scene.primitives.add(new Cesium.Cesium3DTileset({
+                    url: options.url
+                }));
+            }
+            if (options.name === "OSMBuildings") {
+                tileSet = map.scene.primitives.add(Cesium.createOsmBuildings());
+            }
+            if (options.style) {
+                tileSet.style = new Cesium.Cesium3DTileStyle(options.style);
+            }
+            if (options.zoomTo) {
+                map.zoomTo(tileSet, new Cesium.HeadingPitchRange(0, -0.5, 0));
+            }
             return {
                 detached: true,
                 tileSet,
