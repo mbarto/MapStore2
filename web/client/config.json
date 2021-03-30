@@ -28,7 +28,7 @@
               "title": "Dragon",
               "type": "3dtileset",
               "url": "http://localhost:8003/tilesets/TilesetWithDiscreteLOD/tileset.json",
-              "visibility": true,
+              "visibility": false,
               "zoomTo": true
             },
             {
@@ -52,6 +52,13 @@
               "type": "3dtileset",
               "url": "http://localhost:8003/tilesets/TilesetWithExpiration/tileset.json",
               "visibility": false
+            },
+            {
+              "title": "Delft CityGML",
+              "type": "3dtileset",
+              "url": "http://localhost:8003/tilesets/TilesetDelft/tileset.json",
+              "visibility": true,
+              "zoomTo": true
             }
         ]
     }
