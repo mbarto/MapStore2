@@ -14,7 +14,7 @@ type UsersFile = {
     groups: Group[]
 }
 
-const everyOneGroup: Group = {
+export const everyOneGroup: Group = {
     id: 0,
     groupName: "everyOne",
     description: "",
@@ -124,5 +124,20 @@ authentication.post('/changePassword', (req, res) => {
         res.send('Invalid tokens');
     });
 });
+const Anonymous: UserData = {
+    id: 0,
+    name: "anonymous",
+    enabled: true,
+    attribute: [],
+    groups: [everyOneGroup],
+    role: "GUEST"
+}
+export function getUser(req: express.Request): Promise<UserData> {
+    const token = getToken(req)
+    if (token) {
+        return memory.refreshToken(token, token, {}).then((auth) => auth.User)
+    }
+    return Promise.resolve(Anonymous)
+}
 
 export default authentication;

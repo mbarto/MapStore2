@@ -16,7 +16,7 @@ export type UserData = {
     attribute: Attribute[],
     enabled: boolean
     groups: Group[]
-    role: "USER" | "ADMIN"
+    role: "USER" | "ADMIN" | "GUEST"
 }
 
 export type ServiceOptions = {

@@ -1,8 +1,7 @@
 {
-  "canDelete": false,
-  "canEdit": false,
-  "canCopy": true,
+  "permissions": [],
   "creation": "2020-06-12 18:29:11.297",
   "description": "",
-  "name": "MyStory"
+  "name": "MyStory",
+  "owner": "admin"
 }

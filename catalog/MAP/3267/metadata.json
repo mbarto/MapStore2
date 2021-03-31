@@ -1,11 +1,15 @@
 {
-  "canDelete": false,
-  "canEdit": false,
-  "canCopy": true,
+  "permissions": [{
+    "owner": {
+      "type": "group",
+      "group": "everyOne"
+    },
+    "canRead": true
+  }],
   "creation": "2017-11-21 12:22:16.063",
   "lastUpdate": "2018-02-02 08:55:44.075",
   "description": "Institutii de invatamant din sectorul agroalimentar din R. Moldova",
   "name": "Agricultura (invatamant)",
   "thumbnail": "rest/geostore/data/22739/raw?decode=datauri",
-  "owner": "evgenii"
+  "owner": "admin"
 }

@@ -1,13 +1,42 @@
 import fs from "fs";
 import express from "express";
 import memory from "../client/api/resources/memory";
-import { Category, Resource } from "../client/api/resources/api";
+import { Category, ListResult, Resource } from "../client/api/resources/api";
+import { Group, UserData } from "../client/api/authentication/api";
+import { everyOneGroup, getUser } from "./authentication";
+import { truncate } from "lodash";
 
-type ResourcesCatalog = {
-    resources: Resource[]
+const catalogFolder = "catalog"
+
+type UserPermissionOwner = {
+    type: "user",
+    user: string
 }
 
-type MetadataFile = Omit<Resource, "category" | "id">
+type GroupPermissionOwner = {
+    type: "group",
+    group: string
+}
+
+type PermissionOwner = UserPermissionOwner | GroupPermissionOwner
+
+type Permission = {
+    owner: PermissionOwner
+    canRead: boolean
+    canWrite: boolean
+    canAdmin: boolean
+}
+
+type StoredResource = Omit<Resource, "canDelete" | "canEdit" | "canCopy"> & {
+    permissions: Permission[]
+    owner: string
+}
+
+type ResourcesCatalog = {
+    resources: StoredResource[]
+}
+
+type MetadataFile = Omit<StoredResource, "category" | "id">
 
 let resourcesCatalog: ResourcesCatalog;
 
@@ -18,9 +47,9 @@ function createCategory(id: number, name: string): Category {
     }
 }
 
-function createResource(id: number, category: Category): Resource {
+function createResource(id: number, category: Category): StoredResource {
     let metadataFile : MetadataFile
-    metadataFile = JSON.parse(fs.readFileSync(`catalog/${category.name}/${id}/metadata.json`, {
+    metadataFile = JSON.parse(fs.readFileSync(`${catalogFolder}/${category.name}/${id}/metadata.json`, {
         encoding: "utf-8"
     }))
     return {
@@ -30,8 +59,8 @@ function createResource(id: number, category: Category): Resource {
     }
 }
 
-function browseResources(resources: Resource[], category: Category): Resource[] {
-    return [...resources, ...fs.readdirSync(`catalog/${category.name}`, {
+function browseResources(resources: StoredResource[], category: Category): StoredResource[] {
+    return [...resources, ...fs.readdirSync(`${catalogFolder}/${category.name}`, {
         encoding: "utf-8",
         withFileTypes: true
     }).filter(ent => ent.isDirectory())
@@ -51,7 +80,7 @@ function browseCatalog(folder: string): ResourcesCatalog {
 
 function readResources(): boolean {
     try {
-        resourcesCatalog = browseCatalog("catalog")
+        resourcesCatalog = browseCatalog(catalogFolder)
 
         const {resources} = resourcesCatalog;
         memory.clear()
@@ -79,13 +108,84 @@ if(!readResources()) {
 
 const resources = express.Router();
 
+function isEveryOne(permission: Permission) {
+    if (permission.owner.type === "group") {
+        return permission.owner.group === everyOneGroup.groupName
+    }
+    return false
+}
+
+function matchesUser(name: string, p: Permission): boolean {
+    if (p.owner.type === "user") {
+        return p.owner.user === name
+    }
+    return false
+}
+
+function matchesGroup(groups: Group[], p: Permission): boolean {
+    return groups.some(g => p.owner.type === "group" && g.groupName === p.owner.group)
+}
+
+function matchingPermissions(user: UserData, permissions: Permission[]) {
+    return permissions.filter(p =>
+        isEveryOne(p)
+        || matchesUser(user.name, p)
+        || matchesGroup(user.groups, p)
+    )
+}
+
+function canRead(user: UserData, resource: StoredResource) {
+    return resource.owner === user.name
+        || user.role === "ADMIN"
+        || matchingPermissions(user, resource.permissions).some(p => p.canRead)
+}
+
+function canEdit(user: UserData, resource: StoredResource) {
+    return resource.owner === user.name
+        || user.role === "ADMIN"
+        || matchingPermissions(user, resource.permissions).some(p => p.canWrite)
+}
+
+function canAdmin(user: UserData, resource: StoredResource) {
+    return resource.owner === user.name
+        || user.role === "ADMIN"
+        || matchingPermissions(user, resource.permissions).some(p => p.canAdmin)
+}
+
+function addPermissions(user: UserData, resource: Resource) {
+    return {
+        ...resource,
+        canEdit: canEdit(user, resource as StoredResource),
+        canCopy: canEdit(user, resource as StoredResource),
+        canDelete: canAdmin(user, resource as StoredResource)
+    }
+}
+
+function filterByUser(resources: ListResult, user: UserData): ListResult {
+    const filtered = resources.results.filter(r => canRead(user, r as StoredResource))
+    return {
+        ...resources,
+        results: filtered.map(r => addPermissions(user, r)),
+        totalCount: filtered.length
+    }
+}
+
+function paginate(resources: ListResult, start: number, limit: number) {
+    return {
+        ...resources,
+        results: resources.results.filter((r, i) => i>=start && i<start+limit)
+    }
+}
+
 resources.get('/search/category/:category/:query', (req, res) => {
-    memory.getResourcesByCategory(req.params.category, req.params.query, {
+    getUser(req).then(u => memory.getResourcesByCategory(req.params.category, req.params.query, {
         params: {
-            start: Number(req.query.start),
-            limit: Number(req.query.limit)
+            start: 0,
+            limit: Number.MAX_VALUE
         }
     })
+        .then((resources) => filterByUser(resources, u)))
+        .then((resources) => paginate(resources, Number(req.query.start), Number(req.query.limit)))
         .then((resources) => res.send(resources))
         .catch(() => {
             res.status(500);
@@ -107,3 +207,5 @@ resources.post("/search/list", (req, res) => {
 });
 
 export default resources;
+
+

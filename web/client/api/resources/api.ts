@@ -69,7 +69,7 @@ export type SearchByAttributesResult = {
 export type ListResult = {
     success: boolean
     totalCount: number
-    results: Resource | Resource[]
+    results: Resource[]
 }
 
 export type ResourcesApi = {
